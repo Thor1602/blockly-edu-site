@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PixiJS Tile Map</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.3.2/pixi.min.js"></script>
+</head>
+<body>
+
+
+<div>{<br>"name": "taxi_pickup_map_five", <br>"layout": <br>   {</div>
+<pre id="mapLayout"></pre>
+<div>   }<br>}</div>
+<button onclick="initialize(0)">Black</button>
+<button onclick="initialize(1)">Grey</button>
+<button onclick="initialize(2)">Green</button>
+<script>
+  // Map layout from the provided data
+  const mapLayout = {
+    "A": {"1": 2, "2": 2, "3": 0, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 0, "12": 2},
+    "B": {"1": 2, "2": 2, "3": 0, "4": 1, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 1, "11": 0, "12": 2},
+    "C": {"1": 0, "2": 0, "3": 0, "4": 1, "5": 0, "6": 1, "7": 1, "8": 1, "9": 0, "10": 1, "11": 0, "12": 0},
+    "D": {"1": 1, "2": 1, "3": 1, "4": 1, "5": 0, "6": 1, "7": 0, "8": 1, "9": 0, "10": 1, "11": 1, "12": 1},
+    "E": {"1": 1, "2": 0, "3": 0, "4": 0, "5": 0, "6": 1, "7": 0, "8": 1, "9": 0, "10": 0, "11": 0, "12": 1},
+    "F": {"1": 1, "2": 0, "3": 1, "4": 1, "5": 1, "6": 1, "7": 0, "8": 1, "9": 1, "10": 1, "11": 0, "12": 1},
+    "G": {"1": 1, "2": 0, "3": 1, "4": 0, "5": 0, "6": 0, "7": 0, "8": 1, "9": 0, "10": 1, "11": 0, "12": 1},
+    "H": {"1": 1, "2": 0, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 0, "10": 1, "11": 0, "12": 1},
+    "I": {"1": 1, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 1, "11": 0, "12": 1},
+    "J": {"1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 0, "12": 1},
+    "K": {"1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 1, "11": 0, "12": 0},
+    "L": {"1": 2, "2": 2, "3": 0, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 0, "12": 2},
+    "M": {"1": 2, "2": 2, "3": 0, "4": 1, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 1, "11": 0, "12": 2},
+    "N": {"1": 2, "2": 2, "3": 0, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 0, "12": 2},
+    "O": {"1": 2, "2": 2, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0, "11": 0, "12": 2},
+    "P": {"1": 2, "2": 2, "3": 2, "4": 2, "5": 2, "6": 2, "7": 2, "8": 2, "9": 2, "10": 2, "11": 2, "12": 2}
+  };
+
+  const TILE_SIZE = 50;
+  const COLORS = { 0: 0x333333, 1: 0xAAAAAA, 2: 0x00AA00 };
+  function updateMapLayoutDisplay() {
+    const mapLayoutElement = document.getElementById('mapLayout');
+
+    // Create formatted string for mapLayout in the desired style
+    let formattedMap = '';
+    for (const [row, cols] of Object.entries(mapLayout)) {
+      let rowString = `"${row}": { `;
+      for (const [col, value] of Object.entries(cols)) {
+        rowString += `"${col}": ${value}, `;
+      }
+      rowString = rowString.slice(0, -2) + ' },\n'; // Remove last comma and space, then add closing bracket
+      formattedMap += rowString;
+    }
+
+    // Update the text content with formatted string
+    mapLayoutElement.textContent = formattedMap;
+  }
+  const app = new PIXI.Application({
+    width: TILE_SIZE * 12,
+    height: TILE_SIZE * 16,
+    backgroundColor: 0x000000
+  });
+  document.body.appendChild(app.view);
+
+  let tiles = [];
+
+  Object.entries(mapLayout).forEach(([row, cols], rowIndex) => {
+    Object.entries(cols).forEach(([col, value], colIndex) => {
+      let tile = new PIXI.Graphics();
+      tile.beginFill(COLORS[value]);
+      tile.drawRect(0, 0, TILE_SIZE, TILE_SIZE);
+      tile.endFill();
+      tile.x = colIndex * TILE_SIZE;
+      tile.y = rowIndex * TILE_SIZE;
+      tile.interactive = true;
+      tile.buttonMode = true;
+      tile.value = value;
+      tile.row = row;
+      tile.col = col;
+
+      tile.on('pointerdown', function() {
+        // Toggle value and update mapLayout
+        this.value = (this.value + 1) % 3;
+
+        // Update the mapLayout with the new value
+        mapLayout[this.row][this.col] = this.value;
+
+        // Update the tile color
+        this.clear();
+        this.beginFill(COLORS[this.value]);
+        this.drawRect(0, 0, TILE_SIZE, TILE_SIZE);
+        this.endFill();
+
+        // Optionally log the updated mapLayout to the console to see the changes live
+        updateMapLayoutDisplay();
+      });
+
+      app.stage.addChild(tile);
+      tiles.push(tile);
+    });
+  });
+  function initialize(value) {
+    Object.keys(mapLayout).forEach(row => {
+      Object.keys(mapLayout[row]).forEach(col => {
+        mapLayout[row][col] = value;
+      });
+    });
+
+    // Update PIXI tiles
+    tiles.forEach(tile => {
+      tile.value = value;
+      tile.clear();
+      tile.beginFill(COLORS[value]);
+      tile.drawRect(0, 0, TILE_SIZE, TILE_SIZE);
+      tile.endFill();
+    });
+
+    updateMapLayoutDisplay();
+  }
+  updateMapLayoutDisplay();
+
+</script>
+</body>
+</html>

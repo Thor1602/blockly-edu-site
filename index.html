@@ -132,7 +132,7 @@
     </div>
 </div>
 <script>
-    // TODO solve the sizing issue where the taxi show improper size and position behavior
+    // TODO solve the sizing issue where the taxi shows improper size and position behavior
 
     let configData = null; // Global variable to store JSON
     async function fetchData() {
@@ -406,41 +406,6 @@
             }
         }
 
-        moveSmoothly(newRow, newCol, speed, callback) {
-            let targetX = newCol * this.gridSize + this.gridSize / 2;
-            let targetY = newRow * this.gridSize + this.gridSize / 2;
-
-            const animateMove = () => {
-                let dx = targetX - this.sprite.x;
-                let dy = targetY - this.sprite.y;
-
-                if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
-                    this.sprite.x += dx / speed;
-                    this.sprite.y += dy / speed;
-                    requestAnimationFrame(animateMove);
-                } else {
-                    this.sprite.x = targetX;
-                    this.sprite.y = targetY;
-                    this.row = newRow;
-                    this.col = newCol;
-                    if (typeof callback === "function") callback();
-                }
-            };
-
-            requestAnimationFrame(animateMove);
-        }
-
-        moveBy(deltaCol, deltaRow, map_layout, speed, callback) {
-            let newRow = this.row + deltaRow;
-            let newCol = this.col + deltaCol;
-            let rowKey = Object.keys(map_layout)[newRow];
-            let colKey = Object.keys(map_layout[rowKey])[newCol];
-            if (map_layout[rowKey] && map_layout[rowKey][colKey] !== undefined &&
-                (map_layout[rowKey][colKey] === 1 || map_layout[rowKey][colKey] === 2)) {
-                this.moveSmoothly(newRow, newCol, speed, callback);
-            }
-
-        }
 
 
         resize(gridSize) {
@@ -488,6 +453,7 @@
             return (dRow === 1 && dCol === 0) || (dRow === 0 && dCol === 1);
         }
 
+
         playCrashSound() {
             let crashSound = new Audio('https://www.fesliyanstudios.com/play-mp3/4380'); // Replace with your sound URL
             crashSound.volume = 0.7; // Adjust volume
@@ -496,33 +462,44 @@
     }
 
     class Player extends Sprite {
-        constructor(imageURL, row, col, showNotif = false, notifNumber = 0) {
-            super(imageURL, row, col,showNotif, notifNumber);
+        constructor(imageURL, row, col, showNotif = false, notifNumber = 0,gridSize) {
+            super(imageURL, row, col,showNotif, notifNumber,gridSize);
         }
 
-        move(direction) {
-            // Move the player based on a direction input
-            let newRow = this.row;
-            let newCol = this.col;
+        moveSmoothly(newRow, newCol, speed, callback) {
+            let targetX = newCol * this.gridSize + this.gridSize / 2;
+            let targetY = newRow * this.gridSize + this.gridSize / 2;
 
-            switch (direction) {
-                case 'up':
-                    newRow--;
-                    break;
-                case 'down':
-                    newRow++;
-                    break;
-                case 'left':
-                    newCol--;
-                    break;
-                case 'right':
-                    newCol++;
-                    break;
+            const animateMove = () => {
+                let dx = targetX - this.sprite.x;
+                let dy = targetY - this.sprite.y;
+
+                if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+                    this.sprite.x += dx / speed;
+                    this.sprite.y += dy / speed;
+                    requestAnimationFrame(animateMove);
+                } else {
+                    this.sprite.x = targetX;
+                    this.sprite.y = targetY;
+                    this.row = newRow;
+                    this.col = newCol;
+                    if (typeof callback === "function") callback();
+                }
+            };
+
+            requestAnimationFrame(animateMove);
+        }
+
+        moveBy(deltaCol, deltaRow, map_layout, speed, callback) {
+            let newRow = this.row + deltaRow;
+            let newCol = this.col + deltaCol;
+            let rowKey = Object.keys(map_layout)[newRow];
+            let colKey = Object.keys(map_layout[rowKey])[newCol];
+            if (map_layout[rowKey] && map_layout[rowKey][colKey] !== undefined &&
+                (map_layout[rowKey][colKey] === 1 || map_layout[rowKey][colKey] === 2)) {
+                this.moveSmoothly(newRow, newCol, speed, callback);
             }
 
-            if (this.canMoveTo(newRow, newCol)) {
-                this.moveTo(newRow, newCol);
-            }
         }
 
         canMoveTo(row, col) {
@@ -539,7 +516,7 @@
     let people = [], sprites = [], taxi, personOne, personTwo, personThree, personFour, personFive;
 
     (async () => {
-        map = await new MapLayout("taxi_driver_one", false);
+        map = await new MapLayout("taxi_pickup_map_five", false);
         map.setGridSize();
         // Add Taxi
         app = new PIXI.Application({
@@ -547,7 +524,7 @@
             height: map.gridSize * map.mapRows,
             backgroundColor: 0xAAAAAA
         });
-        taxi = new Sprite('https://i.postimg.cc/8C5cQSb0/taxi.png', 9, 11, false, 0, map.gridSize);
+        taxi = new Player ('https://i.postimg.cc/8C5cQSb0/taxi.png', 9, 11, false, 0, map.gridSize);
         personOne = new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', 2, 4, true, 5, map.gridSize);
         personTwo = new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', 8, 4, true, 2, map.gridSize);
         personThree = new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', 8, 10, true, 3, map.gridSize);
