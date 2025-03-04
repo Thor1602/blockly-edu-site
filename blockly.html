@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collection Game</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+          integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.5.1/gsap.min.js"></script>
+    <script src="https://unpkg.com/blockly/blockly_compressed.js"></script>
+    <script src="https://unpkg.com/blockly/blocks_compressed.js"></script>
+    <script src="https://unpkg.com/blockly/javascript_compressed.js"></script>
+    <script src="https://unpkg.com/blockly/msg/en.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.1.3/pixi.min.js"></script>
+    <style>
+
+        body {
+            overflow: hidden;
+            padding: 0;
+        }
+
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+
+        .right-content {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .right-content .row {
+            width: 100%;
+        }
+
+        /* ... (other styles) ... */
+        .flex-container {
+            display: flex;
+            height: 100vh;
+        }
+
+        .flex-item-left { /* New class for the left item */
+            flex: 0 0 33%; /* Takes 33% of the width */
+        }
+
+        .flex-item-right { /* New class for the right item */
+            flex: 0 0 66%; /* Takes 66% of the width */
+        }
+
+        .btn-primary {
+            background-color: #FF9800 !important;
+            color: white !important;
+            border-color: #FF9800 !important;
+        }
+
+        .btn-primary:hover,
+        .btn-primary:visited,
+        .btn-primary:active,
+        .btn-primary:focus {
+            background-color: #FF9800 !important;
+            color: white !important;
+            border-color: #FF9800 !important;
+            box-shadow: none !important; /* Remove Bootstrap focus shadow */
+        }
+
+        .btn-primary:hover {
+            box-shadow: 0 0 10px black !important; /* Adds black glow effect */
+        }
+
+
+        .btn-reset {
+            background-color: #7200c3 !important;
+            color: white !important;
+            border-color: #7200c3 !important;
+            display: none;
+        }
+
+        .btn-reset:hover,
+        .btn-reset:visited,
+        .btn-reset:active,
+        .btn-reset:focus {
+            background-color: #7200c3 !important;
+            color: white !important;
+            border-color: #7200c3 !important;
+            box-shadow: none !important; /* Remove Bootstrap focus shadow */
+        }
+
+        .btn-reset:hover {
+            box-shadow: 0 0 10px black !important; /* Adds black glow effect */
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid vh-100 d-flex flex-row">
+    <!-- Left Side (Visualization) -->
+    <div class="d-flex flex-column p-4">
+        <h2>Collection Game</h2>
+        <div id="visualisation" class="border rounded bg-light p-3"></div>
+        <div class="mt-3 d-flex justify-content-between">
+            <button onclick="runCode()" class="btn btn-lg btn-primary" id="btnRun">
+                <i class="fa-solid fa-play"></i> RUN
+            </button>
+            <button onclick="resetCode()" class="btn btn-lg btn-reset" id="btnReset">
+                <i class="fa-solid fa-rotate-right"></i> RESET
+            </button>
+            <button class="btn btn-lg btn-primary">
+                <i class="fa-solid fa-forward-step"></i> STEP
+            </button>
+        </div>
+        <label for="speed" class="form-label"></label>
+        <input type="range" class="form-range" min="0" max="10" step="1" id="speed">
+    </div>
+
+    <div class="d-flex flex-column flex-grow-1 p-4">
+        <div class="bg-warning p-3 sticky-top">
+            <h2>Instructions</h2>
+            <p>Pick up everyone! Remaining blocks: <b>You have <span id="capacity"></span> block(s) left.</b></p>
+            <div class="d-flex align-items-center">
+                <button class="btn btn-primary" onclick="giveHint('Try to put X block in X order', '3000')">
+                    <i class="fa-solid fa-question"></i> HINT
+                </button>
+                <div id="hint" style="margin-left: 20px;"></div> <!-- Custom margin in pixels -->
+            </div>
+        </div>
+        <div class="border rounded bg-white p-4 flex-grow-1 mt-3">
+            <div id="blocklyDiv" style="height: 100%; width: 100%;"></div>
+        </div>
+    </div>
+</div>
+<script>
+    // TODO solve the sizing issue where the taxi show improper size and position behavior
+
+    let configData = null; // Global variable to store JSON
+    async function fetchData() {
+        const response = await fetch('blocks.json'); // Adjust path as needed
+        configData = await response.json();
+    }
+    
+    class Activity {
+        constructor(name, instructions, hints, mapLayout, sprites, sounds, player, blocks, goal) {
+            this.name = name; // Activity name
+            this.instructions = instructions; // List of instructions
+            this.hints = hints; // List of hints
+            this.mapLayout = mapLayout; // The grid map layout
+            this.sprites = sprites; // List of all sprites (including obstacles)
+            this.sounds = sounds; // List of all sounds
+            this.player = player; // The main player (a Sprite object)
+            this.blocks = blocks; // List of block types available in Blockly
+            this.goal = goal; // The win condition for this activity
+        }
+
+        checkGoal() {
+            // Check if the goal condition is met
+            return this.goal.isMet(this);
+        }
+
+        resetActivity() {
+            // Reset sprites and player position
+            this.mapLayout.reset();
+            this.sprites.forEach(sprite => sprite.reset());
+            this.player.reset();
+        }
+    }
+
+    class Block {
+        constructor(name, executeFunction) {
+            this.name = name;
+            this.executeFunction = executeFunction; // Function to run when block is executed
+        }
+
+        execute(context) {
+            this.executeFunction(context);
+        }
+    }
+
+    class Goal {
+        constructor(checkFunction) {
+            this.checkFunction = checkFunction; // Function to determine if goal is met
+        }
+
+        isMet(activity) {
+            return this.checkFunction(activity);
+        }
+    }
+
+    class MapLayout {
+        constructor(mapLayoutName, grid) {
+            this.gridSize = 40;
+            this.grid = grid;
+            this.mapLayout = null;
+            this.mapRows = null;
+            this.mapCols = null;
+
+            // ✅ Ensure mapLayout is assigned before continuing
+            return (async () => {
+                this.mapLayout = await this.loadMapLayout(mapLayoutName);
+                this.mapRows = Object.keys(this.mapLayout).length;
+                this.mapCols = Object.keys(this.mapLayout[Object.keys(this.mapLayout)[0]]).length;
+                return this;
+            })();
+        }
+        async loadMapLayout(mapLayoutNameParam) {
+            try {
+                await fetchData();
+                const layoutObj = configData.map_layouts.find(layout => layout.name === mapLayoutNameParam);
+                return layoutObj ? layoutObj.layout : null;
+            } catch (error) {
+                console.error("Error fetching JSON:", error);
+                return null;
+            }
+        }
+
+
+        setGridSize() {
+            const breakpoints = [
+                {width: 1300, size: 40},
+                {width: 1000, size: 30},
+                {width: 800, size: 20}
+            ];
+            this.gridSize = breakpoints.find(b => window.innerWidth > b.width)?.size || 10;
+        }
+
+        drawMap() {
+            this.reset();
+            let rowIndex = 0; // Track the numerical row index
+            for (const rowKey in this.mapLayout) {
+                let colIndex = 0; // Track the numerical column index
+                for (const colKey in this.mapLayout[rowKey]) {
+                    let tile = new PIXI.Graphics();
+                    const tileValue = this.mapLayout[rowKey][colKey];
+                    if (this.grid) tile.lineStyle(1, 0x9b9b9b, 1); // (width, color, alpha)
+                    tile.beginFill(tileValue === 1 ? 0xCCCCCC : (tileValue === 2 ? 0x00FF00 : 0x555555));
+                    tile.drawRect(colIndex * this.gridSize, rowIndex * this.gridSize, this.gridSize, this.gridSize);
+                    tile.endFill();
+                    app.stage.addChild(tile);
+                    colIndex++;
+                }
+                rowIndex++;
+            }
+        }
+
+        drawSprites(listOfSprites) {
+            if (listOfSprites) {
+                listOfSprites.forEach((sprite) => {
+                    if (sprite) app.stage.addChild(sprite.container);
+                });
+            }
+        }
+
+        reset() {
+            app.stage.removeChildren();  // Clears everything (including the sprites)
+        }
+
+
+    }
+
+    class BlockManager {
+        constructor(blocklyDiv, configData) {
+            this.blocklyDiv = blocklyDiv;
+            this.configData = configData;
+            this.workspace = null;
+            this.customTheme = null;
+        }
+
+        loadBlocks() {
+            try {
+                const data = this.configData;
+                this.loadTheme(data.blocklyThemeSettings);
+                this.defineBlocks(data.blocks);
+                this.createToolbox(data.blocks);
+                this.injectWorkspace();
+                this.setupChangeListener();
+            } catch (error) {
+                console.error('Error loading Blockly settings:', error);
+            }
+        }
+
+        loadTheme(themeSettings) {
+            if (themeSettings && themeSettings.length > 0) {
+                const themeData = themeSettings[0];
+                this.customTheme = Blockly.Theme.defineTheme(themeData.themeName, {
+                    base: Blockly.Themes[themeData.base] || Blockly.Themes.Classic,
+                    fontStyle: themeData.fontStyle,
+                    componentStyles: themeData.componentStyles,
+                    blockStyles: themeData.blockStyles
+                });
+            } else {
+                console.error('No theme settings found in JSON.');
+            }
+        }
+
+        defineBlocks(blocks) {
+            if (!blocks || blocks.length === 0) {
+                throw new Error('No blocks found in JSON.');
+            }
+            blocks.forEach(block => {
+                Blockly.common.defineBlocksWithJsonArray([{...block}]);
+                javascript.javascriptGenerator.forBlock[block.type] = () => block.javascript_function;
+            });
+            javascript.javascriptGenerator.forBlock['controls_repeat_ext'] = function (block) {
+                let times = block.getFieldValue('TIMES') || 10; // Get number of repeats
+                let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO'); // Get inner blocks
+                let repeatCode = `
+                for (let i = 0; i < ${times}; i++) {
+                    ${innerCode}
+                }
+            `;
+                return repeatCode; // ✅ Returns JavaScript code instead of calling repeat_10(block);
+            };
+        }
+
+        createToolbox(blocks) {
+            this.toolbox = {
+                'kind': 'flyoutToolbox',
+                'contents': blocks.map(block => ({'kind': 'block', 'type': block.type}))
+            };
+        }
+
+        injectWorkspace() {
+            this.workspace = Blockly.inject(this.blocklyDiv, {
+                toolbox: this.toolbox,
+                theme: this.customTheme,
+                maxBlocks: 30,
+                trashcan: true,
+                move: {scrollbars: true}
+            });
+        }
+
+        setupChangeListener() {
+            const updateCapacity = () => {
+                document.getElementById('capacity').textContent = this.workspace.remainingCapacity();
+            };
+            this.workspace.addChangeListener(updateCapacity);
+            updateCapacity();
+        }
+    }
+
+
+    class Sprite {
+        constructor(imageURL, row, col, showNotif = false, notif_number = 0, gridSize) {
+            this.row = row;
+            this.col = col;
+            this.gridSize = gridSize;
+            this.showNotif = showNotif;
+            this.notif_number = notif_number;
+            this.original_notif_number = notif_number;
+            this.sprite = PIXI.Sprite.from(imageURL);
+            this.sprite.anchor.set(0.5);
+            this.updateSizeAndPosition();
+            Object.defineProperty(this, "originalRow", {
+                value: row,
+                writable: false, // Prevent modification
+                configurable: false, // Prevent redefinition
+            });
+            Object.defineProperty(this, "originalCol", {
+                value: col,
+                writable: false, // Prevent modification
+                configurable: false, // Prevent redefinition
+            });
+            this.container = new PIXI.Container();
+            this.container.addChild(this.sprite);
+
+            if (this.showNotif) {
+                this.notifText = new PIXI.Text(this.notif_number, {
+                    fontFamily: 'Arial',
+                    fontSize: 14,
+                    fill: 'yellow',
+                    fontWeight: 'bold',
+                    stroke: 'black',
+                    strokeThickness: 4
+                });
+                this.notifText.anchor.set(0.5);
+                this.container.addChild(this.notifText);
+                this.updateNotifPosition();
+            }
+
+            app.stage.addChild(this.container);
+        }
+
+        updateNotif(newNumber) {
+            if (this.showNotif && this.notifText) {
+                this.notif_number = newNumber;
+                this.notifText.text = newNumber;
+            }
+        }
+
+        initialize() {
+            this.row = this.originalRow;
+            this.col = this.originalCol;
+            this.updateSizeAndPosition();
+            if (this.showNotif) {
+                this.updateNotifPosition();
+            }
+        }
+
+        moveTo(newRow, newCol) {
+            this.row = newRow;
+            this.col = newCol;
+            this.updateSizeAndPosition();
+            if (this.showNotif) {
+                this.updateNotifPosition();
+            }
+        }
+
+        moveSmoothly(newRow, newCol, speed, callback) {
+            let targetX = newCol * this.gridSize + this.gridSize / 2;
+            let targetY = newRow * this.gridSize + this.gridSize / 2;
+
+            const animateMove = () => {
+                let dx = targetX - this.sprite.x;
+                let dy = targetY - this.sprite.y;
+
+                if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+                    this.sprite.x += dx / speed;
+                    this.sprite.y += dy / speed;
+                    requestAnimationFrame(animateMove);
+                } else {
+                    this.sprite.x = targetX;
+                    this.sprite.y = targetY;
+                    this.row = newRow;
+                    this.col = newCol;
+                    if (typeof callback === "function") callback();
+                }
+            };
+
+            requestAnimationFrame(animateMove);
+        }
+
+        moveBy(deltaCol, deltaRow, map_layout, speed, callback) {
+            let newRow = this.row + deltaRow;
+            let newCol = this.col + deltaCol;
+            let rowKey = Object.keys(map_layout)[newRow];
+            let colKey = Object.keys(map_layout[rowKey])[newCol];
+            if (map_layout[rowKey] && map_layout[rowKey][colKey] !== undefined &&
+                (map_layout[rowKey][colKey] === 1 || map_layout[rowKey][colKey] === 2)) {
+                this.moveSmoothly(newRow, newCol, speed, callback);
+            }
+
+        }
+
+
+        resize(gridSize) {
+            // Update sprite size
+            this.sprite.width = this.sprite.height = gridSize;
+
+            // Update position
+            this.sprite.x = this.col * gridSize + gridSize / 2;
+            this.sprite.y = this.row * gridSize + gridSize / 2;
+
+            // Update notification position (if applicable)
+            if (this.showNotif) {
+                this.notifText.x = this.sprite.x + gridSize / 3;
+                this.notifText.y = this.sprite.y - gridSize / 3;
+            }
+            // Ensure sprite remains on the stage
+            if (!app.stage.children.includes(this.container)) {
+                app.stage.addChild(this.container);
+            }
+        }
+
+        updateSizeAndPosition() {
+            this.sprite.width = this.sprite.height = this.gridSize;
+            this.sprite.x = this.col * this.gridSize + this.gridSize / 2;
+            this.sprite.y = this.row * this.gridSize + this.gridSize / 2;
+
+        }
+
+        updateNotifPosition() {
+            this.notifText.x = this.sprite.x + this.gridSize / 3;
+            this.notifText.y = this.sprite.y - this.gridSize / 3;
+        }
+
+        remove() {
+            app.stage.removeChild(this.container);
+        }
+
+
+        isNextTo(otherSprite) {
+            if (!otherSprite) return false; // Prevent errors if null
+
+            const dRow = Math.abs(this.row - otherSprite.row);
+            const dCol = Math.abs(this.col - otherSprite.col);
+
+            return (dRow === 1 && dCol === 0) || (dRow === 0 && dCol === 1);
+        }
+
+        playCrashSound() {
+            let crashSound = new Audio('https://www.fesliyanstudios.com/play-mp3/4380'); // Replace with your sound URL
+            crashSound.volume = 0.7; // Adjust volume
+            crashSound.play();
+        }
+    }
+
+    class Player extends Sprite {
+        constructor(imageURL, row, col, showNotif = false, notifNumber = 0) {
+            super(imageURL, row, col,showNotif, notifNumber);
+        }
+
+        move(direction) {
+            // Move the player based on a direction input
+            let newRow = this.row;
+            let newCol = this.col;
+
+            switch (direction) {
+                case 'up':
+                    newRow--;
+                    break;
+                case 'down':
+                    newRow++;
+                    break;
+                case 'left':
+                    newCol--;
+                    break;
+                case 'right':
+                    newCol++;
+                    break;
+            }
+
+            if (this.canMoveTo(newRow, newCol)) {
+                this.moveTo(newRow, newCol);
+            }
+        }
+
+        canMoveTo(row, col) {
+            // Check if the player can move to the given position
+            return !this.mapLayout.isObstacle(row, col);
+        }
+    }
+
+    const speedElement = document.getElementById('speed');
+    let speed = speedElement.value;
+    speedElement.oninput = () => speed = speedElement.value;
+    let map;
+    let app;
+    let people = [], sprites = [], taxi, personOne, personTwo, personThree, personFour, personFive;
+
+    (async () => {
+        map = await new MapLayout("taxi_driver_one", false);
+        map.setGridSize();
+        // Add Taxi
+        app = new PIXI.Application({
+            width: map.gridSize * map.mapCols,
+            height: map.gridSize * map.mapRows,
+            backgroundColor: 0xAAAAAA
+        });
+        taxi = new Sprite('https://i.postimg.cc/8C5cQSb0/taxi.png', 9, 11, false, 0, map.gridSize);
+        personOne = new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', 2, 4, true, 5, map.gridSize);
+        personTwo = new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', 8, 4, true, 2, map.gridSize);
+        personThree = new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', 8, 10, true, 3, map.gridSize);
+        personFour = new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', 6, 10, true, 1, map.gridSize);
+        personFive = new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', 5, 10, true, 1, map.gridSize);
+        people.push(personOne, personTwo, personThree, personFour, personFive);
+        sprites.push(taxi, personOne, personTwo, personThree, personFour, personFive);
+        document.getElementById("visualisation").appendChild(app.view);
+        initializeEnvironment();
+        const hint = document.getElementById("hint");
+
+    })();
+    window.addEventListener("resize", () => {
+        map.setGridSize();
+        app.renderer.resize(map.gridSize * map.mapCols, map.gridSize * map.mapRows);  // Resize canvas
+        initializeEnvironment();
+
+    });
+    async function getPerson(callback) {
+        let person = people.find(p => taxi.isNextTo(p));
+
+        if (person) {
+            if (person.notif_number > 1) {
+                giveHint("Removed 1 person", "3000")
+                person.updateNotif(person.notif_number - 1);
+            } else if (person.notif_number === 1) {
+                giveHint("Everyone is inside", "3000")
+                person.remove();
+            }
+            if (typeof callback === "function") await callback(person);
+            return person;
+        } else {
+            giveHint("No person", "3000")
+        }
+
+        if (typeof callback === "function") await callback(null);
+        return null;
+    }
+
+
+    function initializeEnvironment() {
+        if (sprites) {
+            sprites.forEach((sprite) => {
+                if (sprite) sprite.resize(map.gridSize);
+            });
+        }
+        map.drawMap();
+        map.drawSprites(sprites);
+        taxi.initialize();
+        taxi.moveTo(9,11);
+        console.log(taxi.row, taxi.col)
+        console.log(taxi.x, taxi.y)
+
+    }
+    // what my sprites will do according to the blocks
+    function pick_up() {
+        return new Promise(resolve => getPerson(resolve));
+    }
+
+    function move_north() {
+        return new Promise(resolve => taxi.moveBy(0, -1, map.mapLayout, speed, resolve));
+    }
+
+    function move_south() {
+        return new Promise(resolve => taxi.moveBy(0, 1, map.mapLayout, speed, resolve));
+    }
+
+    function move_west() {
+        return new Promise(resolve => taxi.moveBy(-1, 0, map.mapLayout, speed, resolve));
+    }
+
+    function move_east() {
+        return new Promise(resolve => taxi.moveBy(1, 0, map.mapLayout, speed, resolve));
+    }
+
+    function runCodeBlock() {
+        giveHint("The code has started RUNNING", "3000");
+    }
+
+    function repeat_10(block) {
+        let times = block.getFieldValue('TIMES') || 10; // Get the number of repetitions, default is 10
+        let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO'); // Get the inner blocks
+
+        let repeatCode = '';
+        for (let i = 0; i < times; i++) {
+            repeatCode += innerCode; // Append inner block code for each repetition
+        }
+
+        return repeatCode;
+    }
+
+    // Initialize BlockManager
+    const blocklyDiv = document.getElementById('blocklyDiv');
+    let blockManager;
+    async function initializeApp() {
+        await fetchData();
+        blockManager = new BlockManager(blocklyDiv, configData);
+        blockManager.loadBlocks();
+    }
+    initializeApp();
+    // Running Blockly Code
+    async function runCode() {
+        document.getElementById("btnRun").style.display = "none";
+        document.getElementById("btnReset").style.display = "inline-block";
+        let runEventBlock = blockManager.workspace.getAllBlocks().find(block => block.type === 'run_event');
+        if (!runEventBlock) {
+            giveHint("Error: Run block is missing. Please add the Run block.", "15000");
+            return;
+        }
+        javascript.javascriptGenerator.init(blockManager.workspace);
+        let code = javascript.javascriptGenerator.blockToCode(runEventBlock);
+        try {
+            console.log(`(async function() { ${code} })();`);
+            await eval(`(async function () {
+                ${code}
+            })();`);
+        } catch (error) {
+            console.error("Error executing code:", error);
+        }
+    }
+
+
+    function resetCode() {
+        document.getElementById("btnRun").style.display = "inline-block"; // Hide RUN button
+        document.getElementById("btnReset").style.display = "none"; // Show RESET button
+        map.setGridSize();
+        initializeEnvironment(); // Reset taxi position and state
+    }
+
+
+    function giveHint(message, time) {
+        hint.textContent = message;
+        setTimeout(() => {
+            hint.textContent = "";
+        }, time);
+    }
+
+    document.addEventListener("keydown", function (event) {
+        const btnRun = document.getElementById("btnRun");
+        const displayStyle = window.getComputedStyle(btnRun).display; // Get computed display style
+        const speedSlider = document.getElementById("speed"); // Get the slider element
+
+        if (event.code === "KeyR") {
+            if (displayStyle === "block") {
+                runCode();
+            } else if (displayStyle === "none") {
+                resetCode();
+            }
+        } else if (event.code === "KeyS") {
+            alert("S key was pressed!");
+        } else if (event.code === "KeyD") {
+            // Increase slider value
+            if (speedSlider) {
+                speedSlider.value = Math.min(parseInt(speedSlider.value) + 1, speedSlider.max);
+            }
+        } else if (event.code === "KeyA") {
+            // Decrease slider value
+            if (speedSlider) {
+                speedSlider.value = Math.max(parseInt(speedSlider.value) - 1, speedSlider.min);
+            }
+        }
+
+    });
+
+
+</script>
+</body>
+</html>
