@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Collection Game 2</title>
+    <title>Blockly by Mr. Thorben</title>
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
           integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
@@ -16,6 +16,18 @@
     <script src="https://unpkg.com/blockly/msg/en.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.1.3/pixi.min.js"></script>
     <style>
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none; /* Hidden initially */
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
 
         body {
             overflow: hidden;
@@ -92,38 +104,223 @@
         .btn-reset:hover {
             box-shadow: 0 0 10px black !important; /* Adds black glow effect */
         }
+
+        .pre-hint-container{
+            height: 25px;
+        }
+        .hint-container{
+            margin-left: 20px;
+            height: 25px;
+            background-color: white;
+            color: black;
+            padding-left: 20px;
+            padding-right: 20px;
+            border-radius: 20px;
+        }
+        /* styling for nav bar START */
+        .offcanvas {
+            position: fixed;
+            top: 0;
+            left: -250px; /* Initially hidden */
+            width: 250px;
+            height: 100%;
+            background-color: #886500; /* yellow theme */
+            color: white;
+            overflow-y: auto;
+            transition: 0.3s ease-in-out;
+            padding-top: 60px;
+            z-index: 1050; /* Above everything */
+        }
+        .offcanvas.show {
+            left: 0; /* Slide in */
+        }
+        .offcanvas a {
+            color: white;
+            padding: 10px;
+            display: block;
+            text-decoration: none;
+        }
+        .offcanvas a:hover {
+            background-color: #8c6c0d; /* yellow theme */
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Dark overlay when menu opens */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1045; /* Just below the sidebar */
+            display: none; /* Hidden by default */
+        }
+        .overlay.show {
+            display: block; /* Show when menu opens */
+        }
+
+        /* Navbar */
+        .navbar {
+            position: relative; /* No overlapping */
+            z-index: 1030; /* Lower than sidebar */
+        }
+
+        /* Content */
+        .content {
+            padding: 20px;
+        }
+        .active-bg-sidebar {
+            background-color: #8c6c0d; /* yellow theme */
+        }
+        .bg-sidebar {
+            background-color: #886500; /* yellow theme */
+        }
+        /* styling for nav bar END */
+
     </style>
 </head>
 <body>
-<div class="container-fluid vh-100 d-flex flex-row">
+
+<nav class="navbar navbar-dark bg-warning">
+    <div class="container-fluid">
+        <!-- Hamburger Button -->
+        <button class="navbar-toggler" type="button" onclick="toggleMenu()">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <img src="http://www.seoulacademy.org/uploads/logo/63d867783578a.png"  height="40px" width="40px" alt=""/> <a class="navbar-brand ml-3" href="#">Seoul Academy Apgujeong</a>
+    </div>
+</nav>
+
+<!-- Dark Overlay (Shades Background) -->
+<div id="overlay" class="overlay" onclick="toggleMenu()"></div>
+
+<!-- Offcanvas Sidebar Menu -->
+<div id="sidebar" class="offcanvas">
+    <span class="close-btn" onclick="toggleMenu()">&times;</span>
+    <ul class="nav flex-column" id="sidebarMenu">
+        <!-- Grades with Submenus -->
+        <li class="nav-item">
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#kinderMenu" data-parent="#sidebarMenu">Kinder</a>
+            <div id="kinderMenu" class="collapse">
+                <a href="#" class="nav-link pl-4">Sequencing</a>
+                <div class="pl-5">
+                    <a href="#" class="nav-link" data-toggle="modal" data-target="#warningModal">Mr. Cabdriver 1</a>
+                    <a href="#" class="nav-link">Mr. Cabdriver 2</a>
+                    <a href="#" class="nav-link">Mr. Cabdriver 3</a>
+                </div>
+                <a href="#" class="nav-link pl-4">Loops</a>
+                <a href="#" class="nav-link pl-4">Events</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade1Menu" data-parent="#sidebarMenu">Grade 1</a>
+            <div id="grade1Menu" class="collapse">
+                <a href="#" class="nav-link pl-4">Sequencing</a>
+                <div class="pl-5">
+                    <a href="#" class="nav-link">Mr. Cabdriver 1</a>
+                    <a href="#" class="nav-link">Mr. Cabdriver 2</a>
+                    <a href="#" class="nav-link">Mr. Cabdriver 3</a>
+                </div>
+                <a href="#" class="nav-link pl-4">Loops</a>
+                <a href="#" class="nav-link pl-4">Events</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade2Menu" data-parent="#sidebarMenu">Grade 2</a>
+            <div id="grade2Menu" class="collapse">
+                <a href="#" class="nav-link pl-4">Sequencing</a>
+                <div class="pl-5">
+                    <a href="#" class="nav-link">Mr. Cabdriver 1</a>
+                    <a href="#" class="nav-link">Mr. Cabdriver 2</a>
+                    <a href="#" class="nav-link">Mr. Cabdriver 3</a>
+                </div>
+                <a href="#" class="nav-link pl-4">Loops</a>
+                <a href="#" class="nav-link pl-4">Events</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade3Menu" data-parent="#sidebarMenu">Grade 3</a>
+            <div id="grade3Menu" class="collapse">
+                <a href="#" class="nav-link pl-4">Sequencing</a>
+                <div class="pl-5">
+                    <a href="#" class="nav-link">Mr. Cabdriver 1</a>
+                    <a href="#" class="nav-link">Mr. Cabdriver 2</a>
+                    <a href="#" class="nav-link">Mr. Cabdriver 3</a>
+                </div>
+                <a href="#" class="nav-link pl-4">Loops</a>
+                <a href="#" class="nav-link pl-4">Events</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade4Menu" data-parent="#sidebarMenu">Grade 4</a>
+            <div id="grade4Menu" class="collapse">
+                <a href="#" class="nav-link pl-4">Sequencing</a>
+                <div class="pl-5">
+                    <a href="#" class="nav-link">Mr. Cabdriver 1</a>
+                    <a href="#" class="nav-link">Mr. Cabdriver 2</a>
+                    <a href="#" class="nav-link">Mr. Cabdriver 3</a>
+                </div>
+                <a href="#" class="nav-link pl-4">Loops</a>
+                <a href="#" class="nav-link pl-4">Events</a>
+            </div>
+        </li>
+        <li class="nav-item">
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade5Menu" data-parent="#sidebarMenu">Grade 5</a>
+            <div id="grade5Menu" class="collapse">
+                <a href="#" class="nav-link pl-4">Sequencing</a>
+                <div class="pl-5">
+                    <a href="#" class="nav-link">Mr. Cabdriver 1</a>
+                    <a href="#" class="nav-link">Mr. Cabdriver 2</a>
+                    <a href="#" class="nav-link">Mr. Cabdriver 3</a>
+                </div>
+                <a href="#" class="nav-link pl-4">Loops</a>
+                <div class="pl-5">
+                    <a href="#" class="nav-link">Step 1</a>
+                    <a href="#" class="nav-link">Step 2</a>
+                    <a href="#" class="nav-link">Step 3</a>
+                </div>
+                <a href="#" class="nav-link pl-4">Events</a>
+            </div>
+        </li>
+    </ul>
+</div>
+<div class="container-fluid vh-100 d-flex flex-row content">
     <!-- Left Side (Visualization) -->
     <div class="d-flex flex-column p-4">
-        <h2>Collection Game</h2>
+        <h2>Mr. Cabdriver</h2>
         <div id="visualisation" class="border rounded bg-light p-3"></div>
         <div class="mt-3 d-flex justify-content-between">
-            <button onclick="runCode()" class="btn btn-lg btn-primary" id="btnRun">
+            <button class="btn btn-lg btn-primary" id="btnRun">
                 <i class="fa-solid fa-play"></i> RUN
             </button>
-            <button onclick="resetCode()" class="btn btn-lg btn-reset" id="btnReset">
+            <button class="btn btn-lg btn-reset" id="btnReset">
                 <i class="fa-solid fa-rotate-right"></i> RESET
             </button>
-            <button class="btn btn-lg btn-primary">
+            <button class="btn btn-lg btn-primary" id="btnStep">
                 <i class="fa-solid fa-forward-step"></i> STEP
             </button>
         </div>
         <label for="speed" class="form-label"></label>
-        <input type="range" class="form-range" min="0" max="10" step="1" id="speed">
+        <input type="range" class="form-range" min="0" max="10" step="1" id="speed" style="display: none">
     </div>
 
     <div class="d-flex flex-column flex-grow-1 p-4">
         <div class="bg-warning p-3 sticky-top">
-            <h2>Instructions</h2>
+            <h2>Instructions
+                <span><button class="btn btn-primary">
+                    <i class="fa-solid fa-question"></i> HINT
+                </button></span>
+            </h2>
             <p>Pick up everyone! Remaining blocks: <b>You have <span id="capacity"></span> block(s) left.</b></p>
             <div class="d-flex align-items-center">
-                <button class="btn btn-primary" onclick="giveHint('Try to put X block in X order', '3000')">
-                    <i class="fa-solid fa-question"></i> HINT
-                </button>
-                <div id="hint" style="margin-left: 20px;"></div> <!-- Custom margin in pixels -->
+                <div class="pre-hint-container" id="hint"></div> <!-- Custom margin in pixels -->
             </div>
         </div>
         <div class="border rounded bg-white p-4 flex-grow-1 mt-3">
@@ -131,6 +328,29 @@
         </div>
     </div>
 </div>
+<!-- Warning Modal -->
+<div class="modal fade" id="warningModal" tabindex="-1" role="dialog" aria-labelledby="warningModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="warningModalLabel">Warning</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                This level is in development.
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
 <script>
     // TODO solve the sizing issue where the taxi shows improper size and position behavior
 
@@ -139,70 +359,303 @@
         const response = await fetch('blocks.json'); // Adjust path as needed
         configData = await response.json();
     }
-    
+
+    buttonSpeedElement = document.getElementById('speed');
+    buttonRunElement = document.getElementById("btnRun");
+    buttonResetElement = document.getElementById("btnReset");
+    buttonStepElement = document.getElementById("btnStep");
+    buttonCapacityElement = document.getElementById("capacity");
+    buttonVisualisationElement = document.getElementById("visualisation");
+    buttonHintElement = document.getElementById("hint");
+    blocklyDivElement = document.getElementById('blocklyDiv');
+
+
     class Activity {
-        constructor(name, instructions, hints, mapLayout, sprites, sounds, player, blocks, goal) {
-            this.name = name; // Activity name
-            this.instructions = instructions; // List of instructions
-            this.hints = hints; // List of hints
-            this.mapLayout = mapLayout; // The grid map layout
-            this.sprites = sprites; // List of all sprites (including obstacles)
-            this.sounds = sounds; // List of all sounds
-            this.player = player; // The main player (a Sprite object)
-            this.blocks = blocks; // List of block types available in Blockly
-            this.goal = goal; // The win condition for this activity
+        constructor(name, instructions, hints, mapLayout, sounds, blocks, goal, speedElement) {
+            this.name = name;
+            this.instructions = instructions;
+            this.hints = hints;
+            this.sprites = [];  // Initialize as empty arrays
+            this.people = [];   // Initialize as empty arrays
+            this.sounds = sounds;
+            this.player = null;
+            this.blocks = blocks;
+            this.blockManager = null;
+            this.goal = goal;
+            this.map = null; // Initialize as null and set it later asynchronously
+            this.app = null; // Initialize as null
+            this.speed = 1;
+            this.speedElement = speedElement;
+            this.isRunning = false;
+            buttonRunElement.addEventListener("click", () => {
+                this.runCode();
+            });
+            buttonResetElement.addEventListener("click", () => {
+                this.resetCode();
+            });
+            // Initialize the activity asynchronously
+            this.initializeActivity(mapLayout);
+            this.initializeBlocklyWorkspace();
+            this.addKeyInput(this.runCode, this.resetCode);
+            // window.addEventListener("resize", () => {
+            //     this.map.setGridSize();
+            //     this.app.renderer.resize(this.map.gridSize * this.map.mapCols, this.map.gridSize * this.map.mapRows);
+            //     this.initializeEnvironment();
+            //     this.map.drawSprites(this.sprites);  // Pass the correct 'sprites' array
+            // });
+        }
+
+
+        // what my sprites will do according to the blocks
+        pick_up() {
+            return new Promise(resolve => this.player.getPerson(this.people, this.speed, resolve));
+        }
+
+        move_north() {
+            return new Promise(resolve => this.player.moveBy(0, -1, this.getMapLayout(), this.speed, this.isRunning, resolve));
+        }
+
+        move_south() {
+            return new Promise(resolve => this.player.moveBy(0, 1, this.getMapLayout(), this.speed, this.isRunning, resolve));
+        }
+
+        move_west() {
+            return new Promise(resolve => this.player.moveBy(-1, 0, this.getMapLayout(), this.speed, this.isRunning, resolve));
+        }
+
+        move_east() {
+            return new Promise(resolve =>
+                this.player.moveBy(1, 0, this.getMapLayout(), this.speed, this.isRunning, this.isRunning, resolve));
+        }
+
+        runCodeBlock() {
+            return new Promise(resolve => {
+                this.giveHint("The code has started RUNNING", "3000");
+                resolve(); // Resolve immediately after showing the hint
+            });
+        }
+
+
+        // Running Blockly Code
+        async runCode() {
+            if (this.isRunning) return; // Prevent multiple executions
+            this.isRunning = true;
+            this.player.initialize();
+            buttonRunElement.style.display = "none";
+            buttonResetElement.style.display = "inline-block";
+            let runEventBlock = this.blockManager.workspace.getAllBlocks().find(block => block.type === 'run_event');
+            if (!runEventBlock) {
+                this.giveHint("Error: Run block is missing. Please add the Run block.", "15000");
+                this.isRunning = false; // Allow execution again
+                return;
+            }
+            javascript.javascriptGenerator.init(this.blockManager.workspace);
+            let code = javascript.javascriptGenerator.blockToCode(runEventBlock);
+            try {
+                await eval(`(async () => {
+                    let checkRunning = () => this.isRunning; // Closure to check the flag
+                    ${code.split("await").join("if (!checkRunning()) return; await")} // Insert check before each await
+                })();`);
+            } catch (error) {
+                console.error("Error executing code:", error);
+            } finally {
+                this.isRunning = false;
+            }
+        }
+
+
+        resetCode() {
+            this.isRunning = false;
+            // this.getMap().setGridSize();
+            // this.initializeEnvironment();
+            buttonResetElement.disabled = true;
+            buttonStepElement.disabled = true;
+            buttonRunElement.disabled = true;
+            buttonResetElement.innerHTML = `
+                    <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                    LOAD
+                `;
+            buttonStepElement.innerHTML = `
+                    <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                    LOAD
+                `;
+            setTimeout(() => {
+                // Draw the sprites (including the new player)
+                this.map.drawSprites(this.sprites);
+                // Initialize the new player (taxi)
+                this.player.initialize();
+                // Reset other elements (e.g., people notifications)
+                this.people.forEach(sprite => sprite.updateNotif(sprite.original_notif_number));
+            }, 800); //  delay
+            setTimeout(() => {
+                buttonResetElement.innerHTML = `<i class="fa-solid fa-rotate-right"></i> RESET`;
+                buttonStepElement.innerHTML = `<i class="fa-solid fa-forward-step"></i> STEP`;
+                buttonResetElement.disabled = false;
+                buttonStepElement.disabled = false;
+                buttonRunElement.disabled = false;
+                buttonRunElement.style.display = "inline-block"; // Show RUN button
+                buttonResetElement.style.display = "none"; // Hide RESET button
+            }, 900); //  delay
+        }
+
+        async initializeActivity(mapLayout) {
+            if (this.speed) {
+                this.speedElement.style.display = "inline-block";
+                this.speed = this.speedElement.value;
+                this.speedElement.oninput = () => this.speed = this.speedElement.value;
+            }
+            // Initialize the PIXI application first with default values
+            this.app = new PIXI.Application({
+                width: 800, // Default placeholder values
+                height: 600, // Default placeholder values
+                backgroundColor: 0xAAAAAA
+            });
+
+            // Initialize the map first
+            this.map = await new MapLayout(mapLayout, false, this.app);
+            await this.map.initialize(mapLayout);
+            this.map.setGridSize();
+
+
+            // Now calculate the correct width and height based on map size
+            this.app.renderer.resize(this.map.gridSize * this.map.mapCols, this.map.gridSize * this.map.mapRows);
+
+            // Initialize player and people (sprites) after the app is ready
+
+            this.player = new Player('https://i.postimg.cc/8C5cQSb0/taxi.png', 9, 11, false, 0, this.map.gridSize, this.app);
+            let personOne = new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', 2, 4, true, 5, this.map.gridSize, this.app);
+            let personTwo = new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', 7, 5, true, 2, this.map.gridSize, this.app);
+            let personThree = new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', 8, 10, true, 3, this.map.gridSize, this.app);
+            let personFour = new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', 6, 10, true, 1, this.map.gridSize, this.app);
+            let personFive = new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', 5, 10, true, 1, this.map.gridSize, this.app);
+            this.people = Sprite.listOfSprites.filter(item => !(item instanceof Player));
+            this.sprites = Sprite.listOfSprites;
+            // Append PIXI app view (canvas) to DOM
+            buttonVisualisationElement.appendChild(this.app.view);
+
+            this.initializeEnvironment();
+            this.map.drawSprites(this.sprites);  // Pass the correct 'sprites' array
+
+        }
+
+        getMap() {
+            return this.map;
+        }
+
+        getMapLayout() {
+            return this.map.mapLayout;
+        }
+
+        initializeEnvironment() {
+            if (!this.map) {
+                console.error("Map is not initialized yet.");
+                return;
+            }
+
+            if (this.sprites) {
+                this.sprites.forEach((sprite) => {
+                    if (sprite) sprite.resize(this.map.gridSize);
+                });
+            }
+            this.map.drawMap();
         }
 
         checkGoal() {
-            // Check if the goal condition is met
             return this.goal.isMet(this);
         }
 
+
         resetActivity() {
-            // Reset sprites and player position
-            this.mapLayout.reset();
-            this.sprites.forEach(sprite => sprite.reset());
-            this.player.reset();
+            if (this.map && this.app) {
+                this.map.reset();
+                this.sprites.forEach(sprite => sprite.reset());
+                this.player.reset();
+            } else {
+                console.error("Map or app is not initialized yet.");
+            }
+        }
+
+
+        async initializeBlocklyWorkspace() {
+            if (!configData) {
+                await fetchData();
+            }
+            this.blockManager = new BlockManager(blocklyDivElement, configData);
+            this.blockManager.loadBlocks();
+        }
+
+
+        static giveHint(message, time) {
+            const hint = buttonHintElement;
+            $('#hint').addClass('hint-container');
+            hint.textContent = message;
+            setTimeout(() => {
+                hint.textContent = "";
+                $('#hint').removeClass('hint-container');
+            }, time);
+
+        }
+
+        giveHint(message, time) {
+            const hint = buttonHintElement;
+            $('#hint').addClass('hint-container');
+            hint.textContent = message;
+            setTimeout(() => {
+                hint.textContent = "";
+                $('#hint').removeClass('hint-container');
+            }, time);
+
+        }
+
+
+        addKeyInput(runCode, resetCode) {
+            document.addEventListener("keydown", function (event) {
+                const displayStyle = window.getComputedStyle(buttonRunElement).display; // Get computed display style
+                const speedSlider = buttonSpeedElement; // Get the slider element
+
+                if (event.code === "KeyR") {
+                    if (displayStyle === "block") {
+                        runCode();
+                    } else if (displayStyle === "none") {
+                        resetCode();
+                    }
+                } else if (event.code === "KeyS") {
+                    alert("S key was pressed!");
+                } else if (event.code === "KeyD") {
+                    // Increase slider value
+                    if (speedSlider) {
+                        speedSlider.value = Math.min(parseInt(speedSlider.value) + 1, speedSlider.max);
+                    }
+                } else if (event.code === "KeyA") {
+                    // Decrease slider value
+                    if (speedSlider) {
+                        speedSlider.value = Math.max(parseInt(speedSlider.value) - 1, speedSlider.min);
+                    }
+                }
+
+            });
         }
     }
 
-    class Block {
-        constructor(name, executeFunction) {
-            this.name = name;
-            this.executeFunction = executeFunction; // Function to run when block is executed
-        }
-
-        execute(context) {
-            this.executeFunction(context);
-        }
-    }
-
-    class Goal {
-        constructor(checkFunction) {
-            this.checkFunction = checkFunction; // Function to determine if goal is met
-        }
-
-        isMet(activity) {
-            return this.checkFunction(activity);
-        }
-    }
 
     class MapLayout {
-        constructor(mapLayoutName, grid) {
+        constructor(mapLayoutName, grid, app) {
             this.gridSize = 40;
             this.grid = grid;
+            this.app = app;
             this.mapLayout = null;
             this.mapRows = null;
             this.mapCols = null;
 
-            // ✅ Ensure mapLayout is assigned before continuing
-            return (async () => {
-                this.mapLayout = await this.loadMapLayout(mapLayoutName);
-                this.mapRows = Object.keys(this.mapLayout).length;
-                this.mapCols = Object.keys(this.mapLayout[Object.keys(this.mapLayout)[0]]).length;
-                return this;
-            })();
         }
+
+        async initialize(mapLayoutName) {
+            this.mapLayout = await this.loadMapLayout(mapLayoutName); // Asynchronous operation
+            this.mapRows = Object.keys(this.mapLayout).length;
+            this.mapCols = Object.keys(this.mapLayout[Object.keys(this.mapLayout)[0]]).length;
+        }
+
+
         async loadMapLayout(mapLayoutNameParam) {
             try {
                 await fetchData();
@@ -226,6 +679,7 @@
 
         drawMap() {
             this.reset();
+            const parkColors = [0x00FF00, 0x228B22, 0x32CD32]; // Different shades of green
             let rowIndex = 0; // Track the numerical row index
             for (const rowKey in this.mapLayout) {
                 let colIndex = 0; // Track the numerical column index
@@ -233,10 +687,11 @@
                     let tile = new PIXI.Graphics();
                     const tileValue = this.mapLayout[rowKey][colKey];
                     if (this.grid) tile.lineStyle(1, 0x9b9b9b, 1); // (width, color, alpha)
-                    tile.beginFill(tileValue === 1 ? 0xCCCCCC : (tileValue === 2 ? 0x00FF00 : 0x555555));
+                    const parkColor = parkColors[Math.floor(Math.random() * parkColors.length)];
+                    tile.beginFill(tileValue === 1 ? 0xCCCCCC : (tileValue === 2 ? parkColor : 0x555555));
                     tile.drawRect(colIndex * this.gridSize, rowIndex * this.gridSize, this.gridSize, this.gridSize);
                     tile.endFill();
-                    app.stage.addChild(tile);
+                    this.app.stage.addChild(tile);
                     colIndex++;
                 }
                 rowIndex++;
@@ -246,16 +701,18 @@
         drawSprites(listOfSprites) {
             if (listOfSprites) {
                 listOfSprites.forEach((sprite) => {
-                    if (sprite) app.stage.addChild(sprite.container);
+                    if (sprite) this.app.stage.addChild(sprite.container);
                 });
             }
         }
 
         reset() {
-            app.stage.removeChildren();  // Clears everything (including the sprites)
+            if (this.app && this.app.stage) {
+                this.app.stage.removeChildren();
+            } else {
+                console.error("PIXI app is not initialized yet.");
+            }
         }
-
-
     }
 
     class BlockManager {
@@ -332,7 +789,7 @@
 
         setupChangeListener() {
             const updateCapacity = () => {
-                document.getElementById('capacity').textContent = this.workspace.remainingCapacity();
+                buttonCapacityElement.textContent = this.workspace.remainingCapacity();
             };
             this.workspace.addChangeListener(updateCapacity);
             updateCapacity();
@@ -341,12 +798,15 @@
 
 
     class Sprite {
-        constructor(imageURL, row, col, showNotif = false, notif_number = 0, gridSize) {
+        static listOfSprites = [];
+
+        constructor(imageURL, row, col, showNotif = false, notif_number = 0, gridSize, app) {
             this.row = row;
             this.col = col;
             this.gridSize = gridSize;
             this.showNotif = showNotif;
             this.notif_number = notif_number;
+            this.app = app;
             this.original_notif_number = notif_number;
             this.sprite = PIXI.Sprite.from(imageURL);
             this.sprite.anchor.set(0.5);
@@ -378,7 +838,8 @@
                 this.updateNotifPosition();
             }
 
-            app.stage.addChild(this.container);
+            this.app.stage.addChild(this.container);
+            Sprite.listOfSprites.push(this);
         }
 
         updateNotif(newNumber) {
@@ -407,7 +868,6 @@
         }
 
 
-
         resize(gridSize) {
             // Update sprite size
             this.sprite.width = this.sprite.height = gridSize;
@@ -422,8 +882,8 @@
                 this.notifText.y = this.sprite.y - gridSize / 3;
             }
             // Ensure sprite remains on the stage
-            if (!app.stage.children.includes(this.container)) {
-                app.stage.addChild(this.container);
+            if (!this.app.stage.children.includes(this.container)) {
+                this.app.stage.addChild(this.container);
             }
         }
 
@@ -440,7 +900,7 @@
         }
 
         remove() {
-            app.stage.removeChild(this.container);
+            this.app.stage.removeChild(this.container);
         }
 
 
@@ -462,15 +922,23 @@
     }
 
     class Player extends Sprite {
-        constructor(imageURL, row, col, showNotif = false, notifNumber = 0,gridSize) {
-            super(imageURL, row, col,showNotif, notifNumber,gridSize);
+        static listOfPlayers = [];
+
+        constructor(imageURL, row, col, showNotif = false, notifNumber = 0, gridSize, app) {
+            super(imageURL, row, col, showNotif, notifNumber, gridSize, app);
+            Player.listOfPlayers.push(this);
         }
 
-        moveSmoothly(newRow, newCol, speed, callback) {
+        moveSmoothly(newRow, newCol, speed, isRunning, callback) {
             let targetX = newCol * this.gridSize + this.gridSize / 2;
             let targetY = newRow * this.gridSize + this.gridSize / 2;
 
             const animateMove = () => {
+                if (!isRunning) {
+                    this.sprite.x = targetX; // Snap to final position
+                    this.sprite.y = targetY;
+                    return;
+                }
                 let dx = targetX - this.sprite.x;
                 let dy = targetY - this.sprite.y;
 
@@ -490,14 +958,14 @@
             requestAnimationFrame(animateMove);
         }
 
-        moveBy(deltaCol, deltaRow, map_layout, speed, callback) {
+        moveBy(deltaCol, deltaRow, map_layout, speed, isRunning, callback) {
             let newRow = this.row + deltaRow;
             let newCol = this.col + deltaCol;
             let rowKey = Object.keys(map_layout)[newRow];
             let colKey = Object.keys(map_layout[rowKey])[newCol];
             if (map_layout[rowKey] && map_layout[rowKey][colKey] !== undefined &&
                 (map_layout[rowKey][colKey] === 1 || map_layout[rowKey][colKey] === 2)) {
-                this.moveSmoothly(newRow, newCol, speed, callback);
+                this.moveSmoothly(newRow, newCol, speed, isRunning, callback);
             }
 
         }
@@ -506,188 +974,52 @@
             // Check if the player can move to the given position
             return !this.mapLayout.isObstacle(row, col);
         }
+
+
+        async getPerson(listOfSprites, speed, callback) {
+            let person = listOfSprites.find(p => this.isNextTo(p));
+            if (person) {
+                if (person.notif_number > 1) {
+                    Activity.giveHint("Removed 1 person", "3000");
+                    await new Promise(resolve => setTimeout(resolve, speed * 100)); // 0.5 sec delay
+                    person.updateNotif(person.notif_number - 1);
+                } else if (person.notif_number === 1) {
+                    Activity.giveHint("Everyone is inside", "3000");
+                    person.remove();
+                }
+                if (typeof callback === "function") await callback(person);
+                return person;
+            } else {
+                Activity.giveHint("No person", "3000");
+            }
+            if (typeof callback === "function") await callback(null);
+            return null;
+        }
     }
-
-    const speedElement = document.getElementById('speed');
-    let speed = speedElement.value;
-    speedElement.oninput = () => speed = speedElement.value;
-    let map;
-    let app;
-    let people = [], sprites = [], taxi, personOne, personTwo, personThree, personFour, personFive;
-
-    (async () => {
-        map = await new MapLayout("taxi_pickup_map_five", false);
-        map.setGridSize();
-        // Add Taxi
-        app = new PIXI.Application({
-            width: map.gridSize * map.mapCols,
-            height: map.gridSize * map.mapRows,
-            backgroundColor: 0xAAAAAA
+    $(document).ready(function () {
+        $('#sidebarMenu .collapse').on('show.bs.collapse', function () {
+            $('#sidebarMenu .collapse').not(this).collapse('hide');
         });
-        taxi = new Player ('https://i.postimg.cc/8C5cQSb0/taxi.png', 9, 11, false, 0, map.gridSize);
-        personOne = new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', 2, 4, true, 5, map.gridSize);
-        personTwo = new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', 8, 4, true, 2, map.gridSize);
-        personThree = new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', 8, 10, true, 3, map.gridSize);
-        personFour = new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', 6, 10, true, 1, map.gridSize);
-        personFive = new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', 5, 10, true, 1, map.gridSize);
-        people.push(personOne, personTwo, personThree, personFour, personFive);
-        sprites.push(taxi, personOne, personTwo, personThree, personFour, personFive);
-        document.getElementById("visualisation").appendChild(app.view);
-        initializeEnvironment();
-        const hint = document.getElementById("hint");
 
-    })();
-    window.addEventListener("resize", () => {
-        map.setGridSize();
-        app.renderer.resize(map.gridSize * map.mapCols, map.gridSize * map.mapRows);  // Resize canvas
-        initializeEnvironment();
+        // Change background of active dropdown
+        $('#sidebarMenu .dropdown-toggle').on('click', function () {
+            // Reset all dropdown backgrounds to default
+            $('#sidebarMenu .nav-item').removeClass('active-bg-sidebar');
+            $('#sidebarMenu .nav-item').addClass('bg-sidebar'); // Default background color
 
+            // Apply bg-warning to the clicked (active) dropdown
+            $(this).parent().removeClass('bg-sidebar').addClass('active-bg-sidebar');
+        });
     });
-    async function getPerson(callback) {
-        let person = people.find(p => taxi.isNextTo(p));
+    function toggleMenu() {
+        let sidebar = document.getElementById("sidebar");
+        let overlay = document.getElementById("overlay");
 
-        if (person) {
-            if (person.notif_number > 1) {
-                giveHint("Removed 1 person", "3000")
-                person.updateNotif(person.notif_number - 1);
-            } else if (person.notif_number === 1) {
-                giveHint("Everyone is inside", "3000")
-                person.remove();
-            }
-            if (typeof callback === "function") await callback(person);
-            return person;
-        } else {
-            giveHint("No person", "3000")
-        }
-
-        if (typeof callback === "function") await callback(null);
-        return null;
+        sidebar.classList.toggle("show");
+        overlay.classList.toggle("show");
     }
-
-
-    function initializeEnvironment() {
-        if (sprites) {
-            sprites.forEach((sprite) => {
-                if (sprite) sprite.resize(map.gridSize);
-            });
-        }
-        map.drawMap();
-        map.drawSprites(sprites);
-        taxi.initialize();
-        taxi.moveTo(9,11);
-        console.log(taxi.row, taxi.col)
-        console.log(taxi.x, taxi.y)
-
-    }
-    // what my sprites will do according to the blocks
-    function pick_up() {
-        return new Promise(resolve => getPerson(resolve));
-    }
-
-    function move_north() {
-        return new Promise(resolve => taxi.moveBy(0, -1, map.mapLayout, speed, resolve));
-    }
-
-    function move_south() {
-        return new Promise(resolve => taxi.moveBy(0, 1, map.mapLayout, speed, resolve));
-    }
-
-    function move_west() {
-        return new Promise(resolve => taxi.moveBy(-1, 0, map.mapLayout, speed, resolve));
-    }
-
-    function move_east() {
-        return new Promise(resolve => taxi.moveBy(1, 0, map.mapLayout, speed, resolve));
-    }
-
-    function runCodeBlock() {
-        giveHint("The code has started RUNNING", "3000");
-    }
-
-    function repeat_10(block) {
-        let times = block.getFieldValue('TIMES') || 10; // Get the number of repetitions, default is 10
-        let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO'); // Get the inner blocks
-
-        let repeatCode = '';
-        for (let i = 0; i < times; i++) {
-            repeatCode += innerCode; // Append inner block code for each repetition
-        }
-
-        return repeatCode;
-    }
-
-    // Initialize BlockManager
-    const blocklyDiv = document.getElementById('blocklyDiv');
-    let blockManager;
-    async function initializeApp() {
-        await fetchData();
-        blockManager = new BlockManager(blocklyDiv, configData);
-        blockManager.loadBlocks();
-    }
-    initializeApp();
-    // Running Blockly Code
-    async function runCode() {
-        document.getElementById("btnRun").style.display = "none";
-        document.getElementById("btnReset").style.display = "inline-block";
-        let runEventBlock = blockManager.workspace.getAllBlocks().find(block => block.type === 'run_event');
-        if (!runEventBlock) {
-            giveHint("Error: Run block is missing. Please add the Run block.", "15000");
-            return;
-        }
-        javascript.javascriptGenerator.init(blockManager.workspace);
-        let code = javascript.javascriptGenerator.blockToCode(runEventBlock);
-        try {
-            console.log(`(async function() { ${code} })();`);
-            await eval(`(async function () {
-                ${code}
-            })();`);
-        } catch (error) {
-            console.error("Error executing code:", error);
-        }
-    }
-
-
-    function resetCode() {
-        document.getElementById("btnRun").style.display = "inline-block"; // Hide RUN button
-        document.getElementById("btnReset").style.display = "none"; // Show RESET button
-        map.setGridSize();
-        initializeEnvironment(); // Reset taxi position and state
-    }
-
-
-    function giveHint(message, time) {
-        hint.textContent = message;
-        setTimeout(() => {
-            hint.textContent = "";
-        }, time);
-    }
-
-    document.addEventListener("keydown", function (event) {
-        const btnRun = document.getElementById("btnRun");
-        const displayStyle = window.getComputedStyle(btnRun).display; // Get computed display style
-        const speedSlider = document.getElementById("speed"); // Get the slider element
-
-        if (event.code === "KeyR") {
-            if (displayStyle === "block") {
-                runCode();
-            } else if (displayStyle === "none") {
-                resetCode();
-            }
-        } else if (event.code === "KeyS") {
-            alert("S key was pressed!");
-        } else if (event.code === "KeyD") {
-            // Increase slider value
-            if (speedSlider) {
-                speedSlider.value = Math.min(parseInt(speedSlider.value) + 1, speedSlider.max);
-            }
-        } else if (event.code === "KeyA") {
-            // Decrease slider value
-            if (speedSlider) {
-                speedSlider.value = Math.max(parseInt(speedSlider.value) - 1, speedSlider.min);
-            }
-        }
-
-    });
+    //  constructor(name, instructions, hints, mapLayout, sounds, blocks, goal,speedElement) {
+    activityOne = new Activity("", "", "", "taxi_pickup_map_twelve", "", "", "", buttonSpeedElement);
 
 
 </script>
