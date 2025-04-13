@@ -396,7 +396,7 @@
 
 
     class Activity {
-        constructor({name, instructions, gridSize, hints, mapLayout, sounds, blocks, goal, speedElement}) {
+        constructor({name, instructions, gridSize, hints, mapLayout, sounds, blocks, goal, speedElement, positions}) {
             this.name = name;
             this.mapLayout = mapLayout;
             this.instructions = instructions;
@@ -408,10 +408,10 @@
             this.blocks = blocks;
             this.blockManager = null;
             this.goal = goal;
+            this.positions = positions;
             this.map = null; // Initialize as null and set it later asynchronously
             this.app = null; // Initialize as null
             this._gridSize = gridSize; // Initialize as null
-            this.levelCompleted = false; // Initialize as null
             this.speed = 1;
             this.speedElement = speedElement;
             this.isRunning = false;
@@ -430,10 +430,10 @@
             this.visualisationDivSizeListener();
         }
 
-        levelCompleted(){
-            this.levelCompleted = true;
+        async levelCompleted(){
+            this.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/level-up-enhancement-8-bit-retro-sound-effect-153002.mp3");
             this.hasSucceeded();
-            console.log("Level Finished")
+            console.log("Level Finished");
         }
 
         async initializeActivity() {
@@ -452,13 +452,10 @@
             // Initialize the map first
             this.map = await new MapLayout(this.mapLayout, false, this.app);
             await this.map.initialize(this.mapLayout);
-            this.player = new Player('https://i.postimg.cc/8C5cQSb0/taxi.png', 9, 11, false, 0, this._gridSize, this.app);
-            let positions = [
-                // [2, 4, 3], [7, 5, 2], [8, 10,1],
-                [6, 10,5], [5, 10,10]
-            ];
-            for (let pos of positions) {
-                this.sprites.push(new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', pos[0], pos[1], true, pos[2], this._gridSize, this.app));
+            this.player = new Player('https://i.postimg.cc/8C5cQSb0/taxi.png', 11, 11, false, 0, this._gridSize, this.app);
+
+            for (let pos of this.positions) {
+                this.sprites.push(new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', pos[1], pos[0], true, pos[2], this._gridSize, this.app));
             }
             this.people = Sprite.listOfSprites.filter(item => !(item instanceof Player));
             this.sprites = Sprite.listOfSprites;
@@ -523,7 +520,7 @@
         }
 
         hasSucceeded() {
-            this.addOverlay("Challenge Completed!")
+            this.addOverlay("Challenge\nCompleted!")
         }
 
         hasFailed() {
@@ -631,7 +628,6 @@
                 this.isRunning = false; // Allow execution again
                 return;
             }
-            this.playSound("d");
             javascript.javascriptGenerator.init(this.blockManager.workspace);
             let code = javascript.javascriptGenerator.blockToCode(runEventBlock);
             try {
@@ -748,20 +744,10 @@
             });
         }
         playSound(link) {
-            const client_id = 'YOUR_CLIENT_ID';
-            const trackUrl = 'https://soundcloud.com/yourusername/yourtrack'; // public track URL
-
-            async function playBackgroundMusic() {
-                const resolveResponse = await fetch(`https://api.soundcloud.com/resolve?url=${trackUrl}&client_id=${client_id}`);
-                const trackData = await resolveResponse.json();
-
-                const streamUrl = `${trackData.stream_url}?client_id=${client_id}`;
-                const audio = new Audio(streamUrl);
-                audio.loop = true;
-                audio.play().catch(() => {
-                    console.log("Autoplay blocked until user interacts.");
-                });
-            }
+            const audio = new Audio(link);
+            audio.play().catch(err => {
+                console.warn("Playback failed:", err);
+            });
         }
 
     }
@@ -1007,7 +993,7 @@
         }
 
         static hasEnvironmentSprites(){
-            return Sprite.#numberOfEnvironmentSprites !== 0;
+            return Sprite.#numberOfEnvironmentSprites !== 1;
         }
         static getNumberOfEnvironmentSprites(){
             return Sprite.#numberOfEnvironmentSprites;
@@ -1137,16 +1123,23 @@
 
 
         async getPerson(activity, listOfSprites, speed, callback) {
+            console.log(Sprite.hasEnvironmentSprites());
+            if (!Sprite.hasEnvironmentSprites()){
+                console.log("level completed");
+                activity.levelCompleted();
+            }
             let person = listOfSprites.find(p => this.isNextTo(p));
             if (person) {
                 console.log("person exists, notif: " + person.notif_number);
                 if (person.notif_number > 1) {
+                    activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/pop-268648.mp3");
                     console.log("Leftover sprites: " + Sprite.getNumberOfEnvironmentSprites());
                     Activity.giveHint("Removed 1 person", "3000");
                     await new Promise(resolve => setTimeout(resolve, speed * 100)); // 0.5 sec delay
                     Sprite.decreaseNumberOfEnvironmentSprites();
                     person.notify(person.notif_number - 1);
                 } else if (person.notif_number === 1) {
+                    activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/pop-268648.mp3");
                     console.log("Leftover sprites: " + Sprite.getNumberOfEnvironmentSprites());
                     Activity.giveHint("Everyone is inside", "3000");
                     person.notify(person.notif_number - 1);
@@ -1154,6 +1147,7 @@
                     person.hide();
                 }
                 else if (person.notif_number <= 0) {
+
                     console.log("3 person exists, notif: " + person.notif_number);
                     Activity.giveHint("No person to be picked up", "3000");
                     activity.hasFailed();
@@ -1164,9 +1158,7 @@
                 activity.hasFailed();
                 Activity.giveHint("No person to be picked up", "150000");
             }
-            if (!Sprite.hasEnvironmentSprites()){
-                activity.levelCompleted();
-            }
+
             if (typeof callback === "function") await callback(null);
             return null;
         }
@@ -1193,6 +1185,16 @@
         sidebar.classList.toggle("show");
         overlay.classList.toggle("show");
     }
+    let positionsTen = [
+        [2,1,1], [3,2,1],[4,3,1], [5,4,1], [6,5,1],[7,6,1], [8,7,1], [9,8,1], [10,9,1], [11,10,1]
+    ];
+    let positionsNine = [
+        [4,3,1],[5,3,1],[6,3,1],[7,3,1],[8,3,1],[9,3,1],[10,3,1],[11,3,1],
+        [3,4,1],[3,5,1],[3,6,1],[3,7,1],[3,8,1],[3,9,1],[3,10,1],[3,11,1],
+        [4,12,1],[5,12,1],[6,12,1],[7,12,1],[8,12,1],
+        [9,7,1],[9,8,1],[9,9,1],[9,10,1],[9,11,1]
+
+    ];
     new Activity({
         name: "Taxi Pickup",
         instructions: "Pick up all the passengers.",
@@ -1202,8 +1204,10 @@
         sounds: "",
         blocks: "",
         goal: "",
-        speedElement: buttonSpeedElement
+        speedElement: buttonSpeedElement,
+        positions: positionsTen
     });
+
 </script>
 </body>
 </html>
