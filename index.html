@@ -15,6 +15,13 @@
     <script src="https://unpkg.com/blockly/javascript_compressed.js"></script>
     <script src="https://unpkg.com/blockly/msg/en.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.1.3/pixi.min.js"></script>
+    <script>
+        function loadUser() {
+            google.script.run.withSuccessHandler(function(email) {
+                document.getElementById("activeUser").innerText = "Logged in as: " + email;
+            }).getUserEmail();
+        }
+    </script>
     <style>
         #loading-screen {
             position: fixed;
@@ -185,8 +192,9 @@
         /* styling for nav bar END */
 
     </style>
+
 </head>
-<body>
+<body onload="loadUser()">
 
 <nav class="navbar navbar-dark bg-warning">
     <div class="container-fluid">
@@ -194,7 +202,16 @@
         <button class="navbar-toggler" type="button" onclick="toggleMenu()">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <img src="images/logo.png"  height="40px" width="40px" alt=""/> <a class="navbar-brand ml-3" href="#">Seoul Academy Apgujeong</a>
+        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="visualisationSize">
+            <option selected disabled>Game Size</option>
+            <option value="small">Small</option>
+            <option value="medium">Medium</option>
+            <option value="large">Large</option>
+        </select>
+        <a class="navbar-brand ml-3" href="#">Seoul Academy Apgujeong</a>
+        <a class="nav-link disabled" id="activeUser"></a>
+        <img src="https://postimg.cc/3d3VySKB"  height="40px" width="40px" alt=""/>
+
     </div>
 </nav>
 
@@ -352,10 +369,15 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    // TODO solve the sizing issue where the taxi shows improper size and position behavior
-
+    function loadUser() {
+        google.script.run.withSuccessHandler(function(email) {
+            document.getElementById("activeUser").innerText = "Logged in as: " + email;
+        }).getUserEmail();
+    }
     let configData = null; // Global variable to store JSON
     async function fetchData() {
+        //let configData = <?= jsonData ?>;
+        //console.log("Loaded configData:", configData);
         const response = await fetch('blocks.json'); // Adjust path as needed
         configData = await response.json();
     }
@@ -368,11 +390,13 @@
     buttonVisualisationElement = document.getElementById("visualisation");
     buttonHintElement = document.getElementById("hint");
     blocklyDivElement = document.getElementById('blocklyDiv');
+    visualisationSize = document.getElementById("visualisationSize");
 
 
     class Activity {
-        constructor(name, instructions, hints, mapLayout, sounds, blocks, goal, speedElement) {
+        constructor({name, instructions, gridSize, hints, mapLayout, sounds, blocks, goal, speedElement}) {
             this.name = name;
+            this.mapLayout = mapLayout;
             this.instructions = instructions;
             this.hints = hints;
             this.sprites = [];  // Initialize as empty arrays
@@ -384,9 +408,13 @@
             this.goal = goal;
             this.map = null; // Initialize as null and set it later asynchronously
             this.app = null; // Initialize as null
+            this._gridSize = gridSize; // Initialize as null
+            this.levelCompleted = false; // Initialize as null
             this.speed = 1;
             this.speedElement = speedElement;
             this.isRunning = false;
+
+            this.overlayContainer = null;
             buttonRunElement.addEventListener("click", () => {
                 this.runCode();
             });
@@ -394,21 +422,172 @@
                 this.resetCode();
             });
             // Initialize the activity asynchronously
-            this.initializeActivity(mapLayout);
+            this.initializeActivity();
             this.initializeBlocklyWorkspace();
             this.addKeyInput(this.runCode, this.resetCode);
-            // window.addEventListener("resize", () => {
-            //     this.map.setGridSize();
-            //     this.app.renderer.resize(this.map.gridSize * this.map.mapCols, this.map.gridSize * this.map.mapRows);
-            //     this.initializeEnvironment();
-            //     this.map.drawSprites(this.sprites);  // Pass the correct 'sprites' array
-            // });
+            this.visualisationDivSizeListener();
         }
+
+        levelCompleted(){
+            this.levelCompleted = true;
+            this.hasSucceeded();
+            console.log("Level Finished")
+        }
+
+        async initializeActivity() {
+            if (this.speed) {
+                this.speedElement.style.display = "inline-block";
+                this.speed = this.speedElement.value;
+                this.speedElement.oninput = () => this.speed = this.speedElement.value;
+            }
+            // Initialize the PIXI application first with default values
+            this.app = new PIXI.Application({
+                width: 12*this._gridSize, // Default placeholder values
+                height: 16*this._gridSize, // Default placeholder values
+                backgroundColor: 0xAAAAAA
+            });
+
+            // Initialize the map first
+            this.map = await new MapLayout(this.mapLayout, false, this.app);
+            await this.map.initialize(this.mapLayout);
+            this.player = new Player('https://i.postimg.cc/8C5cQSb0/taxi.png', 9, 11, false, 0, this._gridSize, this.app);
+            let positions = [
+                // [2, 4, 3], [7, 5, 2], [8, 10,1],
+                [6, 10,5], [5, 10,10]
+            ];
+            for (let pos of positions) {
+                this.sprites.push(new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', pos[0], pos[1], true, pos[2], this._gridSize, this.app));
+            }
+            this.people = Sprite.listOfSprites.filter(item => !(item instanceof Player));
+            this.sprites = Sprite.listOfSprites;
+            // Append PIXI app view (canvas) to DOM
+            buttonVisualisationElement.appendChild(this.app.view);
+
+            this.initializeEnvironment();
+            this.map.drawSprites(this.sprites);  // Pass the correct 'sprites' array
+        }
+        initializeEnvironment() {
+            if (!this.map) {
+                console.error("Map is not initialized yet.");
+                return;
+            }
+
+            if (this.sprites) {
+                this.sprites.forEach((sprite) => {
+                    if (sprite) sprite.resize(this._gridSize);
+                });
+            }
+            this.map.drawMap(this._gridSize);
+        }
+        visualisationDivSizeListener() {
+            visualisationSize.addEventListener("change", () => {
+                if (visualisationSize.value === "medium") {
+                    this.resizeActivity(30);
+                } else if (visualisationSize.value === "large") {
+                    this.resizeActivity(40);
+                } else if (visualisationSize.value === "small") {
+                    this.resizeActivity(20);
+                } else {
+                    this.resizeActivity(30);
+                }
+            });
+        }
+
+        resizeActivity(newGridSize) {
+            this._gridSize = newGridSize;
+
+            // Resize all sprites (including player)
+            if (this.sprites) {
+                this.sprites.forEach(sprite => {
+                    if (sprite) sprite.resize(newGridSize);
+                });
+            }
+
+            // Resize player separately if needed
+            if (this.player) {
+                this.player.resize(newGridSize);
+            }
+
+            // Resize map (if you make a resize method in MapLayout)
+            if (this.map) {
+                this.map.drawMap(newGridSize);  // it uses internal gridSize
+                this.map.drawSprites(this.sprites);
+            }
+
+            // Resize PIXI app view/canvas
+            if (this.app) {
+                this.app.renderer.resize(12 * newGridSize, 16 * newGridSize);
+            }
+        }
+
+        hasSucceeded() {
+            this.addOverlay("Challenge Completed!")
+        }
+
+        hasFailed() {
+          this.addOverlay("🤔")
+        }
+
+        addOverlay(message){
+            if (!this.app || this.overlayContainer) return;
+            // Create container for overlay elements
+            this.overlayContainer = new PIXI.Container();
+            // 1. Semi-transparent black rectangle
+            const overlay = new PIXI.Graphics();
+            overlay.beginFill(0x000000, 0.3); // 30% black
+            overlay.drawRect(0, 0, this.app.screen.width, this.app.screen.height);
+            overlay.endFill();
+            this.overlayContainer.addChild(overlay);
+            // 2. Centered "Try Again" text
+            const textMessage = new PIXI.Text(message, {
+                fontFamily: "Arial",
+                fontSize: 48,
+                fill: 0xffffff,
+                align: "center"
+            });
+            textMessage.anchor.set(0.5);
+            textMessage.x = this.app.screen.width / 2;
+            textMessage.y = this.app.screen.height / 2;
+            this.overlayContainer.addChild(textMessage);
+
+            // Optional: Make overlay block interactions below
+            this.overlayContainer.interactive = true;
+            this.overlayContainer.interactiveChildren = false;
+
+            // Add overlay to stage
+            this.app.stage.addChild(this.overlayContainer);
+        }
+
+        removeOverlay() {
+            if (this.overlayContainer) {
+                this.app.stage.removeChild(this.overlayContainer);
+                this.overlayContainer.destroy({ children: true });
+                this.overlayContainer = null;
+            }
+        }
+
+
+        resetActivity() {
+            if (this.app) {
+                this.app.destroy(true, { children: true });
+                this.app = null;
+            }
+
+            // Reset everything
+            this.map = null;
+            this.player = null;
+            this.people = [];
+            this.sprites = [];
+
+            // Also clear the canvas container (if reused)
+            buttonVisualisationElement.innerHTML = "";
+        }
+
 
 
         // what my sprites will do according to the blocks
         pick_up() {
-            return new Promise(resolve => this.player.getPerson(this.people, this.speed, resolve));
+            return new Promise(resolve => this.player.getPerson(this, this.people, this.speed, resolve));
         }
 
         move_north() {
@@ -446,6 +625,7 @@
             let runEventBlock = this.blockManager.workspace.getAllBlocks().find(block => block.type === 'run_event');
             if (!runEventBlock) {
                 this.giveHint("Error: Run block is missing. Please add the Run block.", "15000");
+                this.hasFailed();
                 this.isRunning = false; // Allow execution again
                 return;
             }
@@ -465,7 +645,9 @@
 
 
         resetCode() {
+
             this.isRunning = false;
+            this.removeOverlay();
             // this.getMap().setGridSize();
             // this.initializeEnvironment();
             buttonResetElement.disabled = true;
@@ -482,10 +664,12 @@
             setTimeout(() => {
                 // Draw the sprites (including the new player)
                 this.map.drawSprites(this.sprites);
+                Sprite.restoreNotifactionNumberForAllSprites();
                 // Initialize the new player (taxi)
                 this.player.initialize();
                 // Reset other elements (e.g., people notifications)
-                this.people.forEach(sprite => sprite.updateNotif(sprite.original_notif_number));
+                this.people.forEach(sprite => sprite.notify(sprite.original_notif_number));
+                this.people.forEach(sprite => sprite.show());
             }, 800); //  delay
             setTimeout(() => {
                 buttonResetElement.innerHTML = `<i class="fa-solid fa-rotate-right"></i> RESET`;
@@ -497,84 +681,9 @@
                 buttonResetElement.style.display = "none"; // Hide RESET button
             }, 900); //  delay
         }
-
-        async initializeActivity(mapLayout) {
-            if (this.speed) {
-                this.speedElement.style.display = "inline-block";
-                this.speed = this.speedElement.value;
-                this.speedElement.oninput = () => this.speed = this.speedElement.value;
-            }
-            // Initialize the PIXI application first with default values
-            this.app = new PIXI.Application({
-                width: 800, // Default placeholder values
-                height: 600, // Default placeholder values
-                backgroundColor: 0xAAAAAA
-            });
-
-            // Initialize the map first
-            this.map = await new MapLayout(mapLayout, false, this.app);
-            await this.map.initialize(mapLayout);
-            this.map.setGridSize();
-
-
-            // Now calculate the correct width and height based on map size
-            this.app.renderer.resize(this.map.gridSize * this.map.mapCols, this.map.gridSize * this.map.mapRows);
-
-            // Initialize player and people (sprites) after the app is ready
-
-            this.player = new Player('https://i.postimg.cc/8C5cQSb0/taxi.png', 9, 11, false, 0, this.map.gridSize, this.app);
-            let personOne = new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', 2, 4, true, 5, this.map.gridSize, this.app);
-            let personTwo = new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', 7, 5, true, 2, this.map.gridSize, this.app);
-            let personThree = new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', 8, 10, true, 3, this.map.gridSize, this.app);
-            let personFour = new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', 6, 10, true, 1, this.map.gridSize, this.app);
-            let personFive = new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', 5, 10, true, 1, this.map.gridSize, this.app);
-            this.people = Sprite.listOfSprites.filter(item => !(item instanceof Player));
-            this.sprites = Sprite.listOfSprites;
-            // Append PIXI app view (canvas) to DOM
-            buttonVisualisationElement.appendChild(this.app.view);
-
-            this.initializeEnvironment();
-            this.map.drawSprites(this.sprites);  // Pass the correct 'sprites' array
-
-        }
-
-        getMap() {
-            return this.map;
-        }
-
         getMapLayout() {
             return this.map.mapLayout;
         }
-
-        initializeEnvironment() {
-            if (!this.map) {
-                console.error("Map is not initialized yet.");
-                return;
-            }
-
-            if (this.sprites) {
-                this.sprites.forEach((sprite) => {
-                    if (sprite) sprite.resize(this.map.gridSize);
-                });
-            }
-            this.map.drawMap();
-        }
-
-        checkGoal() {
-            return this.goal.isMet(this);
-        }
-
-
-        resetActivity() {
-            if (this.map && this.app) {
-                this.map.reset();
-                this.sprites.forEach(sprite => sprite.reset());
-                this.player.reset();
-            } else {
-                console.error("Map or app is not initialized yet.");
-            }
-        }
-
 
         async initializeBlocklyWorkspace() {
             if (!configData) {
@@ -635,18 +744,19 @@
 
             });
         }
+
     }
 
 
     class MapLayout {
         constructor(mapLayoutName, grid, app) {
-            this.gridSize = 40;
             this.grid = grid;
             this.app = app;
             this.mapLayout = null;
             this.mapRows = null;
             this.mapCols = null;
-
+            this.mapContainer = new PIXI.Container();
+            this.app.stage.addChild(this.mapContainer);
         }
 
         async initialize(mapLayoutName) {
@@ -667,18 +777,10 @@
             }
         }
 
-
-        setGridSize() {
-            const breakpoints = [
-                {width: 1300, size: 40},
-                {width: 1000, size: 30},
-                {width: 800, size: 20}
-            ];
-            this.gridSize = breakpoints.find(b => window.innerWidth > b.width)?.size || 10;
-        }
-
-        drawMap() {
+        drawMap(gridSize) {
             this.reset();
+            console.log('Drawing map with grid size:', gridSize);
+            console.log('Map layout:', this.mapLayout);
             const parkColors = [0x00FF00, 0x228B22, 0x32CD32]; // Different shades of green
             let rowIndex = 0; // Track the numerical row index
             for (const rowKey in this.mapLayout) {
@@ -689,9 +791,9 @@
                     if (this.grid) tile.lineStyle(1, 0x9b9b9b, 1); // (width, color, alpha)
                     const parkColor = parkColors[Math.floor(Math.random() * parkColors.length)];
                     tile.beginFill(tileValue === 1 ? 0xCCCCCC : (tileValue === 2 ? parkColor : 0x555555));
-                    tile.drawRect(colIndex * this.gridSize, rowIndex * this.gridSize, this.gridSize, this.gridSize);
+                    tile.drawRect(colIndex * gridSize, rowIndex * gridSize, gridSize, gridSize);
                     tile.endFill();
-                    this.app.stage.addChild(tile);
+                    this.mapContainer.addChild(tile);
                     colIndex++;
                 }
                 rowIndex++;
@@ -707,10 +809,8 @@
         }
 
         reset() {
-            if (this.app && this.app.stage) {
-                this.app.stage.removeChildren();
-            } else {
-                console.error("PIXI app is not initialized yet.");
+            if (this.mapContainer) {
+                this.mapContainer.removeChildren();
             }
         }
     }
@@ -731,6 +831,8 @@
                 this.createToolbox(data.blocks);
                 this.injectWorkspace();
                 this.setupChangeListener();
+                this.setupResizeObserver(); // Add resize listener
+
             } catch (error) {
                 console.error('Error loading Blockly settings:', error);
             }
@@ -783,7 +885,14 @@
                 theme: this.customTheme,
                 maxBlocks: 30,
                 trashcan: true,
-                move: {scrollbars: true}
+                move: {
+                    scrollbars: {
+                        horizontal: true,
+                        vertical: true
+                    },
+                    drag: true,
+                    wheel: true
+                }
             });
         }
 
@@ -794,16 +903,36 @@
             this.workspace.addChangeListener(updateCapacity);
             updateCapacity();
         }
+
+        setupResizeObserver() {
+            if (!buttonVisualisationElement) {
+                console.error("ResizeObserver error: visualisation element not found.");
+                return;
+            }
+
+            const resizeObserver = new ResizeObserver(() => {
+                this.resizeBlocklyWorkspace();
+            });
+
+            resizeObserver.observe(buttonVisualisationElement);
+        }
+
+        // Resizes the Blockly workspace
+        resizeBlocklyWorkspace() {
+            if (this.workspace) {
+                Blockly.svgResize(this.workspace);
+            }
+        }
     }
 
 
     class Sprite {
         static listOfSprites = [];
-
+        static #numberOfEnvironmentSprites = 0;
         constructor(imageURL, row, col, showNotif = false, notif_number = 0, gridSize, app) {
             this.row = row;
             this.col = col;
-            this.gridSize = gridSize;
+            this._gridSize = gridSize;
             this.showNotif = showNotif;
             this.notif_number = notif_number;
             this.app = app;
@@ -840,14 +969,31 @@
 
             this.app.stage.addChild(this.container);
             Sprite.listOfSprites.push(this);
+            Sprite.#numberOfEnvironmentSprites += notif_number;
         }
 
-        updateNotif(newNumber) {
+        static restoreNotifactionNumberForAllSprites(){
+            Sprite.#numberOfEnvironmentSprites = 0;
+            this.listOfSprites.forEach(sprite => Sprite.#numberOfEnvironmentSprites += sprite.original_notif_number);
+        }
+
+        notify(newNumber) {
             if (this.showNotif && this.notifText) {
                 this.notif_number = newNumber;
                 this.notifText.text = newNumber;
             }
         }
+        static decreaseNumberOfEnvironmentSprites() {
+            Sprite.#numberOfEnvironmentSprites--;
+        }
+
+        static hasEnvironmentSprites(){
+            return Sprite.#numberOfEnvironmentSprites !== 0;
+        }
+        static getNumberOfEnvironmentSprites(){
+            return Sprite.#numberOfEnvironmentSprites;
+        }
+
 
         initialize() {
             this.row = this.originalRow;
@@ -869,9 +1015,14 @@
 
 
         resize(gridSize) {
+            if (!this.sprite) {
+                console.warn("Sprite is null or not yet loaded");
+                return;
+            }
+            if (!this.sprite || !this.container) return;
             // Update sprite size
+            this._gridSize = gridSize;
             this.sprite.width = this.sprite.height = gridSize;
-
             // Update position
             this.sprite.x = this.col * gridSize + gridSize / 2;
             this.sprite.y = this.row * gridSize + gridSize / 2;
@@ -888,21 +1039,24 @@
         }
 
         updateSizeAndPosition() {
-            this.sprite.width = this.sprite.height = this.gridSize;
-            this.sprite.x = this.col * this.gridSize + this.gridSize / 2;
-            this.sprite.y = this.row * this.gridSize + this.gridSize / 2;
+            this.sprite.width = this.sprite.height = this._gridSize;
+            this.sprite.x = this.col * this._gridSize + this._gridSize / 2;
+            this.sprite.y = this.row * this._gridSize + this._gridSize / 2;
 
         }
 
         updateNotifPosition() {
-            this.notifText.x = this.sprite.x + this.gridSize / 3;
-            this.notifText.y = this.sprite.y - this.gridSize / 3;
+            this.notifText.x = this.sprite.x + this._gridSize / 3;
+            this.notifText.y = this.sprite.y - this._gridSize / 3;
         }
 
-        remove() {
-            this.app.stage.removeChild(this.container);
+        hide() {
+            this.container.visible = false;
         }
 
+        show() {
+            this.container.visible = true;
+        }
 
         isNextTo(otherSprite) {
             if (!otherSprite) return false; // Prevent errors if null
@@ -930,8 +1084,8 @@
         }
 
         moveSmoothly(newRow, newCol, speed, isRunning, callback) {
-            let targetX = newCol * this.gridSize + this.gridSize / 2;
-            let targetY = newRow * this.gridSize + this.gridSize / 2;
+            let targetX = newCol * this._gridSize + this._gridSize / 2;
+            let targetY = newRow * this._gridSize + this._gridSize / 2;
 
             const animateMove = () => {
                 if (!isRunning) {
@@ -976,26 +1130,42 @@
         }
 
 
-        async getPerson(listOfSprites, speed, callback) {
+        async getPerson(activity, listOfSprites, speed, callback) {
             let person = listOfSprites.find(p => this.isNextTo(p));
             if (person) {
+                console.log("person exists, notif: " + person.notif_number);
                 if (person.notif_number > 1) {
+                    console.log("Leftover sprites: " + Sprite.getNumberOfEnvironmentSprites());
                     Activity.giveHint("Removed 1 person", "3000");
                     await new Promise(resolve => setTimeout(resolve, speed * 100)); // 0.5 sec delay
-                    person.updateNotif(person.notif_number - 1);
+                    Sprite.decreaseNumberOfEnvironmentSprites();
+                    person.notify(person.notif_number - 1);
                 } else if (person.notif_number === 1) {
+                    console.log("Leftover sprites: " + Sprite.getNumberOfEnvironmentSprites());
                     Activity.giveHint("Everyone is inside", "3000");
-                    person.remove();
+                    person.notify(person.notif_number - 1);
+                    Sprite.decreaseNumberOfEnvironmentSprites();
+                    person.hide();
+                }
+                else if (person.notif_number <= 0) {
+                    console.log("3 person exists, notif: " + person.notif_number);
+                    Activity.giveHint("No person to be picked up", "3000");
+                    activity.hasFailed();
                 }
                 if (typeof callback === "function") await callback(person);
                 return person;
             } else {
-                Activity.giveHint("No person", "3000");
+                activity.hasFailed();
+                Activity.giveHint("No person to be picked up", "150000");
+            }
+            if (!Sprite.hasEnvironmentSprites()){
+                activity.levelCompleted();
             }
             if (typeof callback === "function") await callback(null);
             return null;
         }
     }
+
     $(document).ready(function () {
         $('#sidebarMenu .collapse').on('show.bs.collapse', function () {
             $('#sidebarMenu .collapse').not(this).collapse('hide');
@@ -1014,14 +1184,20 @@
     function toggleMenu() {
         let sidebar = document.getElementById("sidebar");
         let overlay = document.getElementById("overlay");
-
         sidebar.classList.toggle("show");
         overlay.classList.toggle("show");
     }
-    //  constructor(name, instructions, hints, mapLayout, sounds, blocks, goal,speedElement) {
-    activityOne = new Activity("", "", "", "taxi_pickup_map_twelve", "", "", "", buttonSpeedElement);
-
-
+    new Activity({
+        name: "Taxi Pickup",
+        instructions: "Pick up all the passengers.",
+        gridSize: 35,
+        hints: "Use loops and conditionals!",
+        mapLayout: "taxi_pickup_map_ten",
+        sounds: "",
+        blocks: "",
+        goal: "",
+        speedElement: buttonSpeedElement
+    });
 </script>
 </body>
 </html>
