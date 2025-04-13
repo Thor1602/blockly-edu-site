@@ -431,7 +431,7 @@
         }
 
         async levelCompleted(){
-            this.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/level-up-enhancement-8-bit-retro-sound-effect-153002.mp3");
+            Activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/level-up-enhancement-8-bit-retro-sound-effect-153002.mp3");
             this.hasSucceeded();
             console.log("Level Finished");
         }
@@ -452,10 +452,10 @@
             // Initialize the map first
             this.map = await new MapLayout(this.mapLayout, false, this.app);
             await this.map.initialize(this.mapLayout);
-            this.player = new Player('https://i.postimg.cc/8C5cQSb0/taxi.png', 11, 11, false, 0, this._gridSize, this.app);
+            this.player = new Player('https://i.postimg.cc/8C5cQSb0/taxi.png', 11, 11, false, 0, this._gridSize, this.app, this);
 
             for (let pos of this.positions) {
-                this.sprites.push(new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', pos[1], pos[0], true, pos[2], this._gridSize, this.app));
+                this.sprites.push(new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', pos[1], pos[0], true, pos[2], this._gridSize, this.app, this));
             }
             this.people = Sprite.listOfSprites.filter(item => !(item instanceof Player));
             this.sprites = Sprite.listOfSprites;
@@ -520,20 +520,20 @@
         }
 
         hasSucceeded() {
-            this.addOverlay("Challenge\nCompleted!")
+            this.addOverlay("Challenge\nCompleted!", 0x000000);
         }
 
         hasFailed() {
-          this.addOverlay("🤔")
+          this.addOverlay("🤔", 0x000000);
         }
 
-        addOverlay(message){
+        addOverlay(message, color){
             if (!this.app || this.overlayContainer) return;
             // Create container for overlay elements
             this.overlayContainer = new PIXI.Container();
             // 1. Semi-transparent black rectangle
             const overlay = new PIXI.Graphics();
-            overlay.beginFill(0x000000, 0.3); // 30% black
+            overlay.beginFill(color, 0.3); // 30% black
             overlay.drawRect(0, 0, this.app.screen.width, this.app.screen.height);
             overlay.endFill();
             this.overlayContainer.addChild(overlay);
@@ -743,7 +743,7 @@
 
             });
         }
-        playSound(link) {
+        static playSound(link) {
             const audio = new Audio(link);
             audio.play().catch(err => {
                 console.warn("Playback failed:", err);
@@ -934,11 +934,12 @@
     class Sprite {
         static listOfSprites = [];
         static #numberOfEnvironmentSprites = 0;
-        constructor(imageURL, row, col, showNotif = false, notif_number = 0, gridSize, app) {
+        constructor(imageURL, row, col, showNotif = false, notif_number = 0, gridSize, app, activity) {
             this.row = row;
             this.col = col;
             this._gridSize = gridSize;
             this.showNotif = showNotif;
+            this.activity = activity;
             this.notif_number = notif_number;
             this.app = app;
             this.original_notif_number = notif_number;
@@ -1070,8 +1071,8 @@
     class Player extends Sprite {
         static listOfPlayers = [];
 
-        constructor(imageURL, row, col, showNotif = false, notifNumber = 0, gridSize, app) {
-            super(imageURL, row, col, showNotif, notifNumber, gridSize, app);
+        constructor(imageURL, row, col, showNotif = false, notifNumber = 0, gridSize, app, activity) {
+            super(imageURL, row, col, showNotif, notifNumber, gridSize, app, activity);
             Player.listOfPlayers.push(this);
         }
 
@@ -1104,16 +1105,64 @@
             requestAnimationFrame(animateMove);
         }
 
+        moveSmoothlyHalfStep(newRow, newCol, speed, isRunning, callback) {
+            // Adjust target position to move only 0.5 tile forward
+            let currentX = this.sprite.x;
+            let currentY = this.sprite.y;
+
+            let fullTargetX = newCol * this._gridSize + this._gridSize / 2;
+            let fullTargetY = newRow * this._gridSize + this._gridSize / 2;
+
+            // Compute direction vector
+            let dx = fullTargetX - currentX;
+            let dy = fullTargetY - currentY;
+
+            // Normalize direction vector
+            let length = Math.sqrt(dx * dx + dy * dy);
+            let unitX = dx / length;
+            let unitY = dy / length;
+
+            // Move only 0.5 grid unit in that direction
+            let halfStepDistance = this._gridSize * 0.5;
+            let targetX = currentX + unitX * halfStepDistance;
+            let targetY = currentY + unitY * halfStepDistance;
+
+            const animateMove = () => {
+                if (!isRunning) {
+                    this.sprite.x = targetX;
+                    this.sprite.y = targetY;
+                    return;
+                }
+                let dx = targetX - this.sprite.x;
+                let dy = targetY - this.sprite.y;
+
+                if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+                    this.sprite.x += dx / speed;
+                    this.sprite.y += dy / speed;
+                    requestAnimationFrame(animateMove);
+                } else {
+                    this.sprite.x = targetX;
+                    this.sprite.y = targetY;
+                    if (typeof callback === "function") callback();
+                }
+            };
+
+            requestAnimationFrame(animateMove);
+        }
+
         moveBy(deltaCol, deltaRow, map_layout, speed, isRunning, callback) {
             let newRow = this.row + deltaRow;
             let newCol = this.col + deltaCol;
             let rowKey = Object.keys(map_layout)[newRow];
             let colKey = Object.keys(map_layout[rowKey])[newCol];
             if (map_layout[rowKey] && map_layout[rowKey][colKey] !== undefined &&
-                (map_layout[rowKey][colKey] === 1 || map_layout[rowKey][colKey] === 2)) {
+                (map_layout[rowKey][colKey] === 1)) {
                 this.moveSmoothly(newRow, newCol, speed, isRunning, callback);
             }
-
+            else{
+                Activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/bang-crash-103775.mp3");
+                this.activity.addOverlay("Crashed!!", 0xE30000)
+            }
         }
 
         canMoveTo(row, col) {
@@ -1123,23 +1172,19 @@
 
 
         async getPerson(activity, listOfSprites, speed, callback) {
-            console.log(Sprite.hasEnvironmentSprites());
             if (!Sprite.hasEnvironmentSprites()){
-                console.log("level completed");
                 activity.levelCompleted();
             }
             let person = listOfSprites.find(p => this.isNextTo(p));
             if (person) {
-                console.log("person exists, notif: " + person.notif_number);
                 if (person.notif_number > 1) {
-                    activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/pop-268648.mp3");
-                    console.log("Leftover sprites: " + Sprite.getNumberOfEnvironmentSprites());
+                    Activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/pop-268648.mp3");
                     Activity.giveHint("Removed 1 person", "3000");
                     await new Promise(resolve => setTimeout(resolve, speed * 100)); // 0.5 sec delay
                     Sprite.decreaseNumberOfEnvironmentSprites();
                     person.notify(person.notif_number - 1);
                 } else if (person.notif_number === 1) {
-                    activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/pop-268648.mp3");
+                    Activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/pop-268648.mp3");
                     console.log("Leftover sprites: " + Sprite.getNumberOfEnvironmentSprites());
                     Activity.giveHint("Everyone is inside", "3000");
                     person.notify(person.notif_number - 1);
@@ -1193,7 +1238,12 @@
         [3,4,1],[3,5,1],[3,6,1],[3,7,1],[3,8,1],[3,9,1],[3,10,1],[3,11,1],
         [4,12,1],[5,12,1],[6,12,1],[7,12,1],[8,12,1],
         [9,7,1],[9,8,1],[9,9,1],[9,10,1],[9,11,1]
-
+    ];
+    let positionsThirteen = [
+        [5,3,1],[6,3,1],
+        [3,4,1],[3,6,1],
+        [4,12,1],
+        [8,8,1]
     ];
     new Activity({
         name: "Taxi Pickup",
