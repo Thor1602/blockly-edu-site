@@ -736,24 +736,13 @@
         }
 
 
-        static giveHint(message, time) {
-            const hint = buttonLiveFeedbackElement;
-            $('#hint').addClass('hint-container');
-            hint.textContent = message;
-            setTimeout(() => {
-                hint.textContent = "";
-                $('#hint').removeClass('hint-container');
-            }, time);
-
-        }
-
         giveHint(message, time) {
             const hint = buttonLiveFeedbackElement;
-            $('#hint').addClass('hint-container');
+            $('#liveFeedback').addClass('hint-container');
             hint.textContent = message;
             setTimeout(() => {
                 hint.textContent = "";
-                $('#hint').removeClass('hint-container');
+                $('#liveFeedback').removeClass('hint-container');
             }, time);
 
         }
@@ -1224,28 +1213,28 @@
             if (person) {
                 if (person.notif_number > 1) {
                     Activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/pop-268648.mp3");
-                    Activity.giveHint("Removed 1 person", "3000");
+                    activity.giveHint("Removed 1 person", "3000");
                     await new Promise(resolve => setTimeout(resolve, speed * 100)); // 0.5 sec delay
                     Sprite.decreaseNumberOfEnvironmentSprites();
                     person.notify(person.notif_number - 1);
                 } else if (person.notif_number === 1) {
                     Activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/pop-268648.mp3");
                     console.log("Leftover sprites: " + Sprite.getNumberOfEnvironmentSprites());
-                    Activity.giveHint("Everyone is inside", "3000");
+                    activity.giveHint("Everyone is inside", "3000");
                     person.notify(person.notif_number - 1);
                     Sprite.decreaseNumberOfEnvironmentSprites();
                     person.hide();
                 } else if (person.notif_number <= 0) {
 
                     console.log("3 person exists, notif: " + person.notif_number);
-                    Activity.giveHint("No person to be picked up", "3000");
+                    activity.giveHint("No person to be picked up", "3000");
                     activity.hasFailed();
                 }
                 if (typeof callback === "function") await callback(person);
                 return person;
             } else {
                 activity.hasFailed();
-                Activity.giveHint("No person to be picked up", "150000");
+                activity.giveHint("No person to be picked up", "150000");
             }
 
             if (typeof callback === "function") await callback(null);
