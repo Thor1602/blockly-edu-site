@@ -19,7 +19,7 @@
 
     <script>
         function loadUser() {
-            google.script.run.withSuccessHandler(function(email) {
+            google.script.run.withSuccessHandler(function (email) {
                 document.getElementById("activeUser").innerText = "Logged in as: " + email;
             }).getUserEmail();
         }
@@ -114,10 +114,11 @@
             box-shadow: 0 0 10px black !important; /* Adds black glow effect */
         }
 
-        .pre-hint-container{
+        .pre-hint-container {
             height: 25px;
         }
-        .hint-container{
+
+        .hint-container {
             margin-left: 20px;
             height: 25px;
             background-color: white;
@@ -126,6 +127,7 @@
             padding-right: 20px;
             border-radius: 20px;
         }
+
         /* styling for nav bar START */
         .offcanvas {
             position: fixed;
@@ -140,18 +142,22 @@
             padding-top: 60px;
             z-index: 1050; /* Above everything */
         }
+
         .offcanvas.show {
             left: 0; /* Slide in */
         }
+
         .offcanvas a {
             color: white;
             padding: 10px;
             display: block;
             text-decoration: none;
         }
+
         .offcanvas a:hover {
             background-color: #8c6c0d; /* yellow theme */
         }
+
         .close-btn {
             position: absolute;
             top: 10px;
@@ -171,6 +177,7 @@
             z-index: 1045; /* Just below the sidebar */
             display: none; /* Hidden by default */
         }
+
         .overlay.show {
             display: block; /* Show when menu opens */
         }
@@ -185,12 +192,15 @@
         .content {
             padding: 20px;
         }
+
         .active-bg-sidebar {
             background-color: #8c6c0d; /* yellow theme */
         }
+
         .bg-sidebar {
             background-color: #886500; /* yellow theme */
         }
+
         /* styling for nav bar END */
 
     </style>
@@ -206,13 +216,15 @@
         </button>
         <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="visualisationSize">
             <option selected disabled>Game Size</option>
-            <option value="small">Small</option>
-            <option value="medium">Medium</option>
-            <option value="large">Large</option>
+            <option value="Extra Small">Extra Small</option>
+            <option value="Small">Small</option>
+            <option value="Medium">Medium</option>
+            <option value="Large">Large</option>
+            <option value="Extra Large">Extra Large</option>
         </select>
         <a class="navbar-brand ml-3" href="#">Seoul Academy Apgujeong</a>
         <a class="nav-link disabled" id="activeUser"></a>
-        <img src="https://postimg.cc/3d3VySKB"  height="40px" width="40px" alt=""/>
+        <img src="https://postimg.cc/3d3VySKB" height="40px" width="40px" alt=""/>
 
     </div>
 </nav>
@@ -226,7 +238,8 @@
     <ul class="nav flex-column" id="sidebarMenu">
         <!-- Grades with Submenus -->
         <li class="nav-item">
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#kinderMenu" data-parent="#sidebarMenu">Kinder</a>
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#kinderMenu"
+               data-parent="#sidebarMenu">Kinder</a>
             <div id="kinderMenu" class="collapse">
                 <a href="#" class="nav-link pl-4">Sequencing</a>
                 <div class="pl-5">
@@ -239,7 +252,8 @@
             </div>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade1Menu" data-parent="#sidebarMenu">Grade 1</a>
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade1Menu"
+               data-parent="#sidebarMenu">Grade 1</a>
             <div id="grade1Menu" class="collapse">
                 <a href="#" class="nav-link pl-4">Sequencing</a>
                 <div class="pl-5">
@@ -252,7 +266,8 @@
             </div>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade2Menu" data-parent="#sidebarMenu">Grade 2</a>
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade2Menu"
+               data-parent="#sidebarMenu">Grade 2</a>
             <div id="grade2Menu" class="collapse">
                 <a href="#" class="nav-link pl-4">Sequencing</a>
                 <div class="pl-5">
@@ -265,7 +280,8 @@
             </div>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade3Menu" data-parent="#sidebarMenu">Grade 3</a>
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade3Menu"
+               data-parent="#sidebarMenu">Grade 3</a>
             <div id="grade3Menu" class="collapse">
                 <a href="#" class="nav-link pl-4">Sequencing</a>
                 <div class="pl-5">
@@ -278,7 +294,8 @@
             </div>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade4Menu" data-parent="#sidebarMenu">Grade 4</a>
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade4Menu"
+               data-parent="#sidebarMenu">Grade 4</a>
             <div id="grade4Menu" class="collapse">
                 <a href="#" class="nav-link pl-4">Sequencing</a>
                 <div class="pl-5">
@@ -291,7 +308,8 @@
             </div>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade5Menu" data-parent="#sidebarMenu">Grade 5</a>
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade5Menu"
+               data-parent="#sidebarMenu">Grade 5</a>
             <div id="grade5Menu" class="collapse">
                 <a href="#" class="nav-link pl-4">Sequencing</a>
                 <div class="pl-5">
@@ -312,8 +330,9 @@
 </div>
 <div class="container-fluid vh-100 d-flex flex-row content">
     <!-- Left Side (Visualization) -->
-    <div class="d-flex flex-column p-4">
-        <div id="visualisation" class="border rounded bg-light p-3"></div>
+    <div class="d-flex flex-column overflow-auto">
+        <div id="visualisation" class="border rounded bg-light p-2"></div>
+
         <div class="mt-3 d-flex justify-content-between">
             <button class="btn btn-lg btn-primary" id="btnRun">
                 <i class="fa-solid fa-play"></i> RUN
@@ -327,33 +346,35 @@
         </div>
         <label for="speed" class="form-label"></label>
         <input type="range" class="form-range" min="0" max="10" step="1" id="speed" style="display: none">
+
     </div>
 
-    <div class="d-flex flex-column flex-grow-1 p-4">
-        <div class="bg-warning p-3 sticky-top">
-            <h2>Instructions
+    <div class="d-flex flex-column flex-grow-1 mx-3">
+        <div class="bg-warning p-3 ml-5 sticky-top">
                 <span><button class="btn btn-primary">
                     <i class="fa-solid fa-question"></i> INSTRUCTIONS
                 </button></span>
-                <span><button class="btn btn-primary">
+            <span><button class="btn btn-primary" disabled>
+                    <span id="capacity"></span> block(s) left
+                </button></span>
+            <span><button class="btn btn-primary" disabled>
                     <i class="fa-solid fa-question"></i> HINT
                 </button></span>
-                <span><button class="btn btn-primary" disabled>
+            <span><button class="btn btn-primary" disabled>
                     <i class="fa-solid fa-question"></i> NEXT
                 </button></span>
-                <span>Pick up everyone! Remaining blocks: <b>You have <span id="capacity"></span> block(s) left.</b></span>
-            </h2>
             <div class="d-flex align-items-center">
                 <div class="pre-hint-container" id="hint"></div> <!-- Custom margin in pixels -->
             </div>
         </div>
-        <div class="border rounded bg-white p-4 flex-grow-1 mt-3">
-            <div id="blocklyDiv" style="height: 100%; width: 100%;"></div>
+        <div class="border rounded bg-white p-2 flex-grow-1">
+            <div id="blocklyDiv" style="height: 90%; width: 100%;"></div>
         </div>
     </div>
 </div>
 <!-- Warning Modal -->
-<div class="modal fade" id="warningModal" tabindex="-1" role="dialog" aria-labelledby="warningModalLabel" aria-hidden="true">
+<div class="modal fade" id="warningModal" tabindex="-1" role="dialog" aria-labelledby="warningModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -435,7 +456,7 @@
             this.visualisationDivSizeListener();
         }
 
-        async levelCompleted(){
+        async levelCompleted() {
             Activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/level-up-enhancement-8-bit-retro-sound-effect-153002.mp3");
             this.hasSucceeded();
             console.log("Level Finished");
@@ -449,8 +470,8 @@
             }
             // Initialize the PIXI application first with default values
             this.app = new PIXI.Application({
-                width: 12*this._gridSize, // Default placeholder values
-                height: 16*this._gridSize, // Default placeholder values
+                width: 12 * this._gridSize, // Default placeholder values
+                height: 16 * this._gridSize, // Default placeholder values
                 backgroundColor: 0xAAAAAA
             });
 
@@ -470,6 +491,7 @@
             this.initializeEnvironment();
             this.map.drawSprites(this.sprites);  // Pass the correct 'sprites' array
         }
+
         initializeEnvironment() {
             if (!this.map) {
                 console.error("Map is not initialized yet.");
@@ -483,14 +505,19 @@
             }
             this.map.drawMap(this._gridSize);
         }
+
         visualisationDivSizeListener() {
             visualisationSize.addEventListener("change", () => {
-                if (visualisationSize.value === "medium") {
+                if (visualisationSize.value === "Medium") {
                     this.resizeActivity(30);
-                } else if (visualisationSize.value === "large") {
+                } else if (visualisationSize.value === "Large") {
                     this.resizeActivity(40);
-                } else if (visualisationSize.value === "small") {
+                } else if (visualisationSize.value === "Small") {
+                    this.resizeActivity(25);
+                } else if (visualisationSize.value === "Extra Small") {
                     this.resizeActivity(20);
+                } else if (visualisationSize.value === "Extra Large") {
+                    this.resizeActivity(45);
                 } else {
                     this.resizeActivity(30);
                 }
@@ -529,11 +556,12 @@
         }
 
         hasFailed() {
-          this.addOverlay("🤔", 0x000000);
+            this.addOverlay("🤔", 0x000000);
         }
 
-        addOverlay(message, color){
+        addOverlay(message, color) {
             if (!this.app || this.overlayContainer) return;
+            this.isRunning = false;
             // Create container for overlay elements
             this.overlayContainer = new PIXI.Container();
             // 1. Semi-transparent black rectangle
@@ -565,7 +593,7 @@
         removeOverlay() {
             if (this.overlayContainer) {
                 this.app.stage.removeChild(this.overlayContainer);
-                this.overlayContainer.destroy({ children: true });
+                this.overlayContainer.destroy({children: true});
                 this.overlayContainer = null;
             }
         }
@@ -573,7 +601,7 @@
 
         resetActivity() {
             if (this.app) {
-                this.app.destroy(true, { children: true });
+                this.app.destroy(true, {children: true});
                 this.app = null;
             }
 
@@ -586,7 +614,6 @@
             // Also clear the canvas container (if reused)
             buttonVisualisationElement.innerHTML = "";
         }
-
 
 
         // what my sprites will do according to the blocks
@@ -685,6 +712,7 @@
                 buttonResetElement.style.display = "none"; // Hide RESET button
             }, 900); //  delay
         }
+
         getMapLayout() {
             return this.map.mapLayout;
         }
@@ -748,6 +776,7 @@
 
             });
         }
+
         static playSound(link) {
             const audio = new Audio(link);
             audio.play().catch(err => {
@@ -939,6 +968,7 @@
     class Sprite {
         static listOfSprites = [];
         static #numberOfEnvironmentSprites = 0;
+
         constructor(imageURL, row, col, showNotif = false, notif_number = 0, gridSize, app, activity) {
             this.row = row;
             this.col = col;
@@ -983,7 +1013,7 @@
             Sprite.#numberOfEnvironmentSprites += notif_number;
         }
 
-        static restoreNotifactionNumberForAllSprites(){
+        static restoreNotifactionNumberForAllSprites() {
             Sprite.#numberOfEnvironmentSprites = 0;
             this.listOfSprites.forEach(sprite => Sprite.#numberOfEnvironmentSprites += sprite.original_notif_number);
         }
@@ -994,14 +1024,16 @@
                 this.notifText.text = newNumber;
             }
         }
+
         static decreaseNumberOfEnvironmentSprites() {
             Sprite.#numberOfEnvironmentSprites--;
         }
 
-        static hasEnvironmentSprites(){
+        static hasEnvironmentSprites() {
             return Sprite.#numberOfEnvironmentSprites !== 1;
         }
-        static getNumberOfEnvironmentSprites(){
+
+        static getNumberOfEnvironmentSprites() {
             return Sprite.#numberOfEnvironmentSprites;
         }
 
@@ -1068,7 +1100,6 @@
 
             return (dRow === 1 && dCol === 0) || (dRow === 0 && dCol === 1);
         }
-
 
 
     }
@@ -1163,8 +1194,7 @@
             if (map_layout[rowKey] && map_layout[rowKey][colKey] !== undefined &&
                 (map_layout[rowKey][colKey] === 1)) {
                 this.moveSmoothly(newRow, newCol, speed, isRunning, callback);
-            }
-            else{
+            } else {
                 Activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/bang-crash-103775.mp3");
                 this.activity.addOverlay("Crashed!!", 0xE30000)
             }
@@ -1177,7 +1207,7 @@
 
 
         async getPerson(activity, listOfSprites, speed, callback) {
-            if (!Sprite.hasEnvironmentSprites()){
+            if (!Sprite.hasEnvironmentSprites()) {
                 activity.levelCompleted();
             }
             let person = listOfSprites.find(p => this.isNextTo(p));
@@ -1195,8 +1225,7 @@
                     person.notify(person.notif_number - 1);
                     Sprite.decreaseNumberOfEnvironmentSprites();
                     person.hide();
-                }
-                else if (person.notif_number <= 0) {
+                } else if (person.notif_number <= 0) {
 
                     console.log("3 person exists, notif: " + person.notif_number);
                     Activity.giveHint("No person to be picked up", "3000");
@@ -1229,31 +1258,33 @@
             $(this).parent().removeClass('bg-sidebar').addClass('active-bg-sidebar');
         });
     });
+
     function toggleMenu() {
         let sidebar = document.getElementById("sidebar");
         let overlay = document.getElementById("overlay");
         sidebar.classList.toggle("show");
         overlay.classList.toggle("show");
     }
+
     let positionsTen = [
-        [2,1,1], [3,2,1],[4,3,1], [5,4,1], [6,5,1],[7,6,1], [8,7,1], [9,8,1], [10,9,1], [11,10,1]
+        [2, 1, 1], [3, 2, 1], [4, 3, 1], [5, 4, 1], [6, 5, 1], [7, 6, 1], [8, 7, 1], [9, 8, 1], [10, 9, 1], [11, 10, 1]
     ];
     let positionsNine = [
-        [4,3,1],[5,3,1],[6,3,1],[7,3,1],[8,3,1],[9,3,1],[10,3,1],[11,3,1],
-        [3,4,1],[3,5,1],[3,6,1],[3,7,1],[3,8,1],[3,9,1],[3,10,1],[3,11,1],
-        [4,12,1],[5,12,1],[6,12,1],[7,12,1],[8,12,1],
-        [9,7,1],[9,8,1],[9,9,1],[9,10,1],[9,11,1]
+        [4, 3, 1], [5, 3, 1], [6, 3, 1], [7, 3, 1], [8, 3, 1], [9, 3, 1], [10, 3, 1], [11, 3, 1],
+        [3, 4, 1], [3, 5, 1], [3, 6, 1], [3, 7, 1], [3, 8, 1], [3, 9, 1], [3, 10, 1], [3, 11, 1],
+        [4, 12, 1], [5, 12, 1], [6, 12, 1], [7, 12, 1], [8, 12, 1],
+        [9, 7, 1], [9, 8, 1], [9, 9, 1], [9, 10, 1], [9, 11, 1]
     ];
     let positionsThirteen = [
-        [5,3,1],[6,3,1],
-        [3,4,1],[3,6,1],
-        [4,12,1],
-        [8,8,1]
+        [5, 3, 1], [6, 3, 1],
+        [3, 4, 1], [3, 6, 1],
+        [4, 12, 1],
+        [8, 8, 1]
     ];
     new Activity({
         name: "Taxi Pickup",
         instructions: "Pick up all the passengers.",
-        gridSize: 35,
+        gridSize: 30,
         hints: "Use loops and conditionals!",
         mapLayout: "taxi_pickup_map_ten",
         sounds: "",
