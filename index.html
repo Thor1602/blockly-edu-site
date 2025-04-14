@@ -357,20 +357,20 @@
     <div class="d-flex flex-column flex-grow-1 mx-3">
         <div class="bg-warning p-3 ml-5 sticky-top">
 
-            <span><button class="btn btn-lg btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="See here the blocks you have left.">
+            <span><button class="btn btn-lg btn-primary" id="blocksLeftover" data-bs-toggle="tooltip" data-bs-placement="top" title="See here the blocks you have left.">
                     <span id="capacity"></span> block(s) left
                 </button></span>
-            <span><button class="btn btn-lg btn-primary" data-bs-toggle="tooltip" data-bs-placement="top" title="Click here for instructions">
+            <span><button class="btn btn-lg btn-primary" id="instructionsModal" data-bs-toggle="tooltip" data-bs-placement="top" title="Click here for instructions">
                     <i class="fa-solid fa-person-chalkboard fa-2xl"></i>
                 </button></span>
-            <span><button class="btn btn-lg btn-primary" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Click here for a hint if enabled"  disabled>
+            <span><button class="btn btn-lg btn-primary" id="hintModal" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Click here for a hint if enabled"  disabled>
                     <i class="fa-solid fa-question fa-2xl"></i>
                 </button></span>
-            <span><button class="btn btn-lg btn-primary" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Click here to go to the next level when the level completed" disabled>
+            <span><button class="btn btn-lg btn-primary" id="nextLevel" tabindex="0" data-bs-toggle="tooltip" data-bs-placement="top" title="Click here to go to the next level when the level completed" disabled>
                     <i class="fa-solid fa-right-long fa-2xl"></i>
                 </button></span>
             <div class="d-flex align-items-center">
-                <div class="pre-hint-container" id="hint"></div> <!-- Custom margin in pixels -->
+                <div class="pre-hint-container" id="liveFeedback"></div> <!-- Custom margin in pixels -->
             </div>
         </div>
         <div class="border rounded bg-white p-2 flex-grow-1">
@@ -422,7 +422,10 @@
     buttonStepElement = document.getElementById("btnStep");
     buttonCapacityElement = document.getElementById("capacity");
     buttonVisualisationElement = document.getElementById("visualisation");
-    buttonHintElement = document.getElementById("hint");
+    buttonLiveFeedbackElement = document.getElementById("liveFeedback");
+    buttonHintModalElement = document.getElementById("hintModal");
+    buttonNextLevelElement = document.getElementById("nextLevel");
+    buttonInstructionsModalElement = document.getElementById("instructionsModal");
     blocklyDivElement = document.getElementById('blocklyDiv');
     visualisationSize = document.getElementById("visualisationSize");
 
@@ -465,6 +468,7 @@
         async levelCompleted() {
             Activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/level-up-enhancement-8-bit-retro-sound-effect-153002.mp3");
             this.hasSucceeded();
+            buttonNextLevelElement.disabled = false;
             console.log("Level Finished");
         }
 
@@ -733,7 +737,7 @@
 
 
         static giveHint(message, time) {
-            const hint = buttonHintElement;
+            const hint = buttonLiveFeedbackElement;
             $('#hint').addClass('hint-container');
             hint.textContent = message;
             setTimeout(() => {
@@ -744,7 +748,7 @@
         }
 
         giveHint(message, time) {
-            const hint = buttonHintElement;
+            const hint = buttonLiveFeedbackElement;
             $('#hint').addClass('hint-container');
             hint.textContent = message;
             setTimeout(() => {
