@@ -412,8 +412,6 @@
     // }
     let configData = null; // Global variable to store JSON
     async function fetchData() {
-        //let configData = <?= jsonData ?>;
-        //console.log("Loaded configData:", configData);
         const response = await fetch('blocks.json'); // Adjust path as needed
         configData = await response.json();
     }
@@ -460,15 +458,17 @@
             buttonResetElement.addEventListener("click", () => {
                 this.resetCode();
             });
+            this.init();
 
-            this.getExercise()
-            // Initialize the activity asynchronously
-            this.initializeActivity();
-            this.initializeBlocklyWorkspace();
+        }
+        async init() {
+            await this.getExercise();
+            console.log(this.gridSize);
+            await this.initializeActivity();
+            await this.initializeBlocklyWorkspace();
             this.addKeyInput(this.runCode, this.resetCode);
             this.visualisationDivSizeListener();
         }
-
         async getExercise() {
             if (!configData) {
                 await fetchData();
@@ -476,7 +476,7 @@
             const exercise = configData.exercises.find(exercise => exercise.name === this.name);
             console.log(exercise.mapLayout);
             this.instructions= exercise.instructions;
-            this.gridSize= exercise.gridSize;
+            this._gridSize= exercise.gridSize;
             this.hints= exercise.hints;
             this.mapLayout= exercise.mapLayout;
             this.sounds= exercise.sounds;
@@ -1285,18 +1285,8 @@
         overlay.classList.toggle("show");
     }
 
-    let positionsTen = [
-        [2, 1, 1], [3, 2, 1], [4, 3, 1], [5, 4, 1], [6, 5, 1], [7, 6, 1], [8, 7, 1], [9, 8, 1], [10, 9, 1], [11, 10, 1]
-    ];
-    let positionsNine = [
-
-    ];
-    let positionsThirteen = [
-
-    ];
-
     // buttonNextLevelElement.click(() => {
-    new Activity("taxi_pickup_ten");
+    new Activity("taxi_pickup_one");
 
     // });
 </script>
