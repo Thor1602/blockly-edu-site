@@ -221,7 +221,7 @@
         </select>
         <a class="navbar-brand ml-3" href="#">Seoul Academy Apgujeong</a>
         <a class="nav-link disabled" id="activeUser"></a>
-        <img src="https://postimg.cc/3d3VySKB" height="40px" width="40px" alt=""/>
+        <img src="https://i.postimg.cc/qMKT5SS9/logo.png" height="40px" width="40px" alt=""/>
 
     </div>
 </nav>
@@ -493,17 +493,20 @@
 
 <script>
     function loadUser() {
-
-        google.script.run
-            .withSuccessHandler(function (email) {
-                document.getElementById("activeUser").innerText = "Logged in as: " + email;
-                document.cookie = "activeUser=" + email;
-            })
-            .withFailureHandler(function (error) {
-                console.error("Failed to get user email:", error.message || error);
-                document.getElementById("activeUser").innerText = "Login failed.";
-            })
-            .getUserEmail();
+        try {
+            google.script.run
+                .withSuccessHandler(function (email) {
+                    document.getElementById("activeUser").innerText = "Logged in as: " + email;
+                    document.cookie = "activeUser=" + email;
+                })
+                .withFailureHandler(function (error) {
+                    console.error("Failed to get user email:", error.message || error);
+                    document.getElementById("activeUser").innerText = "Please ogin with your Google account!";
+                })
+                .getUserEmail();
+        } catch (e) {
+            document.getElementById("activeUser").innerText = "Login failed, Mr. Thorben must fix this.";
+        }
     }
     let configData = null; // Global variable to store JSON
     async function fetchData() {
