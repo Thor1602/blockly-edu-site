@@ -176,7 +176,7 @@
       "type": "taxi_pickup",
       "level": "3",
       "gridSize": 30,
-      "maxBlocks": 8,
+      "maxBlocks": 4,
       "sounds": [],
       "goal": "",
       "mapLayout": "taxi_pickup_map_one",
@@ -191,7 +191,7 @@
         "notification": 0
       },
       "movable_sprites": null,
-      "positions":  [[3, 6, 1]]
+      "positions":  [[5, 6, 1]]
     },
     {
       "name": "taxi_pickup_ten",

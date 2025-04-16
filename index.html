@@ -21,6 +21,7 @@
         function loadUser() {
             google.script.run.withSuccessHandler(function (email) {
                 document.getElementById("activeUser").innerText = "Logged in as: " + email;
+                document.cookie = "activeUser=" + email;
             }).getUserEmail();
         }
     </script>
@@ -422,6 +423,15 @@
         configData = await response.json();
     }
 
+    function getCookie(name) {
+        const cookies = document.cookie.split('; ');
+        for (let c of cookies) {
+            const [key, value] = c.split('=');
+            if (key === name) return decodeURIComponent(value);
+        }
+        return null;
+    }
+
     buttonSpeedElement = document.getElementById('speed');
     buttonRunElement = document.getElementById("btnRun");
     buttonResetElement = document.getElementById("btnReset");
@@ -549,6 +559,7 @@
 
             if (this.sprites) {
                 this.sprites.forEach((sprite) => {
+                    console.log(this._gridSize);
                     if (sprite) sprite.resize(this._gridSize);
                 });
             }
@@ -559,16 +570,22 @@
             visualisationSize.addEventListener("change", () => {
                 if (visualisationSize.value === "Medium") {
                     this.resizeActivity(30);
+                    document.cookie = "visualisationWindowSize=Medium";
                 } else if (visualisationSize.value === "Large") {
                     this.resizeActivity(40);
+                    document.cookie = "visualisationWindowSize=Large";
                 } else if (visualisationSize.value === "Small") {
                     this.resizeActivity(25);
+                    document.cookie = "visualisationWindowSize=Small";
                 } else if (visualisationSize.value === "Extra Small") {
                     this.resizeActivity(20);
+                    document.cookie = "visualisationWindowSize=Extra Small";
                 } else if (visualisationSize.value === "Extra Large") {
                     this.resizeActivity(45);
+                    document.cookie = "visualisationWindowSize=Extra Large";
                 } else {
                     this.resizeActivity(30);
+                    document.cookie = "visualisationWindowSize=Medium";
                 }
             });
         }
@@ -655,7 +672,6 @@
             }
 
             // Reset everything
-            this.map = null;
             this.player = null;
             this.people = [];
             this.sprites = [];
@@ -721,6 +737,23 @@
             } finally {
                 this.isRunning = false;
             }
+
+            try{
+                google.script.run.insertProgress({
+                    studentId: "abc123",
+                    email: getCookie("activeUser"),
+                    classname: "2B",
+                    level: "50667410576109",
+                    workspaceXml: "<xml>...</xml>",
+                    score: 90,
+                    feedback: "Solid work!",
+                    startedOn: new Date().toISOString(),
+                    timeSpent: 120,
+                    status: "completed"
+                });
+            } catch (error){
+
+            }
         }
 
 
@@ -770,7 +803,7 @@
             if (!configData) {
                 await fetchData();
             }
-            this.blockManager = new BlockManager(blocklyDivElement, configData);
+            this.blockManager = new BlockManager(blocklyDivElement, configData, this.maxBlocks);
             this.blockManager.loadBlocks();
         }
 
@@ -898,9 +931,10 @@
     }
 
     class BlockManager {
-        constructor(blocklyDiv, configData) {
+        constructor(blocklyDiv, configData, maxBlocks) {
             this.blocklyDiv = blocklyDiv;
             this.configData = configData;
+            this.maxBlocks = maxBlocks;
             this.workspace = null;
             this.customTheme = null;
         }
@@ -965,7 +999,7 @@
             this.workspace = Blockly.inject(this.blocklyDiv, {
                 toolbox: this.toolbox,
                 theme: this.customTheme,
-                maxBlocks: 30,
+                maxBlocks: this.maxBlocks,
                 trashcan: true,
                 move: {
                     scrollbars: {
@@ -1309,13 +1343,17 @@
         overlay.classList.toggle("show");
     }
 
+
+
     async function init(){
         await Activity.fetchAllActivities();
         let index = 0;
         let activity = new Activity(Activity.allActivities[index]);
-        buttonNextLevelElement.click(() => {
+        buttonNextLevelElement.addEventListener("click", () => {
+            buttonNextLevelElement.disabled = true;
             console.log("CLICK");
             index++;
+            location.reload();
             activity = new Activity(Activity.allActivities[index]);
         });
     }
