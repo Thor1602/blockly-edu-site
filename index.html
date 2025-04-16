@@ -357,7 +357,9 @@
 
     <div class="d-flex flex-column flex-grow-1 mx-3">
         <div class="bg-warning p-3 ml-5 sticky-top">
-<span><button class="btn btn-lg btn-primary" id="omgTeacherModal" data-bs-toggle="tooltip" data-bs-placement="top"
+
+
+            <span><button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#omgTeacherModal" data-bs-toggle="tooltip" data-bs-placement="top"
               title="OMG Mr.Thorben!! I found an error and you should fix it!!">
                     <i class="fa-solid fa-bug fa-2xl"></i>
                 </button></span>
@@ -365,11 +367,11 @@
                           data-bs-placement="top" title="See here the blocks you have left.">
                     <span id="capacity"></span> block(s) left
                 </button></span>
-            <span><button class="btn btn-lg btn-primary" id="instructionsModal" data-bs-toggle="tooltip"
+            <span><button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#instructionsModal"   data-bs-toggle="tooltip"
                           data-bs-placement="top" title="Click here for instructions">
                     <i class="fa-solid fa-person-chalkboard fa-2xl"></i>
                 </button></span>
-            <span><button class="btn btn-lg btn-primary" id="hintModal" tabindex="0" data-bs-toggle="tooltip"
+            <span><button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#hintModal" tabindex="0" data-bs-toggle="tooltip"
                           data-bs-placement="top" title="Click here for a hint if enabled" disabled>
                     <i class="fa-solid fa-question fa-2xl"></i>
                 </button></span>
@@ -407,6 +409,93 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="omgTeacherModal" tabindex="-1" role="dialog" aria-labelledby="omgTeacherModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content modal-dialog-centered">
+            <div class="modal-header">
+                <h5 class="modal-title" id="omgTeacherModalLabel">The "I found a bug" report</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form>
+                <div class="modal-body">
+                        <div class="form-group">
+                            <label for="bugContent">Describe the bug and where it happened</label>
+                            <textarea class="form-control" id="bugContent" name="bugDescription" rows="3"></textarea>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" id="sendBtnBugForm">Send</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="instructionsModal" tabindex="-1" role="dialog" aria-labelledby="instructionsModalLabel"     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="instructionsModalLabel">Instructions</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="instructionsContent">
+                No instructions
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="hintModal" tabindex="-1" role="dialog" aria-labelledby="hintModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="hintModalLabel">Hint</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="hintContent">
+                No hints
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="nextLevelModal" tabindex="-1" role="dialog" aria-labelledby="nextLevelModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="nextLevelModalLabel">CONGRATULATIONS</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="feedback">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Retry</button>
+                <button type="button" class="btn btn-lg btn-primary" >Continue</button>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
@@ -419,7 +508,7 @@
     // }
     let configData = null; // Global variable to store JSON
     async function fetchData() {
-        const response = await fetch('blocks.json'); // Adjust path as needed
+        const response = await fetch('https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/blocks.json');
         configData = await response.json();
     }
 
@@ -518,6 +607,12 @@
             Activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/level-up-enhancement-8-bit-retro-sound-effect-153002.mp3");
             this.hasSucceeded();
             buttonNextLevelElement.disabled = false;
+            $('#nextLevelModal').modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
+
             console.log("Level Finished");
         }
 
@@ -675,6 +770,8 @@
             this.player = null;
             this.people = [];
             this.sprites = [];
+            this.mapLayout = null;
+
 
             // Also clear the canvas container (if reused)
             buttonVisualisationElement.innerHTML = "";
@@ -738,7 +835,7 @@
                 this.isRunning = false;
             }
 
-            try{
+            try {
                 google.script.run.insertProgress({
                     studentId: "abc123",
                     email: getCookie("activeUser"),
@@ -751,7 +848,7 @@
                     timeSpent: 120,
                     status: "completed"
                 });
-            } catch (error){
+            } catch (error) {
 
             }
         }
@@ -1344,19 +1441,16 @@
     }
 
 
-
-    async function init(){
+    async function init() {
         await Activity.fetchAllActivities();
-        let index = 0;
-        let activity = new Activity(Activity.allActivities[index]);
+        let activity = new Activity(Activity.allActivities[0]);
         buttonNextLevelElement.addEventListener("click", () => {
             buttonNextLevelElement.disabled = true;
-            console.log("CLICK");
-            index++;
-            location.reload();
-            activity = new Activity(Activity.allActivities[index]);
+            activity.resetActivity();
+            activity = new Activity(Activity.allActivities[1]);
         });
     }
+
     init();
 </script>
 </body>
