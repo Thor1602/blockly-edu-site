@@ -429,7 +429,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary" id="sendBtnBugForm">Send</button>
+                    <button type="button" class="btn btn-primary" id="sendBtnBugForm">Send to Mr. Thorben</button>
                 </div>
             </form>
 
@@ -490,7 +490,7 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Retry</button>
+                <button type="button" class="btn btn-secondary" id="retryBeforeNextLevel" data-dismiss="modal">Retry</button>
                 <button type="button" class="btn btn-lg btn-primary" >Continue</button>
             </div>
         </div>
@@ -531,6 +531,12 @@
     buttonHintModalElement = document.getElementById("hintModal");
     buttonNextLevelElement = document.getElementById("nextLevel");
     buttonInstructionsModalElement = document.getElementById("instructionsModal");
+
+    retryBeforeNextLevelElement = document.getElementById("retryBeforeNextLevel");
+    feedbackElement = document.getElementById("feedback");
+    hintContentElement = document.getElementById("hintContent");
+    instructionsContentElement = document.getElementById("instructionsContent");
+
     blocklyDivElement = document.getElementById('blocklyDiv');
     visualisationSize = document.getElementById("visualisationSize");
 
@@ -547,6 +553,7 @@
             this.movable_sprites = null;
             this.mapLayout = null;
             this.instructions = null;
+            this.feedback = null;
             this.hints = null;
             this.sprites = [];  // Initialize as empty arrays
             this.people = [];   // Initialize as empty arrays
@@ -570,8 +577,11 @@
             buttonResetElement.addEventListener("click", () => {
                 this.resetCode();
             });
+            retryBeforeNextLevelElement.addEventListener("click", () => {
+                this.resetCode();
+            });
             this.init();
-            console.log(this.playerInfo)
+            console.log(this.playerInfo);
 
         }
 
@@ -594,6 +604,7 @@
             this.playerInfo = exercise.playerInfo;
             this.movable_sprites = exercise.movable_sprites;
             this.instructions = exercise.instructions;
+            this.feedback = exercise.feedback;
             this._gridSize = exercise.gridSize;
             this.hints = exercise.hints;
             this.mapLayout = exercise.mapLayout;
@@ -601,6 +612,10 @@
             this.blocks = exercise.blocks;
             this.goal = exercise.goal;
             this.positions = exercise.positions;
+            feedbackElement.innerHTML = this.instructions;
+            instructionsContentElement.innerHTML = this.instructions;
+            hintContentElement.innerHTML = this.hints;
+
         }
 
         async levelCompleted() {

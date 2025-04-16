@@ -181,6 +181,7 @@
       "goal": "",
       "mapLayout": "taxi_pickup_map_one",
       "instructions": "Pick up all the passengers.",
+      "feedback": "Good job!",
       "hints": "Use the pick up block to get everyone in your taxi.",
       "blocks": ["run_event","controls_repeat_ext","move_north","move_south","move_west","move_east","pick_up"],
       "playerInfo": {
@@ -203,6 +204,7 @@
       "goal": "",
       "mapLayout": "taxi_pickup_map_ten",
       "instructions": "Pick up all the passengers.",
+      "feedback": "Good job!",
       "hints": "Use the pick up block to get everyone in your taxi.",
       "blocks": ["run_event","controls_repeat_ext","move_north","move_south","move_west","move_east","pick_up"],
       "playerInfo": {
@@ -225,6 +227,7 @@
       "goal": "",
       "mapLayout": "taxi_pickup_map_thirteen",
       "instructions": "Pick up all the passengers.",
+      "feedback": "Good job!",
       "hints": "Use the pick up block to get everyone in your taxi.",
       "blocks": ["run_event","controls_repeat_ext","move_north","move_south","move_west","move_east","pick_up"],
       "playerInfo": {
