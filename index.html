@@ -863,7 +863,7 @@
                         console.error("Error submitting progress:", error);
                     })
                     .insertProgress({
-                        email: getCookie("activeUser"),
+                        email: document.getElementById("activeUser").innerText,
                         level: "50667410576109",
                         workspaceXml: "<xml>...</xml>",
                         score: 90,
@@ -1491,7 +1491,7 @@
                     console.error("Error submitting report:", error);
                     Activity.giveHint("An error happened. Say it to me in person please.");
                 })
-                .sendSupportEmail("Debug Report from a student",document.getElementById("activeUser").innerText, document.getElementById("bugContent").innerText);
+                .sendSupportEmail("Debug Report from a student",document.getElementById("activeUser").innerText, document.getElementById("bugContent").value);
         } catch (e) {
             console.error("Unexpected error in script.run:", e);
         }
