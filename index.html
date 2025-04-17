@@ -351,7 +351,7 @@
 
 
             <span><button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#omgTeacherModal" data-bs-toggle="tooltip" data-bs-placement="top"
-              title="OMG Mr.Thorben!! I found an error and you should fix it!!">
+                          title="OMG Mr.Thorben!! I found an error and you should fix it!!">
                     <i class="fa-solid fa-bug fa-2xl"></i>
                 </button></span>
             <span><button class="btn btn-lg btn-primary" id="blocksLeftover" data-bs-toggle="tooltip"
@@ -413,10 +413,10 @@
             </div>
             <form>
                 <div class="modal-body">
-                        <div class="form-group">
-                            <label for="bugContent">Describe the bug and where it happened</label>
-                            <textarea class="form-control" id="bugContent" name="bugDescription" rows="3"></textarea>
-                        </div>
+                    <div class="form-group">
+                        <label for="bugContent">Describe the bug and where it happened</label>
+                        <textarea class="form-control" id="bugContent" name="bugDescription" rows="3"></textarea>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
@@ -496,12 +496,12 @@
         try {
             google.script.run
                 .withSuccessHandler(function (email) {
-                    document.getElementById("activeUser").innerText = "Logged in as: " + email;
+                    document.getElementById("activeUser").innerText = email;
                     document.cookie = "activeUser=" + email;
                 })
                 .withFailureHandler(function (error) {
                     console.error("Failed to get user email:", error.message || error);
-                    document.getElementById("activeUser").innerText = "Please ogin with your Google account!";
+                    document.getElementById("activeUser").innerText = "Please login with your Google account!";
                 })
                 .getUserEmail();
         } catch (e) {
@@ -534,6 +534,7 @@
     buttonNextLevelElement = document.getElementById("nextLevel");
     buttonNextLevelModalElement = document.getElementById("nextLevelModalBtn");
     buttonInstructionsModalElement = document.getElementById("instructionsModal");
+    buttonSendBugFormElement = document.getElementById("sendBtnBugForm");
 
     retryBeforeNextLevelElement = document.getElementById("retryBeforeNextLevel");
     feedbackElement = document.getElementById("feedback");
@@ -854,26 +855,30 @@
             }
 
             try {
-                google.script.run.insertProgress({
-                    studentId: "abc123",
-                    email: getCookie("activeUser"),
-                    classname: "2B",
-                    level: "50667410576109",
-                    workspaceXml: "<xml>...</xml>",
-                    score: 90,
-                    feedback: "Solid work!",
-                    startedOn: new Date().toISOString(),
-                    timeSpent: 120,
-                    status: "completed"
-                });
-            } catch (error) {
-
+                google.script.run
+                    .withSuccessHandler(() => {
+                        console.log("Progress submitted successfully.");
+                    })
+                    .withFailureHandler((error) => {
+                        console.error("Error submitting progress:", error);
+                    })
+                    .insertProgress({
+                        email: getCookie("activeUser"),
+                        level: "50667410576109",
+                        workspaceXml: "<xml>...</xml>",
+                        score: 90,
+                        feedback: "Solid work!",
+                        startedOn: new Date().toISOString(),
+                        timeSpent: 120,
+                        status: "completed"
+                    });
+            } catch (e) {
+                console.error("Unexpected error in script.run:", e);
             }
         }
 
 
         resetCode() {
-
             this.isRunning = false;
             this.removeOverlay();
             // this.getMap().setGridSize();
@@ -1475,6 +1480,22 @@
         });
 
     }
+    buttonSendBugFormElement.addEventListener("click", () => {
+        try {
+            google.script.run
+                .withSuccessHandler(() => {
+                    console.log("Report submitted successfully.");
+                    Activity.giveHint("Thank you!!");
+                })
+                .withFailureHandler((error) => {
+                    console.error("Error submitting report:", error);
+                    Activity.giveHint("An error happened. Say it to me in person please.");
+                })
+                .sendSupportEmail("Debug Report from a student",document.getElementById("activeUser").innerText, document.getElementById("bugContent").innerText);
+        } catch (e) {
+            console.error("Unexpected error in script.run:", e);
+        }
+    });
 
     init();
 </script>
