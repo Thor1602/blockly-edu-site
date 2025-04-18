@@ -83,6 +83,25 @@
         .btn-primary:hover {
             box-shadow: 0 0 10px black !important; /* Adds black glow effect */
         }
+        .btn-warning {
+            background-color: #f44336 !important;  /* Bright red or deep orange */
+            color: white !important;
+            border-color: #f44336 !important;
+        }
+
+        .btn-warning:hover,
+        .btn-warning:visited,
+        .btn-warning:active,
+        .btn-warning:focus {
+            background-color: #d32f2f !important;
+            color: white !important;
+            border-color: #d32f2f !important;
+            box-shadow: none !important;
+        }
+
+        .btn-warning:hover {
+            box-shadow: 0 0 10px red !important;
+        }
 
         .fa-2xl {
             padding: 14px;
@@ -220,7 +239,7 @@
             <option value="Extra Large">Extra Large</option>
         </select>
         <a class="navbar-brand ml-3" href="#">Seoul Academy Apgujeong</a>
-        <a class="nav-link disabled" id="activeUser"></a>
+        <a class="nav-link disabled" id="activeUserEmail"></a>
         <img src="https://i.postimg.cc/qMKT5SS9/logo.png" height="40px" width="40px" alt=""/>
 
     </div>
@@ -234,6 +253,7 @@
     <span class="close-btn" onclick="toggleMenu()">&times;</span>
     <ul class="nav flex-column" id="sidebarMenu">
         <!-- Grades with Submenus -->
+        <li class="nav-item"><h3 id="activeUserName"></h3></li>
         <li class="nav-item">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#kinderMenu"
                data-parent="#sidebarMenu">Kinder</a>
@@ -356,7 +376,7 @@
                 </button></span>
             <span><button class="btn btn-lg btn-primary" id="blocksLeftover" data-bs-toggle="tooltip"
                           data-bs-placement="top" title="See here the blocks you have left.">
-                    <span id="capacity"></span> block(s) left
+                    <span id="numberBlockCapacity"></span> block(s) <span id="contentBlockCapacity"></span>
                 </button></span>
             <span><button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#instructionsModal"   data-bs-toggle="tooltip"
                           data-bs-placement="top" title="Click here for instructions">
@@ -492,20 +512,44 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
 <script>
+    let email = null;
+    let firstname = null;
+    let lastname = null;
+    let studentId = null;
+    let className = null;
+    let grade = null;
     function loadUser() {
         try {
             google.script.run
-                .withSuccessHandler(function (email) {
-                    document.getElementById("activeUser").innerText = email;
+                .withSuccessHandler(function (studentData) {
+                    email = studentData[0];
+                    firstname = studentData[1];
+                    lastname = studentData[2];
+                    studentId = studentData[3];
+                    className = studentData[4];
+                    grade = studentData[5];
+                    document.getElementById("activeUserEmail").innerText = email;
+                    document.getElementById("activeUserName").innerText = "Hi " + firstname + " " + lastname + " (" + className + ")";
                     document.cookie = "activeUser=" + email;
                 })
                 .withFailureHandler(function (error) {
                     console.error("Failed to get user email:", error.message || error);
-                    document.getElementById("activeUser").innerText = "Please login with your Google account!";
+                    document.getElementById("activeUserEmail").innerText = "Please login with your Google account!";
                 })
-                .getUserEmail();
+                .getStudentData();
         } catch (e) {
-            document.getElementById("activeUser").innerText = "Login failed, Mr. Thorben must fix this.";
+            document.getElementById("activeUserEmail").innerText = "Login failed, Mr. Thorben must fix this.";
+        }
+    }
+
+
+    window.onload = function() {
+        const nextLevel = localStorage.getItem("nextLevel");
+
+        if (nextLevel) {
+            console.log("Navigating to next level: " + nextLevel);
+            // You can now update the UI or redirect to the new level page
+            window.location.href = `?level=${nextLevel}`; // Or use other logic to navigate
         }
     }
     let configData = null; // Global variable to store JSON
@@ -527,7 +571,11 @@
     buttonRunElement = document.getElementById("btnRun");
     buttonResetElement = document.getElementById("btnReset");
     buttonStepElement = document.getElementById("btnStep");
-    buttonCapacityElement = document.getElementById("capacity");
+    // maxBlocks
+    numberBlockCapacityElement = document.getElementById("numberBlockCapacity");
+    contentBlockCapacityElement = document.getElementById("contentBlockCapacity");
+    buttonCapacityElement = document.getElementById("blocksLeftover");
+
     buttonVisualisationElement = document.getElementById("visualisation");
     buttonLiveFeedbackElement = document.getElementById("liveFeedback");
     buttonHintModalElement = document.getElementById("hintModal");
@@ -544,6 +592,7 @@
     blocklyDivElement = document.getElementById('blocklyDiv');
     visualisationSize = document.getElementById("visualisationSize");
     $nextLevelModal = $("#nextLevelModal");
+    $omgTeacherModal = $("#omgTeacherModal");
 
     class Activity {
         static allActivities = [];
@@ -567,12 +616,15 @@
             this.blockManager = null;
             this.goal = null;
             this.positions = null;
+            this.startedOn = new Date().toISOString();
             this.map = null; // Initialize as null and set it later asynchronously
             this.app = null; // Initialize as null
             this._gridSize = null; // Initialize as null
             this.speed = 1;
             this.speedElement = buttonSpeedElement;
             this.isRunning = false;
+            this.isComplete = false;
+
 
             this.overlayContainer = null;
             buttonRunElement.addEventListener("click", () => {
@@ -624,13 +676,9 @@
 
         async levelCompleted() {
             Activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/level-up-enhancement-8-bit-retro-sound-effect-153002.mp3");
-            this.hasSucceeded();
-            buttonNextLevelElement.disabled = false;
-            $nextLevelModal.modal({
-                backdrop: 'static',
-                keyboard: false,
-                show: true
-            });
+            this.hasSucceededOverlay();
+            this.isComplete = true;
+
 
             console.log("Level Finished");
         }
@@ -731,7 +779,7 @@
             }
         }
 
-        hasSucceeded() {
+        hasSucceededOverlay() {
             this.addOverlay("Challenge\nCompleted!", 0x000000);
         }
 
@@ -855,23 +903,41 @@
             }
 
             try {
+                const xmlDom = Blockly.Xml.workspaceToDom(this.blockManager.workspace);
+                const xmlText = Blockly.Xml.domToText(xmlDom);
                 google.script.run
-                    .withSuccessHandler(() => {
+                    .withSuccessHandler(function (nextLevel) {
                         console.log("Progress submitted successfully.");
+                        console.log("Next level is: " + nextLevel);
+
+                        // Store the next level in localStorage or sessionStorage (optional)
+                        localStorage.setItem("nextLevel", nextLevel);
+
+                        // Reload the page
+                        window.location.reload();  // This will reload the page
                     })
-                    .withFailureHandler((error) => {
+                    .withFailureHandler(function (error) {
                         console.error("Error submitting progress:", error);
+                        buttonNextLevelElement.disabled = false;
+                        $nextLevelModal.modal({
+                            backdrop: 'static',
+                            keyboard: false,
+                            show: true
+                        });
                     })
                     .insertProgress({
-                        email: document.getElementById("activeUser").innerText,
-                        level: "50667410576109",
-                        workspaceXml: "<xml>...</xml>",
+                        email: email,
+                        className: className,
+                        grade: grade,
+                        studentId: studentId,
+                        level: this.name,
+                        workspaceXml: xmlText,
                         score: 90,
                         feedback: "Solid work!",
-                        startedOn: new Date().toISOString(),
-                        timeSpent: 120,
-                        status: "completed"
+                        startedOn: this.startedOn,
+                        isCompleted: this.isComplete
                     });
+
             } catch (e) {
                 console.error("Unexpected error in script.run:", e);
             }
@@ -1119,7 +1185,6 @@
             this.workspace = Blockly.inject(this.blocklyDiv, {
                 toolbox: this.toolbox,
                 theme: this.customTheme,
-                maxBlocks: this.maxBlocks,
                 trashcan: true,
                 move: {
                     scrollbars: {
@@ -1131,14 +1196,51 @@
                 }
             });
         }
+        countAttachedBlocks(block) {
+            let count = 0;
+            let current = block;
+
+            while (current) {
+                count++;
+                current = current.getNextBlock(); // go down the chain
+            }
+
+            return count;
+        }
+
 
         setupChangeListener() {
             const updateCapacity = () => {
-                buttonCapacityElement.textContent = this.workspace.remainingCapacity();
+                const allBlocks = this.workspace.getAllBlocks();
+                const runEventBlock = allBlocks.find(block => block.type === 'run_event');
+console.log(runEventBlock);
+console.log(allBlocks);
+                let usedBlocks = 0;
+                if (runEventBlock) {
+                    usedBlocks = this.countAttachedBlocks(runEventBlock);
+                }
+
+                const remaining = this.maxBlocks - usedBlocks;
+                console.log('Used blocks:', usedBlocks, 'Remaining:', remaining);
+
+                numberBlockCapacityElement.textContent = Math.abs(remaining);
+
+                if (remaining < 0) {
+                    buttonCapacityElement.classList.remove("btn-primary");
+                    buttonCapacityElement.classList.add("btn-warning");
+                    contentBlockCapacityElement.textContent = "over";
+                } else {
+                    buttonCapacityElement.classList.remove("btn-warning");
+                    buttonCapacityElement.classList.add("btn-primary");
+                    contentBlockCapacityElement.textContent = "left";
+                }
             };
+            // Initial capacity update
+            console.log('Initial capacity update');
             this.workspace.addChangeListener(updateCapacity);
-            updateCapacity();
+            updateCapacity(); // initial run
         }
+
 
         setupResizeObserver() {
             if (!buttonVisualisationElement) {
@@ -1466,11 +1568,11 @@
 
     async function init() {
         await Activity.fetchAllActivities();
-        let activity = new Activity(Activity.allActivities[0]);
+        let activity = new Activity(Activity.allActivities[1]);
         buttonNextLevelElement.addEventListener("click", () => {
             buttonNextLevelElement.disabled = true;
             activity.resetActivity();
-            activity = new Activity(Activity.allActivities[1]);
+            activity = new Activity(Activity.allActivities[2]);
         });
         buttonNextLevelModalElement.addEventListener("click", () => {
             buttonNextLevelElement.disabled = true;
@@ -1485,17 +1587,20 @@
             google.script.run
                 .withSuccessHandler(() => {
                     console.log("Report submitted successfully.");
-                    Activity.giveHint("Thank you!!");
+                    $omgTeacherModal.hide();
+                    Activity.giveHint("Thank you!!", "8000");
                 })
                 .withFailureHandler((error) => {
                     console.error("Error submitting report:", error);
-                    Activity.giveHint("An error happened. Say it to me in person please.");
+                    $omgTeacherModal.hide();
+                    Activity.giveHint("An error happened. Say it to me in person please.", "8000");
                 })
-                .sendSupportEmail("Debug Report from a student",document.getElementById("activeUser").innerText, document.getElementById("bugContent").value);
+                .sendSupportEmail("Debug Report from a Student",document.getElementById("activeUser").innerText, document.getElementById("bugContent").value);
         } catch (e) {
             console.error("Unexpected error in script.run:", e);
         }
     });
+
 
     init();
 </script>
