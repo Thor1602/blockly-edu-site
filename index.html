@@ -638,7 +638,6 @@
                 this.resetCode();
             });
             this.init();
-            console.log(this.playerInfo);
 
         }
 
@@ -722,7 +721,6 @@
 
             if (this.sprites) {
                 this.sprites.forEach((sprite) => {
-                    console.log(this._gridSize);
                     if (sprite) sprite.resize(this._gridSize);
                 });
             }
@@ -1214,15 +1212,12 @@
             const updateCapacity = () => {
                 const allBlocks = this.workspace.getAllBlocks();
                 const runEventBlock = allBlocks.find(block => block.type === 'run_event');
-console.log(runEventBlock);
-console.log(allBlocks);
                 let usedBlocks = 0;
                 if (runEventBlock) {
                     usedBlocks = this.countAttachedBlocks(runEventBlock);
                 }
 
                 const remaining = this.maxBlocks - usedBlocks;
-                console.log('Used blocks:', usedBlocks, 'Remaining:', remaining);
 
                 numberBlockCapacityElement.textContent = Math.abs(remaining);
 
@@ -1237,7 +1232,6 @@ console.log(allBlocks);
                 }
             };
             // Initial capacity update
-            console.log('Initial capacity update');
             this.workspace.addChangeListener(updateCapacity);
             updateCapacity(); // initial run
         }
