@@ -209,8 +209,8 @@
       "blocks": ["run_event","controls_repeat_ext","move_north","move_south","move_west","move_east","pick_up"],
       "playerInfo": {
         "image":"https://i.postimg.cc/8C5cQSb0/taxi.png",
-        "row":5,
-        "col":3,
+        "row":0,
+        "col":0,
         "setNotification":false,
         "notification": 0
       },

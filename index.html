@@ -554,7 +554,8 @@
     }
     let configData = null; // Global variable to store JSON
     async function fetchData() {
-        const response = await fetch('https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/blocks.json');
+       // const response = await fetch('https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/blocks.json');
+        const response = await fetch('blocks.json');
         configData = await response.json();
     }
 
