@@ -315,7 +315,7 @@
         </li>
     </ul>
 </div>
-<div class="container-fluid vh-100 d-flex flex-row content">
+<div class="container-fluid vh-100 d-flex flex-row content" id="codingPane">
     <!-- Left Side (Visualization) -->
     <div class="d-flex flex-column overflow-auto">
         <div id="visualisation" class="border rounded bg-light p-2"></div>
@@ -890,6 +890,8 @@
             try {
                 const xmlDom = Blockly.Xml.workspaceToDom(this.blockManager.workspace);
                 const xmlText = Blockly.Xml.domToText(xmlDom);
+                const blockExcess = numberBlockCapacityElement.innerText === "over";
+                const blocksOver = blockExcess ? parseInt(numberBlockCapacityElement.innerText) : 0;
                 google.script.run
                     .withSuccessHandler(function (nextLevel) {
                         console.log("Progress submitted successfully.");
@@ -912,8 +914,8 @@
                         workspaceXml: xmlText,
                         feedback: "Solid work!",
                         startedOn: this.startedOn,
-                        blockExcess: numberBlockCapacityElement.innerText === "over",
-                        blocksUsed: parseInt(numberBlockCapacityElement.innerText),
+                        blockExcess: blockExcess,
+                        blocksOver: blocksOver,
                         isCompleted: this.isComplete
                     });
 
@@ -1554,18 +1556,16 @@
 
 
     async function init() {
-        await Activity.fetchAllActivities();
-        let activity = new Activity(Activity.allActivities[4]);
+        if (localStorage.getItem("nextLevel")){
+            document.getElementById('codingPane').style.setProperty('display', 'flex', 'important');
+            new Activity(localStorage.getItem("nextLevel"));
+        }
         buttonNextLevelElement.addEventListener("click", () => {
-            buttonNextLevelElement.disabled = true;
-            activity.resetActivity();
-            activity = new Activity(Activity.allActivities[0]);
+            // TODO add backend script to get the next level name and set it to a cookie
         });
         buttonNextLevelModalElement.addEventListener("click", () => {
             buttonNextLevelElement.disabled = true;
             $nextLevelModal.modal('hide');
-            activity.resetActivity();
-            activity = new Activity(Activity.allActivities[1]);
         });
 
     }
@@ -1589,6 +1589,8 @@
     });
 
     document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById('codingPane').style.setProperty('display', 'none', 'important');
+        console.log(localStorage.getItem("nextLevel"));
         const sidebar = document.getElementById("sidebar");
 
         // Select only <a> elements where href starts with "#sequencing"
