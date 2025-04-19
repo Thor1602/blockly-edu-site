@@ -134,6 +134,17 @@
             height: 25px;
         }
 
+        .progress-container {
+            padding-left: 3px;
+            padding-right: 3px;
+            margin-left: 3px;
+            margin-right: 10px;
+            padding-top: 2px;
+            height: 25px;
+            background-color: white;
+            border-radius: 20px;
+        }
+
         .hint-container {
             margin-left: 20px;
             height: 25px;
@@ -238,7 +249,7 @@
             <option value="Large">Large</option>
             <option value="Extra Large">Extra Large</option>
         </select>
-        <a class="navbar-brand ml-3" href="#">Seoul Academy Apgujeong</a>
+        <a class="navbar-brand ml-3">Seoul Academy Apgujeong</a>
         <a class="nav-link disabled" id="activeUserEmail"></a>
         <img src="https://i.postimg.cc/qMKT5SS9/logo.png" height="40px" width="40px" alt=""/>
 
@@ -248,7 +259,7 @@
 <!-- Dark Overlay (Shades Background) -->
 <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
 
-<!-- Offcanvas Sidebar Menu -->
+<!-- OffCanvas Sidebar Menu -->
 <div id="sidebar" class="offcanvas">
     <span class="close-btn" onclick="toggleMenu()">&times;</span>
     <ul class="nav flex-column" id="sidebarMenu">
@@ -259,13 +270,6 @@
                data-parent="#sidebarMenu">Kinder</a>
             <div id="kinderMenu" class="collapse">
                 <a href="#" class="nav-link pl-4">Sequencing</a>
-                <div class="pl-5">
-                    <a href="#" class="nav-link" data-toggle="modal" data-target="#warningModal">Mr. Cab Driver 1</a>
-                    <a href="#" class="nav-link">Mr. Cab Driver 2</a>
-                    <a href="#" class="nav-link">Mr. Cab Driver 3</a>
-                </div>
-                <a href="#" class="nav-link pl-4">Loops</a>
-                <a href="#" class="nav-link pl-4">Events</a>
             </div>
         </li>
         <li class="nav-item">
@@ -273,13 +277,6 @@
                data-parent="#sidebarMenu">Grade 1</a>
             <div id="grade1Menu" class="collapse">
                 <a href="#" class="nav-link pl-4">Sequencing</a>
-                <div class="pl-5">
-                    <a href="#" class="nav-link">Mr. Cab Driver 1</a>
-                    <a href="#" class="nav-link">Mr. Cab Driver 2</a>
-                    <a href="#" class="nav-link">Mr. Cab Driver 3</a>
-                </div>
-                <a href="#" class="nav-link pl-4">Loops</a>
-                <a href="#" class="nav-link pl-4">Events</a>
             </div>
         </li>
         <li class="nav-item">
@@ -288,12 +285,8 @@
             <div id="grade2Menu" class="collapse">
                 <a href="#" class="nav-link pl-4">Sequencing</a>
                 <div class="pl-5">
-                    <a href="#" class="nav-link">Mr. Cab Driver 1</a>
-                    <a href="#" class="nav-link">Mr. Cab Driver 2</a>
-                    <a href="#" class="nav-link">Mr. Cab Driver 3</a>
+                    <a href="#taxiDriverSequencing2" class="nav-link">Mr. Cab Driver</a>
                 </div>
-                <a href="#" class="nav-link pl-4">Loops</a>
-                <a href="#" class="nav-link pl-4">Events</a>
             </div>
         </li>
         <li class="nav-item">
@@ -302,12 +295,8 @@
             <div id="grade3Menu" class="collapse">
                 <a href="#" class="nav-link pl-4">Sequencing</a>
                 <div class="pl-5">
-                    <a href="#" class="nav-link">Mr. Cab Driver 1</a>
-                    <a href="#" class="nav-link">Mr. Cab Driver 2</a>
-                    <a href="#" class="nav-link">Mr. Cab Driver 3</a>
+                    <a href="#taxiDriverSequencing3" class="nav-link">Mr. Cab Driver</a>
                 </div>
-                <a href="#" class="nav-link pl-4">Loops</a>
-                <a href="#" class="nav-link pl-4">Events</a>
             </div>
         </li>
         <li class="nav-item">
@@ -315,13 +304,6 @@
                data-parent="#sidebarMenu">Grade 4</a>
             <div id="grade4Menu" class="collapse">
                 <a href="#" class="nav-link pl-4">Sequencing</a>
-                <div class="pl-5">
-                    <a href="#" class="nav-link">Mr. Cab Driver 1</a>
-                    <a href="#" class="nav-link">Mr. Cab Driver 2</a>
-                    <a href="#" class="nav-link">Mr. Cab Driver 3</a>
-                </div>
-                <a href="#" class="nav-link pl-4">Loops</a>
-                <a href="#" class="nav-link pl-4">Events</a>
             </div>
         </li>
         <li class="nav-item">
@@ -329,18 +311,6 @@
                data-parent="#sidebarMenu">Grade 5</a>
             <div id="grade5Menu" class="collapse">
                 <a href="#" class="nav-link pl-4">Sequencing</a>
-                <div class="pl-5">
-                    <a href="#" class="nav-link">Mr. Cab Driver 1</a>
-                    <a href="#" class="nav-link">Mr. Cab Driver 2</a>
-                    <a href="#" class="nav-link">Mr. Cab Driver 3</a>
-                </div>
-                <a href="#" class="nav-link pl-4">Loops</a>
-                <div class="pl-5">
-                    <a href="#" class="nav-link">Step 1</a>
-                    <a href="#" class="nav-link">Step 2</a>
-                    <a href="#" class="nav-link">Step 3</a>
-                </div>
-                <a href="#" class="nav-link pl-4">Events</a>
             </div>
         </li>
     </ul>
@@ -369,32 +339,58 @@
     <div class="d-flex flex-column flex-grow-1 mx-3">
         <div class="bg-warning p-3 ml-5 sticky-top">
 
+            <!-- EVERYTHING IN ONE HORIZONTAL LINE -->
+            <div class="d-flex align-items-center gap-3 flex-wrap">
+                <!-- Dot Progress Bar -->
+                <div class="d-flex justify-content-center progress-container" style="gap: 10px;">
+                    <div class="rounded-circle bg-success" style="width: 20px; height: 20px;"></div>
+                    <div class="rounded-circle bg-dark" style="width: 20px; height: 20px;"></div>
+                    <div class="rounded-circle bg-secondary" style="width: 20px; height: 20px;"></div>
+                    <div class="rounded-circle bg-secondary" style="width: 20px; height: 20px;"></div>
+                </div>
 
-            <span><button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#omgTeacherModal" data-bs-toggle="tooltip" data-bs-placement="top"
-                          title="OMG Mr.Thorben!! I found an error and you should fix it!!">
-                    <i class="fa-solid fa-bug fa-2xl"></i>
-                </button></span>
-            <span><button class="btn btn-lg btn-primary" id="blocksLeftover" data-bs-toggle="tooltip"
-                          data-bs-placement="top" title="See here the blocks you have left.">
-                    <span id="numberBlockCapacity"></span> block(s) <span id="contentBlockCapacity"></span>
-                </button></span>
-            <span><button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#instructionsModal"   data-bs-toggle="tooltip"
-                          data-bs-placement="top" title="Click here for instructions">
-                    <i class="fa-solid fa-person-chalkboard fa-2xl"></i>
-                </button></span>
-            <span><button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#hintModal" tabindex="0" data-bs-toggle="tooltip"
-                          data-bs-placement="top" title="Click here for a hint if enabled" disabled>
-                    <i class="fa-solid fa-question fa-2xl"></i>
-                </button></span>
-            <span><button class="btn btn-lg btn-primary" id="nextLevel" tabindex="0" data-bs-toggle="tooltip"
-                          data-bs-placement="top" title="Click here to go to the next level when the level completed"
-                          disabled>
-                    <i class="fa-solid fa-right-long fa-2xl"></i>
-                </button></span>
-            <div class="d-flex align-items-center">
-                <div class="pre-hint-container" id="liveFeedback"></div> <!-- Custom margin in pixels -->
+                <!-- Button Group -->
+                <div class="d-flex gap-2 flex-wrap">
+
+
+                    <button class="btn btn-lg btn-primary" id="blocksLeftover" data-bs-toggle="tooltip"
+                            data-bs-placement="top" title="See here the blocks you have left.">
+                        <span id="numberBlockCapacity"></span> block(s)
+                        <span id="contentBlockCapacity"></span>
+                    </button>
+                    <button class="btn btn-lg btn-primary" id="nextLevel" tabindex="0" data-bs-toggle="tooltip"
+                            data-bs-placement="top" title="Click here to go to the next level when the level completed" disabled>
+                        <i class="fa-solid fa-right-long fa-2xl"></i>
+                    </button>
+
+                    <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#omgTeacherModal"
+                            data-bs-toggle="tooltip" data-bs-placement="top"
+                            title="OMG Mr.Thorben!! I found an error and you should fix it!!">
+                        <i class="fa-solid fa-bug fa-2xl"></i>
+                    </button>
+
+                    <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#instructionsModal"
+                            data-bs-toggle="tooltip" data-bs-placement="top" title="Click here for instructions">
+                        <i class="fa-solid fa-person-chalkboard fa-2xl"></i>
+                    </button>
+
+                    <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#hintModal" tabindex="0"
+                            data-bs-toggle="tooltip" data-bs-placement="top" title="Click here for a hint if enabled" disabled>
+                        <i class="fa-solid fa-question fa-2xl"></i>
+                    </button>
+
+
+                </div>
+
             </div>
+
+            <!-- Live Feedback Container -->
+            <div class="d-flex align-items-center mt-2">
+                <div class="pre-hint-container" id="liveFeedback"></div>
+            </div>
+
         </div>
+
         <div class="border rounded bg-white p-2 flex-grow-1">
             <div id="blocklyDiv" style="height: 90%; width: 100%;"></div>
         </div>
@@ -530,7 +526,6 @@
                     grade = studentData[5];
                     document.getElementById("activeUserEmail").innerText = email;
                     document.getElementById("activeUserName").innerText = "Hi " + firstname + " " + lastname + " (" + className + ")";
-                    document.cookie = "activeUser=" + email;
                 })
                 .withFailureHandler(function (error) {
                     console.error("Failed to get user email:", error.message || error);
@@ -559,14 +554,8 @@
         configData = await response.json();
     }
 
-    function getCookie(name) {
-        const cookies = document.cookie.split('; ');
-        for (let c of cookies) {
-            const [key, value] = c.split('=');
-            if (key === name) return decodeURIComponent(value);
-        }
-        return null;
-    }
+
+
 
     buttonSpeedElement = document.getElementById('speed');
     buttonRunElement = document.getElementById("btnRun");
@@ -678,8 +667,12 @@
             Activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/level-up-enhancement-8-bit-retro-sound-effect-153002.mp3");
             this.hasSucceededOverlay();
             this.isComplete = true;
-
-
+            buttonNextLevelElement.disabled = false;
+            $nextLevelModal.modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
             console.log("Level Finished");
         }
 
@@ -702,7 +695,7 @@
             this.player = new Player(this.playerInfo.image, this.playerInfo.row, this.playerInfo.col, this.playerInfo.setNotification, this.playerInfo.notification, this._gridSize, this.app, this);
 
             for (let pos of this.positions) {
-                this.sprites.push(new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', pos[1], pos[0], true, pos[2], this._gridSize, this.app, this));
+                this.sprites.push(new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', pos[0], pos[1], true, pos[2], this._gridSize, this.app, this));
             }
             this.people = Sprite.listOfSprites.filter(item => !(item instanceof Player));
             this.sprites = Sprite.listOfSprites;
@@ -731,22 +724,16 @@
             visualisationSize.addEventListener("change", () => {
                 if (visualisationSize.value === "Medium") {
                     this.resizeActivity(30);
-                    document.cookie = "visualisationWindowSize=Medium";
                 } else if (visualisationSize.value === "Large") {
                     this.resizeActivity(40);
-                    document.cookie = "visualisationWindowSize=Large";
                 } else if (visualisationSize.value === "Small") {
                     this.resizeActivity(25);
-                    document.cookie = "visualisationWindowSize=Small";
                 } else if (visualisationSize.value === "Extra Small") {
                     this.resizeActivity(20);
-                    document.cookie = "visualisationWindowSize=Extra Small";
                 } else if (visualisationSize.value === "Extra Large") {
                     this.resizeActivity(45);
-                    document.cookie = "visualisationWindowSize=Extra Large";
                 } else {
                     this.resizeActivity(30);
-                    document.cookie = "visualisationWindowSize=Medium";
                 }
             });
         }
@@ -862,8 +849,7 @@
         }
 
         move_east() {
-            return new Promise(resolve =>
-                this.player.moveBy(1, 0, this.getMapLayout(), this.speed, this.isRunning, this.isRunning, resolve));
+            return new Promise(resolve => this.player.moveBy(1, 0, this.getMapLayout(), this.speed, this.isRunning, resolve));
         }
 
         runCodeBlock() {
@@ -908,21 +894,14 @@
                     .withSuccessHandler(function (nextLevel) {
                         console.log("Progress submitted successfully.");
                         console.log("Next level is: " + nextLevel);
-
                         // Store the next level in localStorage or sessionStorage (optional)
                         localStorage.setItem("nextLevel", nextLevel);
-
                         // Reload the page
                         window.location.reload();  // This will reload the page
                     })
                     .withFailureHandler(function (error) {
                         console.error("Error submitting progress:", error);
-                        buttonNextLevelElement.disabled = false;
-                        $nextLevelModal.modal({
-                            backdrop: 'static',
-                            keyboard: false,
-                            show: true
-                        });
+
                     })
                     .insertProgress({
                         email: email,
@@ -931,9 +910,10 @@
                         studentId: studentId,
                         level: this.name,
                         workspaceXml: xmlText,
-                        score: 100,
                         feedback: "Solid work!",
                         startedOn: this.startedOn,
+                        blockExcess: numberBlockCapacityElement.innerText === "over",
+                        blocksUsed: parseInt(numberBlockCapacityElement.innerText),
                         isCompleted: this.isComplete
                     });
 
@@ -988,8 +968,8 @@
             if (!configData) {
                 await fetchData();
             }
-            this.blockManager = new BlockManager(blocklyDivElement, configData, this.maxBlocks);
-            this.blockManager.loadBlocks();
+            this.blockManager = new BlockManager(blocklyDivElement, this.maxBlocks);
+            this.blockManager.loadBlocks(this.blocks);
         }
 
 
@@ -1116,20 +1096,21 @@
     }
 
     class BlockManager {
-        constructor(blocklyDiv, configData, maxBlocks) {
+        constructor(blocklyDiv, maxBlocks) {
             this.blocklyDiv = blocklyDiv;
-            this.configData = configData;
             this.maxBlocks = maxBlocks;
             this.workspace = null;
             this.customTheme = null;
         }
 
-        loadBlocks() {
+        loadBlocks(blocks) {
             try {
-                const data = this.configData;
-                this.loadTheme(data.blocklyThemeSettings);
-                this.defineBlocks(data.blocks);
-                this.createToolbox(data.blocks);
+                const filteredBlocks = blocks
+                    .map(type => configData.blocks.find(block => block.type === type))
+                    .filter(Boolean);
+                this.loadTheme(configData.blocklyThemeSettings);
+                this.defineBlocks(filteredBlocks);
+                this.createToolbox(filteredBlocks);
                 this.injectWorkspace();
                 this.setupChangeListener();
                 this.setupResizeObserver(); // Add resize listener
@@ -1195,17 +1176,29 @@
                 }
             });
         }
-        countAttachedBlocks(block) {
-            let count = 0;
-            let current = block;
 
-            while (current) {
-                count++;
-                current = current.getNextBlock(); // go down the chain
+        countAttachedBlocks(block) {
+            if (!block) return 0;
+
+            let count = 1; // Count this block
+
+            // Go through each input (statement, value, dummy)
+            for (const input of block.inputList) {
+                const connected = input.connection?.targetBlock();
+                if (connected) {
+                    count += this.countAttachedBlocks(connected);
+                }
+            }
+
+            // Also go through the next block in the sequence (outside of inputs)
+            const nextBlock = block.getNextBlock();
+            if (nextBlock) {
+                count += this.countAttachedBlocks(nextBlock);
             }
 
             return count;
         }
+
 
 
         setupChangeListener() {
@@ -1386,14 +1379,7 @@
             this.container.visible = true;
         }
 
-        isNextTo(otherSprite) {
-            if (!otherSprite) return false; // Prevent errors if null
 
-            const dRow = Math.abs(this.row - otherSprite.row);
-            const dCol = Math.abs(this.col - otherSprite.col);
-
-            return (dRow === 1 && dCol === 0) || (dRow === 0 && dCol === 1);
-        }
 
 
     }
@@ -1485,18 +1471,15 @@
             let newCol = this.col + deltaCol;
             let rowKey = Object.keys(map_layout)[newRow];
             let colKey = Object.keys(map_layout[rowKey])[newCol];
+
             if (map_layout[rowKey] && map_layout[rowKey][colKey] !== undefined &&
                 (map_layout[rowKey][colKey] === 1)) {
                 this.moveSmoothly(newRow, newCol, speed, isRunning, callback);
             } else {
+                this.moveSmoothlyHalfStep(newRow, newCol, speed, isRunning, callback);
                 Activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/bang-crash-103775.mp3");
                 this.activity.addOverlay("Crashed!!", 0xE30000)
             }
-        }
-
-        canMoveTo(row, col) {
-            // Check if the player can move to the given position
-            return !this.mapLayout.isObstacle(row, col);
         }
 
 
@@ -1535,6 +1518,15 @@
             if (typeof callback === "function") await callback(null);
             return null;
         }
+        isNextTo(otherSprite) {
+            if (!otherSprite) return false; // Prevent errors if null
+
+            const dRow = Math.abs(this.row - otherSprite.row);
+            const dCol = Math.abs(this.col - otherSprite.col);
+            console.log(`Checking next-to: this (${this.row}, ${this.col}) vs other (${otherSprite.row}, ${otherSprite.col}) → dRow: ${dRow}, dCol: ${dCol}`);
+
+            return (dRow === 1 && dCol === 0) || (dRow === 0 && dCol === 1);
+        }
     }
 
     $(document).ready(function () {
@@ -1563,11 +1555,11 @@
 
     async function init() {
         await Activity.fetchAllActivities();
-        let activity = new Activity(Activity.allActivities[1]);
+        let activity = new Activity(Activity.allActivities[4]);
         buttonNextLevelElement.addEventListener("click", () => {
             buttonNextLevelElement.disabled = true;
             activity.resetActivity();
-            activity = new Activity(Activity.allActivities[2]);
+            activity = new Activity(Activity.allActivities[0]);
         });
         buttonNextLevelModalElement.addEventListener("click", () => {
             buttonNextLevelElement.disabled = true;
@@ -1594,6 +1586,21 @@
         } catch (e) {
             console.error("Unexpected error in script.run:", e);
         }
+    });
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const sidebar = document.getElementById("sidebar");
+
+        // Select only <a> elements where href starts with "#sequencing"
+        const sequencingLinks = sidebar.querySelectorAll('a[href^="#taxiDriverSequencing"]');
+
+        sequencingLinks.forEach(link => {
+            link.addEventListener("click", function (e) {
+                e.preventDefault();
+                const target = link.getAttribute("href");
+                console.log("Sequencing link clicked:", target);
+            });
+        });
     });
 
 
