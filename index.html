@@ -258,7 +258,9 @@
             <option value="Large">Large</option>
             <option value="Extra Large">Extra Large</option>
         </select>
-        <a class="navbar-brand ml-3">Seoul Academy Apgujeong</a>
+        <a href="#" class="navbar-brand ml-3" onclick="event.preventDefault(); showPane('home')">
+            Seoul Academy Apgujeong
+        </a>
         <a class="nav-link disabled" id="activeUserEmail"></a>
         <img src="https://i.postimg.cc/qMKT5SS9/logo.png" height="40px" width="40px" alt=""/>
 
@@ -273,7 +275,10 @@
     <span class="close-btn" onclick="toggleMenu()">&times;</span>
     <ul class="nav flex-column" id="sidebarMenu">
         <!-- Grades with Submenus -->
-        <li class="nav-item"><h3 id="activeUserName"></h3></li>
+        <li class="nav-item"><h3 class="activeUserName"></h3></li>
+        <li class="nav-item">
+            <a href="#" class="nav-link" data-parent="#sidebarMenu" onclick="event.preventDefault(); showPane('home')">HOME</a>
+        </li>
         <li class="nav-item">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#kinderMenu"
                data-parent="#sidebarMenu">Kinder</a>
@@ -325,12 +330,8 @@
     </ul>
 </div>
 <div id="home" class="tab-pane active">
-    <h3>Home</h3>
-    <p>This is the homepage.</p>
-    <div class="btn-group mb-3">
-        <button class="btn btn-primary" onclick="showPane('home')">Home</button>
-        <button class="btn btn-primary" onclick="showPane('codingPane')">About</button>
-    </div>
+    <h3 class="activeUserName"></h3>
+    <button class="btn btn-lg btn-primary" onclick="showPane('codingPane')">Continue</button>
 </div>
 <div id="codingPane" class="tab-pane">
     <div class="container-fluid vh-100 d-flex flex-row content">
@@ -531,7 +532,10 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
 <script>
-    localStorage.setItem("nextLevel", "taxi_pickup_two");
+    // TODO getPerson sometimes gets the last person wrong. Change it by the len of a list where sprites.hide are skipped
+    // TODO change grid size 12 and 16 to the size length of the map
+    // TODO taxi can get people sometimes. It can get people from the hood side but not here in the second loop taxi_pickup_five
+    localStorage.setItem("nextLevel", "taxi_pickup_five");
     let email = null;
     let firstname = null;
     let lastname = null;
@@ -550,7 +554,9 @@
                     className = studentData[4];
                     grade = studentData[5];
                     document.getElementById("activeUserEmail").innerText = email;
-                    document.getElementById("activeUserName").innerText = "Hi " + firstname + " " + lastname + " (" + className + ")";
+                    document.querySelectorAll(".activeUserName").forEach(el => {
+                        el.innerText = "Hi " + firstname + " " + lastname + " (" + className + ")";
+                    });
                 })
                 .withFailureHandler(function (error) {
                     console.error("Failed to get user email:", error.message || error);
@@ -667,7 +673,12 @@
             this.movable_sprites = exercise.movable_sprites;
             this.instructions = exercise.instructions;
             this.feedback = exercise.feedback;
-            this._gridSize = exercise.gridSize;
+            if (localStorage.getItem('visualisationSize') !== null) {
+                this._gridSize = localStorage.getItem('visualisationSize');
+            }
+            else{
+                this._gridSize = exercise.gridSize;
+            }
             this.hints = exercise.hints;
             this.mapLayout = exercise.mapLayout;
             this.sounds = exercise.sounds;
@@ -741,16 +752,22 @@
             visualisationSize.addEventListener("change", () => {
                 if (visualisationSize.value === "Medium") {
                     this.resizeActivity(30);
+                    localStorage.setItem('visualisationSize', 30);
                 } else if (visualisationSize.value === "Large") {
                     this.resizeActivity(40);
+                    localStorage.setItem('visualisationSize', 40);
                 } else if (visualisationSize.value === "Small") {
                     this.resizeActivity(25);
+                    localStorage.setItem('visualisationSize', 25);
                 } else if (visualisationSize.value === "Extra Small") {
                     this.resizeActivity(20);
+                    localStorage.setItem('visualisationSize', 20);
                 } else if (visualisationSize.value === "Extra Large") {
                     this.resizeActivity(45);
+                    localStorage.setItem('visualisationSize', 45);
                 } else {
                     this.resizeActivity(30);
+                    localStorage.setItem('visualisationSize', 30);
                 }
             });
         }
@@ -1624,8 +1641,22 @@
         document.querySelectorAll('.tab-pane').forEach(pane => {
             pane.classList.remove('active');
         });
-        document.getElementById(id).classList.add('active');
+        const activePane = document.getElementById(id);
+        if (activePane) {
+            activePane.classList.add('active');
+            sessionStorage.setItem('activePane', id);
+        }
+        let isSidebarOpen = document.getElementById("sidebar").classList.contains("show");
+        if (isSidebarOpen) {
+            toggleMenu();
+        }
     }
+
+    // On page load
+    window.addEventListener('DOMContentLoaded', () => {
+        const savedPane = sessionStorage.getItem('activePane') || 'home';
+        showPane(savedPane);
+    });
 
 
     init();
