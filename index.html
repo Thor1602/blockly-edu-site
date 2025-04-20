@@ -17,6 +17,14 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.1.3/pixi.min.js"></script>
     <script src="https://w.soundcloud.com/player/api.js"></script> <!-- Load SoundCloud API -->
     <style>
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+        }
+
         #loading-screen {
             position: fixed;
             top: 0;
@@ -83,8 +91,9 @@
         .btn-primary:hover {
             box-shadow: 0 0 10px black !important; /* Adds black glow effect */
         }
+
         .btn-warning {
-            background-color: #f44336 !important;  /* Bright red or deep orange */
+            background-color: #f44336 !important; /* Bright red or deep orange */
             color: white !important;
             border-color: #f44336 !important;
         }
@@ -315,84 +324,96 @@
         </li>
     </ul>
 </div>
-<div class="container-fluid vh-100 d-flex flex-row content" id="codingPane">
-    <!-- Left Side (Visualization) -->
-    <div class="d-flex flex-column overflow-auto">
-        <div id="visualisation" class="border rounded bg-light p-2"></div>
-
-        <div class="mt-3 d-flex justify-content-between">
-            <button class="btn btn-lg btn-primary" id="btnRun">
-                <i class="fa-solid fa-play"></i> RUN
-            </button>
-            <button class="btn btn-lg btn-reset" id="btnReset">
-                <i class="fa-solid fa-rotate-right"></i> RESET
-            </button>
-            <button class="btn btn-lg btn-primary" id="btnStep">
-                <i class="fa-solid fa-forward-step"></i> STEP
-            </button>
-        </div>
-        <label for="speed" class="form-label"></label>
-        <input type="range" class="form-range" min="0" max="10" step="1" id="speed" style="display: none">
-
+<div id="home" class="tab-pane active">
+    <h3>Home</h3>
+    <p>This is the homepage.</p>
+    <div class="btn-group mb-3">
+        <button class="btn btn-primary" onclick="showPane('home')">Home</button>
+        <button class="btn btn-primary" onclick="showPane('codingPane')">About</button>
     </div>
+</div>
+<div id="codingPane" class="tab-pane">
+    <div class="container-fluid vh-100 d-flex flex-row content">
+        <!-- Left Side (Visualization) -->
+        <div class="d-flex flex-column overflow-auto">
+            <div id="visualisation" class="border rounded bg-light p-2"></div>
 
-    <div class="d-flex flex-column flex-grow-1 mx-3">
-        <div class="bg-warning p-3 ml-5 sticky-top">
-
-            <!-- EVERYTHING IN ONE HORIZONTAL LINE -->
-            <div class="d-flex align-items-center gap-3 flex-wrap">
-                <!-- Dot Progress Bar -->
-                <div class="d-flex justify-content-center progress-container" style="gap: 10px;">
-                    <div class="rounded-circle bg-success" style="width: 20px; height: 20px;"></div>
-                    <div class="rounded-circle bg-dark" style="width: 20px; height: 20px;"></div>
-                    <div class="rounded-circle bg-secondary" style="width: 20px; height: 20px;"></div>
-                    <div class="rounded-circle bg-secondary" style="width: 20px; height: 20px;"></div>
-                </div>
-
-                <!-- Button Group -->
-                <div class="d-flex gap-2 flex-wrap">
-
-
-                    <button class="btn btn-lg btn-primary" id="blocksLeftover" data-bs-toggle="tooltip"
-                            data-bs-placement="top" title="See here the blocks you have left.">
-                        <span id="numberBlockCapacity"></span> block(s)
-                        <span id="contentBlockCapacity"></span>
-                    </button>
-                    <button class="btn btn-lg btn-primary" id="nextLevel" tabindex="0" data-bs-toggle="tooltip"
-                            data-bs-placement="top" title="Click here to go to the next level when the level completed" disabled>
-                        <i class="fa-solid fa-right-long fa-2xl"></i>
-                    </button>
-
-                    <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#omgTeacherModal"
-                            data-bs-toggle="tooltip" data-bs-placement="top"
-                            title="OMG Mr.Thorben!! I found an error and you should fix it!!">
-                        <i class="fa-solid fa-bug fa-2xl"></i>
-                    </button>
-
-                    <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#instructionsModal"
-                            data-bs-toggle="tooltip" data-bs-placement="top" title="Click here for instructions">
-                        <i class="fa-solid fa-person-chalkboard fa-2xl"></i>
-                    </button>
-
-                    <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#hintModal" tabindex="0"
-                            data-bs-toggle="tooltip" data-bs-placement="top" title="Click here for a hint if enabled" disabled>
-                        <i class="fa-solid fa-question fa-2xl"></i>
-                    </button>
-
-
-                </div>
-
+            <div class="mt-3 d-flex justify-content-between">
+                <button class="btn btn-lg btn-primary" id="btnRun">
+                    <i class="fa-solid fa-play"></i> RUN
+                </button>
+                <button class="btn btn-lg btn-reset" id="btnReset">
+                    <i class="fa-solid fa-rotate-right"></i> RESET
+                </button>
+                <button class="btn btn-lg btn-primary" id="btnStep">
+                    <i class="fa-solid fa-forward-step"></i> STEP
+                </button>
             </div>
-
-            <!-- Live Feedback Container -->
-            <div class="d-flex align-items-center mt-2">
-                <div class="pre-hint-container" id="liveFeedback"></div>
-            </div>
+            <label for="speed" class="form-label"></label>
+            <input type="range" class="form-range" min="0" max="10" step="1" id="speed" style="display: none">
 
         </div>
 
-        <div class="border rounded bg-white p-2 flex-grow-1">
-            <div id="blocklyDiv" style="height: 90%; width: 100%;"></div>
+        <div class="d-flex flex-column flex-grow-1 mx-3">
+            <div class="bg-warning p-3 ml-5 sticky-top">
+
+                <!-- EVERYTHING IN ONE HORIZONTAL LINE -->
+                <div class="d-flex align-items-center gap-3 flex-wrap">
+                    <!-- Dot Progress Bar -->
+                    <div class="d-flex justify-content-center progress-container" style="gap: 10px;">
+                        <div class="rounded-circle bg-success" style="width: 20px; height: 20px;"></div>
+                        <div class="rounded-circle bg-dark" style="width: 20px; height: 20px;"></div>
+                        <div class="rounded-circle bg-secondary" style="width: 20px; height: 20px;"></div>
+                        <div class="rounded-circle bg-secondary" style="width: 20px; height: 20px;"></div>
+                    </div>
+
+                    <!-- Button Group -->
+                    <div class="d-flex gap-2 flex-wrap">
+
+
+                        <button class="btn btn-lg btn-primary" id="blocksLeftover" data-bs-toggle="tooltip"
+                                data-bs-placement="top" title="See here the blocks you have left.">
+                            <span id="numberBlockCapacity"></span> block(s)
+                            <span id="contentBlockCapacity"></span>
+                        </button>
+                        <button class="btn btn-lg btn-primary" id="nextLevel" tabindex="0" data-bs-toggle="tooltip"
+                                data-bs-placement="top"
+                                title="Click here to go to the next level when the level completed" disabled>
+                            <i class="fa-solid fa-right-long fa-2xl"></i>
+                        </button>
+
+                        <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#omgTeacherModal"
+                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="OMG Mr.Thorben!! I found an error and you should fix it!!">
+                            <i class="fa-solid fa-bug fa-2xl"></i>
+                        </button>
+
+                        <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#instructionsModal"
+                                data-bs-toggle="tooltip" data-bs-placement="top" title="Click here for instructions">
+                            <i class="fa-solid fa-person-chalkboard fa-2xl"></i>
+                        </button>
+
+                        <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#hintModal" tabindex="0"
+                                data-bs-toggle="tooltip" data-bs-placement="top"
+                                title="Click here for a hint if enabled" disabled>
+                            <i class="fa-solid fa-question fa-2xl"></i>
+                        </button>
+
+
+                    </div>
+
+                </div>
+
+                <!-- Live Feedback Container -->
+                <div class="d-flex align-items-center mt-2">
+                    <div class="pre-hint-container" id="liveFeedback"></div>
+                </div>
+
+            </div>
+
+            <div class="border rounded bg-white p-2 flex-grow-1">
+                <div id="blocklyDiv" style="height: 90%; width: 100%;"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -444,7 +465,8 @@
     </div>
 </div>
 
-<div class="modal fade" id="instructionsModal" tabindex="-1" role="dialog" aria-labelledby="instructionsModalLabel"     aria-hidden="true">
+<div class="modal fade" id="instructionsModal" tabindex="-1" role="dialog" aria-labelledby="instructionsModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -497,7 +519,8 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" id="retryBeforeNextLevel" data-dismiss="modal">Retry</button>
+                <button type="button" class="btn btn-secondary" id="retryBeforeNextLevel" data-dismiss="modal">Retry
+                </button>
                 <button type="button" class="btn btn-lg btn-primary" id="nextLevelModalBtn">Continue</button>
             </div>
         </div>
@@ -508,12 +531,14 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
 <script>
+    localStorage.setItem("nextLevel", "taxi_pickup_two");
     let email = null;
     let firstname = null;
     let lastname = null;
     let studentId = null;
     let className = null;
     let grade = null;
+
     function loadUser() {
         try {
             google.script.run
@@ -538,23 +563,15 @@
     }
 
 
-    window.onload = function() {
-        const nextLevel = localStorage.getItem("nextLevel");
-
-        if (nextLevel) {
-            console.log("Navigating to next level: " + nextLevel);
-            // You can now update the UI or redirect to the new level page
-            window.location.href = `?level=${nextLevel}`; // Or use other logic to navigate
-        }
+    window.onload = function () {
+        localStorage.getItem("nextLevel");
     }
     let configData = null; // Global variable to store JSON
     async function fetchData() {
-       // const response = await fetch('https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/blocks.json');
+        // const response = await fetch('https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/blocks.json');
         const response = await fetch('blocks.json');
         configData = await response.json();
     }
-
-
 
 
     buttonSpeedElement = document.getElementById('speed');
@@ -1202,7 +1219,6 @@
         }
 
 
-
         setupChangeListener() {
             const updateCapacity = () => {
                 const allBlocks = this.workspace.getAllBlocks();
@@ -1382,8 +1398,6 @@
         }
 
 
-
-
     }
 
     class Player extends Sprite {
@@ -1520,6 +1534,7 @@
             if (typeof callback === "function") await callback(null);
             return null;
         }
+
         isNextTo(otherSprite) {
             if (!otherSprite) return false; // Prevent errors if null
 
@@ -1556,8 +1571,8 @@
 
 
     async function init() {
-        if (localStorage.getItem("nextLevel")){
-            document.getElementById('codingPane').style.setProperty('display', 'flex', 'important');
+        if (localStorage.getItem("nextLevel")) {
+            console.log("Loading next level");
             new Activity(localStorage.getItem("nextLevel"));
         }
         buttonNextLevelElement.addEventListener("click", () => {
@@ -1569,6 +1584,7 @@
         });
 
     }
+
     buttonSendBugFormElement.addEventListener("click", () => {
         try {
             google.script.run
@@ -1582,14 +1598,13 @@
                     $omgTeacherModal.hide();
                     Activity.giveHint("An error happened. Say it to me in person please.", "8000");
                 })
-                .sendSupportEmail("Debug Report from a Student",document.getElementById("activeUser").innerText, document.getElementById("bugContent").value);
+                .sendSupportEmail("Debug Report from a Student", document.getElementById("activeUser").innerText, document.getElementById("bugContent").value);
         } catch (e) {
             console.error("Unexpected error in script.run:", e);
         }
     });
 
     document.addEventListener("DOMContentLoaded", function () {
-        document.getElementById('codingPane').style.setProperty('display', 'none', 'important');
         console.log(localStorage.getItem("nextLevel"));
         const sidebar = document.getElementById("sidebar");
 
@@ -1604,6 +1619,13 @@
             });
         });
     });
+
+    function showPane(id) {
+        document.querySelectorAll('.tab-pane').forEach(pane => {
+            pane.classList.remove('active');
+        });
+        document.getElementById(id).classList.add('active');
+    }
 
 
     init();
