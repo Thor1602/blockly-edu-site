@@ -16,6 +16,8 @@
     <script src="https://unpkg.com/blockly/msg/en.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.1.3/pixi.min.js"></script>
     <script src="https://w.soundcloud.com/player/api.js"></script> <!-- Load SoundCloud API -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
     <style>
         .tab-pane {
             display: none;
@@ -239,6 +241,57 @@
 
         /* styling for nav bar END */
 
+        .grade-card {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 20px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .grade-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .grade-title {
+            background: linear-gradient(135deg, #ff9800, #fbbb60);
+            color: white;
+            padding: 0.4rem;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+        }
+
+        .section-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            margin-bottom: 0.3rem;
+            color: #333;
+        }
+
+        .exercise-link {
+            text-decoration: none;
+            color: #4e54c8;
+            font-weight: 500;
+            display: inline-block;
+            transition: transform 0.2s, color 0.2s;
+        }
+
+        .exercise-link:hover {
+            color: #2d2d94;
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .row-cols-lg-6 > * {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+        }
+
     </style>
 
 </head>
@@ -266,6 +319,7 @@
 
     </div>
 </nav>
+
 
 <!-- Dark Overlay (Shades Background) -->
 <div id="overlay" class="overlay" onclick="toggleMenu()"></div>
@@ -329,9 +383,123 @@
         </li>
     </ul>
 </div>
+
 <div id="home" class="tab-pane active">
-    <h3 class="activeUserName"></h3>
     <button class="btn btn-lg btn-primary" onclick="showPane('codingPane')">Continue</button>
+    <div class="container">
+        <h1 class="text-center mb-5 fw-bold">✨ Coding Activities ✨</h1>
+        <h3 class="text-center mb-5 fw-bold activeUserName"></h3>
+        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-3 g-4">
+            <div class="col">
+                <div class="grade-card h-100">
+                    <div class="grade-title">Grade K</div>
+                    <div>
+                        <div class="section-title">Sequencing</div>
+                        <a href="#" class="exercise-link" onclick="setNextLevel('taxi_driver_k')">Mr. Cab Driver</a>
+                    </div>
+                    <div>
+                        <div class="section-title">Loops</div>
+                        <a>Coming soon</a>
+                    </div>
+                    <div>
+                        <div class="section-title">Events</div>
+                        <a>Coming soon</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="grade-card h-100">
+                    <div class="grade-title">Grade 1</div>
+                    <div>
+                        <div class="section-title">Sequencing</div>
+                        <a href="#" class="exercise-link" onclick="setNextLevel('taxi_driver_1')">Mr. Cab Driver</a>
+                    </div>
+                    <div>
+                        <div class="section-title">Loops</div>
+                        <a>Coming soon</a>
+                    </div>
+                    <div>
+                        <div class="section-title">Events</div>
+                        <a>Coming soon</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="grade-card h-100">
+                    <div class="grade-title">Grade 2</div>
+                    <div>
+                        <div class="section-title">Sequencing</div>
+                        <a href="#" class="exercise-link" onclick="setNextLevel('taxi_pickup_one')">Mr. Cab Driver</a>
+                    </div>
+                    <div>
+                        <div class="section-title">Loops</div>
+                        <a>Coming soon</a>
+                    </div>
+                    <div>
+                        <div class="section-title">Events</div>
+                        <a>Coming soon</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="grade-card h-100">
+                    <div class="grade-title">Grade 3</div>
+                    <div>
+                        <div class="section-title">Sequencing</div>
+                        <a href="#" class="exercise-link" onclick="setNextLevel('taxi_driver_3')">Mr. Cab Driver</a>
+                    </div>
+                    <div>
+                        <div class="section-title">Loops</div>
+                        <a>Coming soon</a>
+                    </div>
+                    <div>
+                        <div class="section-title">Events</div>
+                        <a>Coming soon</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="grade-card h-100">
+                    <div class="grade-title">Grade 4</div>
+                    <div>
+                        <div class="section-title">Sequencing</div>
+                        <a href="#" class="exercise-link" onclick="setNextLevel('taxi_driver_4')">Mr. Cab Driver</a>
+                    </div>
+                    <div>
+                        <div class="section-title">Loops</div>
+                        <a>Coming soon</a>
+                    </div>
+                    <div>
+                        <div class="section-title">Events</div>
+                        <a>Coming soon</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="grade-card h-100">
+                    <div class="grade-title">Grade 5</div>
+                    <div>
+                        <div class="section-title">Sequencing</div>
+                        <a href="#" class="exercise-link" onclick="setNextLevel('taxi_driver_5')">Mr. Cab Driver</a>
+                    </div>
+                    <div>
+                        <div class="section-title">Loops</div>
+                        <a>Coming soon</a>
+                    </div>
+                    <div>
+                        <div class="section-title">Events</div>
+                        <a>Coming soon</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
 <div id="codingPane" class="tab-pane">
     <div class="container-fluid vh-100 d-flex flex-row content">
@@ -535,7 +703,7 @@
     // TODO getPerson sometimes gets the last person wrong. Change it by the len of a list where sprites.hide are skipped
     // TODO change grid size 12 and 16 to the size length of the map
     // TODO taxi can get people sometimes. It can get people from the hood side but not here in the second loop taxi_pickup_five
-    localStorage.setItem("nextLevel", "taxi_pickup_five");
+    // TODO add code in case there is no user logged in,
     let email = null;
     let firstname = null;
     let lastname = null;
@@ -544,6 +712,7 @@
     let grade = null;
 
     function loadUser() {
+        console.log("loadUser() called"); // Step 1
         try {
             google.script.run
                 .withSuccessHandler(function (studentData) {
@@ -555,7 +724,7 @@
                     grade = studentData[5];
                     document.getElementById("activeUserEmail").innerText = email;
                     document.querySelectorAll(".activeUserName").forEach(el => {
-                        el.innerText = "Hi " + firstname + " " + lastname + " (" + className + ")";
+                        el.innerText = "💛 Hi " + firstname + " " + lastname + " (" + className + ") 💛";
                     });
                 })
                 .withFailureHandler(function (error) {
@@ -568,10 +737,10 @@
         }
     }
 
-
     window.onload = function () {
-        localStorage.getItem("nextLevel");
+        loadUser();
     }
+
     let configData = null; // Global variable to store JSON
     async function fetchData() {
         // const response = await fetch('https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/blocks.json');
@@ -632,7 +801,9 @@
             this.startedOn = new Date().toISOString();
             this.map = null; // Initialize as null and set it later asynchronously
             this.app = null; // Initialize as null
-            this._gridSize = null; // Initialize as null
+            this._gridSize = null;
+            this.rowLength = null;
+            this.colLength = null;
             this.speed = 1;
             this.speedElement = buttonSpeedElement;
             this.isRunning = false;
@@ -665,6 +836,7 @@
             if (!configData) {
                 await fetchData();
             }
+            console.log(this.name);
             const exercise = configData.exercises.find(exercise => exercise.name === this.name);
             this.type = exercise.type;
             this.level = exercise.level;
@@ -675,10 +847,11 @@
             this.feedback = exercise.feedback;
             if (localStorage.getItem('visualisationSize') !== null) {
                 this._gridSize = localStorage.getItem('visualisationSize');
-            }
-            else{
+            } else {
                 this._gridSize = exercise.gridSize;
             }
+            this.rowLength = exercise.rowLength;
+            this.colLength = exercise.colLength;
             this.hints = exercise.hints;
             this.mapLayout = exercise.mapLayout;
             this.sounds = exercise.sounds;
@@ -710,10 +883,10 @@
                 this.speed = this.speedElement.value;
                 this.speedElement.oninput = () => this.speed = this.speedElement.value;
             }
-            // Initialize the PIXI application first with default values
+
             this.app = new PIXI.Application({
-                width: 12 * this._gridSize, // Default placeholder values
-                height: 16 * this._gridSize, // Default placeholder values
+                width: this.rowLength * this._gridSize, // Default placeholder values
+                height: this.colLength * this._gridSize, // Default placeholder values
                 backgroundColor: 0xAAAAAA
             });
 
@@ -931,7 +1104,8 @@
                         console.log("Progress submitted successfully.");
                         console.log("Next level is: " + nextLevel);
                         // Store the next level in localStorage or sessionStorage (optional)
-                        localStorage.setItem("nextLevel", nextLevel);
+                        sessionStorage.setItem("nextLevel", nextLevel);
+                        console.log(sessionStorage.getItem("nextLevel"));
                         // Reload the page
                         window.location.reload();  // This will reload the page
                     })
@@ -1588,10 +1762,20 @@
 
 
     async function init() {
-        if (localStorage.getItem("nextLevel")) {
-            console.log("Loading next level");
-            new Activity(localStorage.getItem("nextLevel"));
+        console.log("Loading next level");
+        let nextLevel = sessionStorage.getItem("nextLevel");
+
+        if (!nextLevel) {
+            console.log("LOADING");
+            nextLevel = "taxi_pickup_one";
+            sessionStorage.setItem("nextLevel", nextLevel);
+            console.log(nextLevel + " just loaded");
         }
+
+        // Launch the activity with the actual value (without unnecessary "+ 3 already loaded")
+        new Activity(nextLevel);
+
+
         buttonNextLevelElement.addEventListener("click", () => {
             // TODO add backend script to get the next level name and set it to a cookie
         });
@@ -1621,21 +1805,6 @@
         }
     });
 
-    document.addEventListener("DOMContentLoaded", function () {
-        console.log(localStorage.getItem("nextLevel"));
-        const sidebar = document.getElementById("sidebar");
-
-        // Select only <a> elements where href starts with "#sequencing"
-        const sequencingLinks = sidebar.querySelectorAll('a[href^="#taxiDriverSequencing"]');
-
-        sequencingLinks.forEach(link => {
-            link.addEventListener("click", function (e) {
-                e.preventDefault();
-                const target = link.getAttribute("href");
-                console.log("Sequencing link clicked:", target);
-            });
-        });
-    });
 
     function showPane(id) {
         document.querySelectorAll('.tab-pane').forEach(pane => {
@@ -1654,9 +1823,32 @@
 
     // On page load
     window.addEventListener('DOMContentLoaded', () => {
+        const sidebar = document.getElementById("sidebar");
+
+        // Select only <a> elements where href starts with "#sequencing"
+        const sequencingLinks = sidebar.querySelectorAll('a[href^="#taxiDriverSequencing"]');
+
+        sequencingLinks.forEach(link => {
+            link.addEventListener("click", function (e) {
+                e.preventDefault();
+                const target = link.getAttribute("href");
+                console.log("Sequencing link clicked:", target);
+            });
+        });
         const savedPane = sessionStorage.getItem('activePane') || 'home';
         showPane(savedPane);
+        gsap.from(".grade-card", {
+            duration: 0.8,
+            opacity: 0,
+            stagger: 0.05,
+            ease: "power1.out"
+        });
     });
+    function setNextLevel(level) {
+        sessionStorage.setItem('nextLevel', level);
+        showPane('codingPane');
+        window.location.reload();
+    }
 
 
     init();
