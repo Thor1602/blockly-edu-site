@@ -383,7 +383,7 @@
 </div>
 
 <div id="home" class="tab-pane active overflow-auto">
-    <button class="btn btn-lg btn-primary" onclick="showPane('codingPane')">Continue</button>
+    <button class="btn btn-lg btn-primary" onclick="resetTheActivty('taxiDriverSequencing2')">Continue</button>
     <div class="container">
         <h1 class="text-center mb-5 fw-bold">✨ Coding Activities ✨</h1>
         <h3 class="text-center mb-5 fw-bold activeUserName"></h3>
@@ -709,6 +709,7 @@
     let className = null;
     let grade = null;
     let studentProgress = null;
+    let currentExercise = null;
 
     function loadUser() {
         console.log("loadUser() called"); // Step 1
@@ -726,7 +727,7 @@
                     document.querySelectorAll(".activeUserName").forEach(el => {
                         el.innerText = "💛 Hi " + firstname + " " + lastname + " (" + className + ") 💛";
                     });
-                    console.log(studentProgress);
+
                 })
                 .withFailureHandler(function (error) {
                     console.error("Failed to get user email:", error.message || error);
@@ -813,7 +814,6 @@
             this.isRunning = false;
             this.isComplete = false;
 
-
             this.overlayContainer = null;
             buttonRunElement.addEventListener("click", () => {
                 this.runCode();
@@ -842,7 +842,6 @@
             if (!configData) {
                 await fetchData();
             }
-            console.log(this.type, this.level);
             const exercise = configData.exercises.find(exercise => exercise.type === this.type && exercise.level === this.level);
             this.name = exercise.name;
             this.maxBlocks = exercise.maxBlocks;
@@ -917,12 +916,21 @@
                 return;
             }
 
-            if (this.sprites) {
+            // Draw the map first — maybe the sprites depend on it
+            this.map.drawMap(this._gridSize);
+
+            // Now resize any existing sprites, with defensive checks
+            if (this.sprites && Array.isArray(this.sprites)) {
                 this.sprites.forEach((sprite) => {
-                    if (sprite) sprite.resize(this._gridSize);
+                    try {
+                        if (sprite && typeof sprite.resize === 'function') {
+                            sprite.resize(this._gridSize);
+                        }
+                    } catch (error) {
+                        console.error("Error resizing sprite:", sprite, error);
+                    }
                 });
             }
-            this.map.drawMap(this._gridSize);
         }
 
         visualisationDivSizeListener() {
@@ -1029,15 +1037,18 @@
                 this.app.destroy(true, {children: true});
                 this.app = null;
             }
+            // TODO make this work
+            //  console.log(this.map);
+            // console.log(this.map.workspace);
 
+            //if (this.map.workspace) {
+            //       this.map.workspace.clear();
+            //  }
             // Reset everything
             this.player = null;
             this.people = [];
             this.sprites = [];
-            this.mapLayout = null;
 
-
-            // Also clear the canvas container (if reused)
             buttonVisualisationElement.innerHTML = "";
         }
 
@@ -1739,21 +1750,43 @@
         }
     }
 
-    $(document).ready(function () {
+    document.addEventListener('DOMContentLoaded', () => {
+        // Sidebar collapse behavior
         $('#sidebarMenu .collapse').on('show.bs.collapse', function () {
             $('#sidebarMenu .collapse').not(this).collapse('hide');
         });
 
         // Change background of active dropdown
         $('#sidebarMenu .dropdown-toggle').on('click', function () {
-            // Reset all dropdown backgrounds to default
             $('#sidebarMenu .nav-item').removeClass('active-bg-sidebar');
-            $('#sidebarMenu .nav-item').addClass('bg-sidebar'); // Default background color
-
-            // Apply bg-warning to the clicked (active) dropdown
+            $('#sidebarMenu .nav-item').addClass('bg-sidebar');
             $(this).parent().removeClass('bg-sidebar').addClass('active-bg-sidebar');
         });
+
+        // Handle sequencing links
+        const sidebar = document.getElementById("sidebar");
+        const sequencingLinks = sidebar.querySelectorAll('a[href^="#taxiDriverSequencing"]');
+        sequencingLinks.forEach(link => {
+            link.addEventListener("click", function (e) {
+                e.preventDefault();
+                const target = link.getAttribute("href");
+                console.log("Sequencing link clicked:", target);
+            });
+        });
+
+        // Restore previously saved pane
+        const savedPane = sessionStorage.getItem('activePane') || 'home';
+        showPane(savedPane);
+
+        // Animate grade cards
+        gsap.from(".grade-card", {
+            duration: 0.8,
+            opacity: 0,
+            stagger: 0.05,
+            ease: "power1.out"
+        });
     });
+
 
     function toggleMenu() {
         let sidebar = document.getElementById("sidebar");
@@ -1764,9 +1797,6 @@
 
 
     async function init() {
-
-        new Activity("taxiDriverSequencing2", "2");
-
         buttonNextLevelElement.addEventListener("click", () => {
             // TODO add backend script to get the next level name and set it to a cookie
         });
@@ -1774,7 +1804,6 @@
             buttonNextLevelElement.disabled = true;
             $nextLevelModal.modal('hide');
         });
-// can google app script refresh a page from the back side like when submitting a form with google.script.run
     }
 
     buttonSendBugFormElement.addEventListener("click", () => {
@@ -1811,36 +1840,19 @@
             toggleMenu();
         }
     }
-
-    // On page load
-    window.addEventListener('DOMContentLoaded', () => {
-        const sidebar = document.getElementById("sidebar");
-
-        // Select only <a> elements where href starts with "#sequencing"
-        const sequencingLinks = sidebar.querySelectorAll('a[href^="#taxiDriverSequencing"]');
-
-        sequencingLinks.forEach(link => {
-            link.addEventListener("click", function (e) {
-                e.preventDefault();
-                const target = link.getAttribute("href");
-                console.log("Sequencing link clicked:", target);
-            });
-        });
-        const savedPane = sessionStorage.getItem('activePane') || 'home';
-        showPane(savedPane);
-        gsap.from(".grade-card", {
-            duration: 0.8,
-            opacity: 0,
-            stagger: 0.05,
-            ease: "power1.out"
-        });
-    });
-
+    let activity = null;
     function setNextExercise(type) {
-        sessionStorage.setItem('nextExercise', type);
+        activity= new Activity(type, "2");
         showPane('codingPane');
-        window.location.reload();
+
     }
+    function resetTheActivty(type) {
+        activity.resetActivity();
+        activity= new Activity(type, "3");
+        showPane('codingPane');
+    }
+
+
     init();
 </script>
 </body>
