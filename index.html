@@ -383,7 +383,7 @@
 </div>
 
 <div id="home" class="tab-pane active overflow-auto">
-    <button class="btn btn-lg btn-primary" onclick="resetTheActivty('taxiDriverSequencing2')">Continue</button>
+    <button class="btn btn-lg btn-primary" onclick="showPane('codePane')">Continue</button>
     <div class="container">
         <h1 class="text-center mb-5 fw-bold">✨ Coding Activities ✨</h1>
         <h3 class="text-center mb-5 fw-bold activeUserName"></h3>
@@ -1034,20 +1034,19 @@
 
         resetActivity() {
             if (this.app) {
-                this.app.destroy(true, {children: true});
+                this.app.destroy(true, { children: true });
                 this.app = null;
             }
-            // TODO make this work
-            //  console.log(this.map);
-            // console.log(this.map.workspace);
 
-            //if (this.map.workspace) {
-            //       this.map.workspace.clear();
-            //  }
-            // Reset everything
+            if (this.map.workspace) {
+                this.map.workspace.clear();
+                this.map.workspace = null;
+            }
+
             this.player = null;
             this.people = [];
             this.sprites = [];
+            this.mapLayout = null;
 
             buttonVisualisationElement.innerHTML = "";
         }
@@ -1520,6 +1519,7 @@
             this.app.stage.addChild(this.container);
             Sprite.listOfSprites.push(this);
             Sprite.#numberOfEnvironmentSprites += notif_number;
+            console.log(this.app);
         }
 
         static restoreNotifactionNumberForAllSprites() {
@@ -1558,28 +1558,36 @@
 
 
         resize(gridSize) {
-            if (!this.sprite) {
-                console.warn("Sprite is null or not yet loaded");
+            if (!this.sprite || !this.sprite.texture || !this.sprite.texture.baseTexture.valid) {
+                console.warn("Sprite is not ready for resizing");
                 return;
             }
-            if (!this.sprite || !this.container) return;
-            // Update sprite size
+            if (!this.sprite || !this.container) {
+                console.warn("Sprite or container is not initialized.");
+                return;
+            }
+
             this._gridSize = gridSize;
+
+            // Resize sprite
             this.sprite.width = this.sprite.height = gridSize;
-            // Update position
+
+            // Reposition sprite
             this.sprite.x = this.col * gridSize + gridSize / 2;
             this.sprite.y = this.row * gridSize + gridSize / 2;
 
-            // Update notification position (if applicable)
-            if (this.showNotif) {
+            // Reposition notification text, if it exists
+            if (this.showNotif && this.notifText) {
                 this.notifText.x = this.sprite.x + gridSize / 3;
                 this.notifText.y = this.sprite.y - gridSize / 3;
             }
-            // Ensure sprite remains on the stage
-            if (!this.app.stage.children.includes(this.container)) {
+
+            // Add container back to stage if it's missing
+            if (this.app && this.app.stage && !this.app.stage.children.includes(this.container)) {
                 this.app.stage.addChild(this.container);
             }
         }
+
 
         updateSizeAndPosition() {
             this.sprite.width = this.sprite.height = this._gridSize;
@@ -1842,14 +1850,13 @@
     }
     let activity = null;
     function setNextExercise(type) {
+        if(activity){
+            activity.resetActivity();
+            activity = null;
+        }
         activity= new Activity(type, "2");
         showPane('codingPane');
 
-    }
-    function resetTheActivty(type) {
-        activity.resetActivity();
-        activity= new Activity(type, "3");
-        showPane('codingPane');
     }
 
 
