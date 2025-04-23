@@ -165,35 +165,69 @@
             border-radius: 20px;
         }
 
-        /* styling for nav bar START */
+        .email-container {
+            margin-right: 20px;
+            margin-left: 20px;
+            height: 40px;
+            background-color: white;
+            color: black;
+            padding-left: 20px;
+            padding-right: 20px;
+            border-radius: 20px;
+        }
+
         .offcanvas {
             position: fixed;
             top: 0;
-            left: -250px; /* Initially hidden */
-            width: 250px;
+            right: -280px; /* Initially hidden */
+            width: 280px;
             height: 100%;
-            background-color: #886500; /* yellow theme */
+            text-shadow: 0 2px 3px rgba(0, 0, 0, 0.4); /* subtle contrast */
+            background: linear-gradient(135deg, #ffc107, #cc9b00);
             color: white;
             overflow-y: auto;
-            transition: 0.3s ease-in-out;
+            transition: right 0.4s ease;
             padding-top: 60px;
-            z-index: 1050; /* Above everything */
+            z-index: 1050;
+            box-shadow: -4px 0 20px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(5px);
+            border-left: 3px solid rgba(255, 255, 255, 0.1);
         }
 
         .offcanvas.show {
-            left: 0; /* Slide in */
+            right: 0;
         }
 
         .offcanvas a {
             color: white;
-            padding: 10px;
-            display: block;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
             text-decoration: none;
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+
+        .offcanvas a::before {
+            color: #fff;
+            font-size: 18px;
+            transition: transform 0.3s ease;
         }
 
         .offcanvas a:hover {
-            background-color: #8c6c0d; /* yellow theme */
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+            padding-left: 30px;
         }
+
+        .offcanvas a:hover::before {
+            transform: scale(1.4);
+            color: #ffe4be;
+        }
+
 
         .close-btn {
             position: absolute;
@@ -231,11 +265,11 @@
         }
 
         .active-bg-sidebar {
-            background-color: #8c6c0d; /* yellow theme */
+            background-color: #ffc107; /* yellow theme */
         }
 
         .bg-sidebar {
-            background-color: #886500; /* yellow theme */
+            background-color: #ffc107; /* yellow theme */
         }
 
         /* styling for nav bar END */
@@ -290,33 +324,76 @@
                 max-width: 50%;
             }
         }
+        .icon-circle {
+            background: white;
+            border-radius: 50%;
+            padding: 10px;
+            color: #ffac31;
+            box-shadow: 0 0 0 2px #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+        }
+
+        #visualisationSize {
+            border-radius: 0.75rem;
+            padding: 0.2rem 0.3rem;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.6);
+            background-color: #f8f9fa;
+            transition: box-shadow 0.2s ease-in-out;
+        }
+
+        #visualisationSize:focus {
+
+            box-shadow: 0 0 0 0.25rem rgb(255, 211, 145);
+        }
+        .expand {
+            text-shadow: 0 2px 3px rgba(0, 0, 0, 0.4); /* subtle contrast */
+            transition: transform 0.25s ease-in-out; /* Slower expand */
+        }
+        .expand:hover {
+            transform: scale(1.1);
+        }
     </style>
 
 </head>
 <body onload="loadUser()">
 
 <nav class="navbar navbar-dark bg-warning">
-    <div class="container-fluid">
-        <!-- Hamburger Button -->
-        <button class="navbar-toggler" type="button" onclick="toggleMenu()">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" id="visualisationSize">
-            <option selected disabled>Game Size</option>
-            <option value="Extra Small">Extra Small</option>
-            <option value="Small">Small</option>
-            <option value="Medium">Medium</option>
-            <option value="Large">Large</option>
-            <option value="Extra Large">Extra Large</option>
-        </select>
-        <a href="#" class="navbar-brand ml-3" onclick="event.preventDefault(); showPane('home')">
-            Seoul Academy Apgujeong
-        </a>
-        <a class="nav-link disabled" id="activeUserEmail"></a>
-        <img src="https://i.postimg.cc/qMKT5SS9/logo.png" height="40px" width="40px" alt=""/>
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+
+        <!-- Left side -->
+        <div class="d-flex align-items-center">
+            <a href="#" class="navbar-brand me-3 expand" onclick="event.preventDefault(); showPane('home')">
+                <img src="https://i.postimg.cc/qMKT5SS9/logo.png" height="40px" width="40px" alt=""/>
+                Seoul Academy Apgujeong
+            </a>
+        </div>
+
+        <!-- Right side -->
+        <div class="d-flex align-items-center gap-3">
+            <a class="nav-link email-container disabled" id="activeUserEmail"></a>
+
+            <label for="visualisationSize"></label>
+            <select class="form-select form-select-sm" id="visualisationSize" style="max-width: 200px;">
+                <option selected disabled>Game Size</option>
+                <option value="Extra Small">Extra Small</option>
+                <option value="Small">Small</option>
+                <option value="Medium">Medium</option>
+                <option value="Large">Large</option>
+                <option value="Extra Large">Extra Large</option>
+            </select>
+            <button class="navbar-toggler expand" type="button" onclick="toggleMenu()">
+                <i class="fa-solid fa-user icon-circle"></i>            </button>
+        </div>
 
     </div>
 </nav>
+
 
 
 <!-- Dark Overlay (Shades Background) -->
@@ -1856,7 +1933,6 @@
         }
         activity= new Activity(type, "2");
         showPane('codingPane');
-
     }
 
 
