@@ -18,8 +18,15 @@
     },
     {
       "type": "controls_repeat_ext",
-      "message0": "%1 %2",
+      "message0": "%1 %2 %3",
       "args0": [
+        {
+          "type": "field_image",
+          "src": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/images/rotate-right-solid.svg",
+          "width": 24,
+          "height": 24,
+          "alt": "*"
+        },
         {
           "type": "field_dropdown",
           "name": "TIMES",
