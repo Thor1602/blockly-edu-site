@@ -895,7 +895,6 @@
     let currentExercise = null;
     disableLinks();
     function loadUser() {
-        console.log("loadUser() called"); // Step 1
         try {
             google.script.run
                 .withSuccessHandler(function (studentData) {
@@ -1289,7 +1288,6 @@
                     let checkRunning = () => this.isRunning; // Closure to check the flag
                     ${code.split("await").join("if (!checkRunning()) return; await")} // Insert check before each await
                 })();`);
-                console.log("evaluated");
             } catch (error) {
                 console.error("Error executing code:", error);
             } finally {
@@ -1354,7 +1352,7 @@
                 this.map.drawSprites(this.sprites);
                 Sprite.restoreNotifactionNumberForAllSprites();
                 // Initialize the new player (taxi)
-                this.player.initialize();
+                // this.player.initialize();
                 // Reset other elements (e.g., people notifications)
                 this.people.forEach(sprite => sprite.notify(sprite.original_notif_number));
                 this.people.forEach(sprite => sprite.show());
@@ -1532,9 +1530,9 @@
                 zoom: {
                     controls: true,     // ✅ Adds zoom in/out buttons
                     wheel: true,
-                    startScale: 1.0,
+                    startScale: 0.8,
                     maxScale: 1.5,
-                    minScale: 0.8,
+                    minScale: 0.4,
                     scaleSpeed: 1.2
                 },
                 move: {
@@ -1577,6 +1575,14 @@
 
                 this.defineBlocks(filteredBlocks);
                 this.updateToolbox(filteredBlocks);
+                if (BlockManager.workspace) {
+                    const runEventBlock = BlockManager.workspace.newBlock('run_event');
+                    runEventBlock.setDeletable(false);
+                    runEventBlock.setMovable(false);
+                    runEventBlock.initSvg();
+                    runEventBlock.render();
+                    runEventBlock.moveBy(50, 50); // Set to a good spot
+                }
                 this.setupChangeListener();
                 this.resizeBlocklyWorkspace(); // Immediate resize on activity load
             } catch (error) {
@@ -1705,7 +1711,6 @@
             this.app.stage.addChild(this.container);
             Sprite.listOfSprites.push(this);
             Sprite.#numberOfEnvironmentSprites += notif_number;
-            console.log(this.app);
         }
 
         static restoreNotifactionNumberForAllSprites() {
@@ -1967,7 +1972,6 @@
             link.addEventListener("click", function (e) {
                 e.preventDefault();
                 const target = link.getAttribute("href");
-                console.log("Sequencing link clicked:", target);
             });
         });
 
@@ -2065,7 +2069,6 @@
     function handleLoginStatus(isLoggedIn) {
         try {
             gsap.killTweensOf("#loadingText");
-            console.log("🔄 Killed loading text animation");
         } catch (err) {
             console.warn("⚠️ Failed to kill loading animation:", err);
         }
@@ -2092,9 +2095,7 @@
                         opacity: 1,
                         y: 0,
                         duration: 0.8,
-                        ease: "power3.out",
-                        onStart: () => console.log("🎉 Showing success text"),
-                        onComplete: () => console.log("✅ Success text animation complete")
+                        ease: "power3.out"
                     }
                 );
             } else {
@@ -2108,7 +2109,6 @@
 
             // Wait 2 seconds, then switch to the next pane
             setTimeout(() => {
-                console.log("⏳ Switching to 'home' pane...");
                 showPane('home');
             }, 2000);
 
@@ -2124,9 +2124,7 @@
                         opacity: 1,
                         y: 0,
                         duration: 0.8,
-                        ease: "power3.out",
-                        onStart: () => console.log("🚨 Showing error text"),
-                        onComplete: () => console.log("❌ Error text animation complete")
+                        ease: "power3.out"
                     }
                 );
             } else {
