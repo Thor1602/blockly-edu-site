@@ -19,13 +19,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
     <style>
-        .tab-pane {
-            display: none;
-        }
-
-        .tab-pane.active {
-            display: block;
-        }
 
         #loading-screen {
             position: fixed;
@@ -145,10 +138,10 @@
         }
 
         .progress-container {
-            display: flex;                  /* Flex layout */
-            align-items: center;           /* Vertically center the circles */
-            justify-content: center;       /* Horizontally center the whole group */
-            gap: 10px;                     /* Space between circles */
+            display: flex; /* Flex layout */
+            align-items: center; /* Vertically center the circles */
+            justify-content: center; /* Horizontally center the whole group */
+            gap: 10px; /* Space between circles */
 
             padding: 2px 10px;
             height: 30px;
@@ -234,8 +227,14 @@
             position: absolute;
             top: 10px;
             right: 20px;
-            font-size: 24px;
+            font-size: 50px;
             cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+
+        }
+
+        .close-btn:hover {
+            transform: translateY(-5px);
         }
 
         /* Dark overlay when menu opens */
@@ -325,6 +324,7 @@
                 max-width: 50%;
             }
         }
+
         .icon-circle {
             background: white;
             border-radius: 50%;
@@ -352,13 +352,31 @@
 
             box-shadow: 0 0 0 0.25rem rgb(255, 211, 145);
         }
+
         .expand {
             text-shadow: 0 2px 3px rgba(0, 0, 0, 0.4); /* subtle contrast */
             transition: transform 0.25s ease-in-out; /* Slower expand */
         }
+
         .expand:hover {
             transform: scale(1.1);
         }
+
+        #paneWrapper {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .tab-pane {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
     </style>
 
 </head>
@@ -369,10 +387,11 @@
 
         <!-- Left side -->
         <div class="d-flex align-items-center">
-            <a href="#" class="navbar-brand me-3 expand" onclick="event.preventDefault(); showPane('home')">
+            <a href="javascript:void(0);" class="navbar-brand me-3 expand" onclick="event.preventDefault(); showPane('home')">
                 <img src="https://i.postimg.cc/qMKT5SS9/logo.png" height="40px" width="40px" alt=""/>
                 Seoul Academy Apgujeong
             </a>
+            <button class="btn btn-lg btn-primary" onclick="showPane('codingPane')">Continue</button>
         </div>
 
         <!-- Right side -->
@@ -389,12 +408,11 @@
                 <option value="Extra Large">Extra Large</option>
             </select>
             <button class="navbar-toggler expand" type="button" onclick="toggleMenu()">
-                <i class="fa-solid fa-user icon-circle"></i>            </button>
+                <i class="fa-solid fa-user icon-circle"></i></button>
         </div>
 
     </div>
 </nav>
-
 
 
 <!-- Dark Overlay (Shades Background) -->
@@ -407,324 +425,345 @@
         <!-- Grades with Submenus -->
         <li class="nav-item"><h3 class="activeUserName"></h3></li>
         <li class="nav-item">
-            <a href="#" class="nav-link" data-parent="#sidebarMenu" onclick="event.preventDefault(); showPane('home')">HOME</a>
+            <a href="javascript:void(0);" class="nav-link" data-parent="#sidebarMenu" onclick="event.preventDefault(); showPane('home')">HOME</a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#kinderMenu"
+            <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#kinderMenu"
                data-parent="#sidebarMenu">Kinder</a>
             <div id="kinderMenu" class="collapse">
-                <a href="#" class="nav-link pl-4">Sequencing</a>
+                <a href="javascript:void(0);" class="nav-link pl-4">Sequencing</a>
             </div>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade1Menu"
+            <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade1Menu"
                data-parent="#sidebarMenu">Grade 1</a>
             <div id="grade1Menu" class="collapse">
-                <a href="#" class="nav-link pl-4">Sequencing</a>
+                <a href="javascript:void(0);" class="nav-link pl-4">Sequencing</a>
             </div>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade2Menu"
+            <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade2Menu"
                data-parent="#sidebarMenu">Grade 2</a>
             <div id="grade2Menu" class="collapse">
-                <a href="#" class="nav-link pl-4">Sequencing</a>
+                <a href="javascript:void(0);" class="nav-link pl-4">Sequencing</a>
                 <div class="pl-5">
                     <a href="#taxiDriverSequencing2" class="nav-link">Mr. Cab Driver</a>
                 </div>
             </div>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade3Menu"
+            <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade3Menu"
                data-parent="#sidebarMenu">Grade 3</a>
             <div id="grade3Menu" class="collapse">
-                <a href="#" class="nav-link pl-4">Sequencing</a>
+                <a href="javascript:void(0);" class="nav-link pl-4">Sequencing</a>
                 <div class="pl-5">
                     <a href="#taxiDriverSequencing3" class="nav-link">Mr. Cab Driver</a>
                 </div>
             </div>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade4Menu"
+            <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade4Menu"
                data-parent="#sidebarMenu">Grade 4</a>
             <div id="grade4Menu" class="collapse">
-                <a href="#" class="nav-link pl-4">Sequencing</a>
+                <a href="javascript:void(0);" class="nav-link pl-4">Sequencing</a>
             </div>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade5Menu"
+            <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade5Menu"
                data-parent="#sidebarMenu">Grade 5</a>
             <div id="grade5Menu" class="collapse">
-                <a href="#" class="nav-link pl-4">Sequencing</a>
+                <a href="javascript:void(0);" class="nav-link pl-4">Sequencing</a>
             </div>
         </li>
     </ul>
 </div>
+<div id="paneWrapper">
 
-<div id="home" class="tab-pane active overflow-auto">
-    <button class="btn btn-lg btn-primary" onclick="showPane('codePane')">Continue</button>
-    <div class="container">
-        <h1 class="text-center mb-5 fw-bold">✨ Coding Activities ✨</h1>
-        <h3 class="text-center mb-5 fw-bold activeUserName"></h3>
-        <div class="row row-cols-1 row-cols-md-3 row-cols-lg-3 g-4">
-            <div class="col">
-                <div class="grade-card h-100">
-                    <div class="grade-title">Grade K</div>
-                    <div>
-                        <div class="section-title">Sequencing</div>
-                        <a href="#" class="exercise-link" onclick="setNextExercise('taxiDriverSequencingK')">Mr. Cab Driver</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Loops</div>
-                        <a>Coming soon</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Debugging</div>
-                        <a>Coming soon</a>
-                    </div>
-                </div>
+    <div id="loadingPane" class="tab-pane d-flex justify-content-center align-items-center flex-column" style="display: none;">
+        <div class="text-center">
+            <div class="spinner-border text-primary" role="status" style="width: 4rem; height: 4rem;">
+                <span class="visually-hidden">Loading...</span>
             </div>
-
-            <div class="col">
-                <div class="grade-card h-100">
-                    <div class="grade-title">Grade 1</div>
-                    <div>
-                        <div class="section-title">Sequencing</div>
-                        <a href="#" class="exercise-link" onclick="setNextExercise('taxiDriverSequencing1')">Mr. Cab Driver</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Loops</div>
-                        <a>Coming soon</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Debugging</div>
-                        <a>Coming soon</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Events</div>
-                        <a>Coming soon</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="grade-card h-100">
-                    <div class="grade-title">Grade 2</div>
-                    <div>
-                        <div class="section-title">Sequencing</div>
-                        <a href="#" class="exercise-link" onclick="setNextExercise('taxiDriverSequencing2')">Mr. Cab Driver</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Loops</div>
-                        <a>Coming soon</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Debugging</div>
-                        <a>Coming soon</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Events</div>
-                        <a>Coming soon</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="grade-card h-100">
-                    <div class="grade-title">Grade 3</div>
-                    <div>
-                        <div class="section-title">Sequencing</div>
-                        <a href="#" class="exercise-link" onclick="setNextExercise('taxiDriverSequencing3')">Mr. Cab Driver</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Loops</div>
-                        <a>Coming soon</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Debugging</div>
-                        <a>Coming soon</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Events</div>
-                        <a>Coming soon</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Conditionals</div>
-                        <a>Coming soon</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="grade-card h-100">
-                    <div class="grade-title">Grade 4</div>
-                    <div>
-                        <div class="section-title">Sequencing</div>
-                        <a href="#" class="exercise-link" onclick="setNextExercise('taxiDriverSequencing4')">Mr. Cab Driver</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Loops</div>
-                        <a>Coming soon</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Debugging</div>
-                        <a>Coming soon</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Events</div>
-                        <a>Coming soon</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Conditionals</div>
-                        <a>Coming soon</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Nested Loops</div>
-                        <a>Coming soon</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Operators</div>
-                        <a>Coming soon</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Variables</div>
-                        <a>Coming soon</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col">
-                <div class="grade-card h-100">
-                    <div class="grade-title">Grade 5</div>
-                    <div>
-                        <div class="section-title">Sequencing</div>
-                        <a href="#" class="exercise-link" onclick="setNextExercise('taxiDriverSequencing5')">Mr. Cab Driver</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Loops</div>
-                        <a>Coming soon</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Debugging</div>
-                        <a>Coming soon</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Events</div>
-                        <a>Coming soon</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Conditionals</div>
-                        <a>Coming soon</a>
-                    </div>
-                    <div>
-                    <div class="section-title">Nested Loops</div>
-                        <a>Coming soon</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Conditional Loops</div>
-                        <a>Coming soon</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Advanced Loops</div>
-                        <a>Coming soon</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Functions</div>
-                        <a>Coming soon</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Operators</div>
-                        <a>Coming soon</a>
-                    </div>
-                    <div>
-                        <div class="section-title">Variables</div>
-                        <a>Coming soon</a>
-                    </div>
-                </div>
-            </div>
-
+            <h4 class="mt-4" id="loadingText">Loading...</h4>
+            <h5 id="successText" class="mt-3 text-success fw-bold" style="display: none;">You're logged in!</h5>
         </div>
     </div>
-</div>
-<div id="codingPane" class="tab-pane">
-    <div class="container-fluid vh-100 d-flex flex-row content">
-        <!-- Left Side (Visualization) -->
-        <div class="d-flex flex-column overflow-auto">
-            <div id="visualisation" class="border rounded bg-light p-2"></div>
 
-            <div class="mt-3 d-flex justify-content-between">
-                <button class="btn btn-lg btn-primary" id="btnRun">
-                    <i class="fa-solid fa-play"></i> RUN
-                </button>
-                <button class="btn btn-lg btn-reset" id="btnReset">
-                    <i class="fa-solid fa-rotate-right"></i> RESET
-                </button>
-                <button class="btn btn-lg btn-primary" id="btnStep">
-                    <i class="fa-solid fa-forward-step"></i> STEP
-                </button>
-            </div>
-            <label for="speed" class="form-label"></label>
-            <input type="range" class="form-range" min="0" max="10" step="1" id="speed" style="display: none">
-
-        </div>
-
-        <div class="d-flex flex-column flex-grow-1 mx-3">
-            <div class="bg-warning p-3 ml-5 sticky-top">
-
-                <!-- EVERYTHING IN ONE HORIZONTAL LINE -->
-                <div class="d-flex align-items-center gap-3 flex-wrap">
-                    <!-- Dot Progress Bar -->
-                    <div class="d-flex justify-content-center progress-container" style="gap: 10px;"></div>
-
-                    <!-- Button Group -->
-                    <div class="d-flex gap-2 flex-wrap">
-
-
-                        <button class="btn btn-lg btn-primary" id="blocksLeftover" data-bs-toggle="tooltip"
-                                data-bs-placement="top" title="See here the blocks you have left.">
-                            <span id="numberBlockCapacity"></span> block(s)
-                            <span id="contentBlockCapacity"></span>
-                        </button>
-                        <button class="btn btn-lg btn-primary" id="nextLevel" tabindex="0" data-bs-toggle="tooltip"
-                                data-bs-placement="top"
-                                title="Click here to go to the next level when the level completed" disabled>
-                            <i class="fa-solid fa-right-long fa-2xl"></i>
-                        </button>
-
-                        <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#omgTeacherModal"
-                                data-bs-toggle="tooltip" data-bs-placement="top"
-                                title="OMG Mr.Thorben!! I found an error and you should fix it!!">
-                            <i class="fa-solid fa-bug fa-2xl"></i>
-                        </button>
-
-                        <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#instructionsModal"
-                                data-bs-toggle="tooltip" data-bs-placement="top" title="Click here for instructions">
-                            <i class="fa-solid fa-person-chalkboard fa-2xl"></i>
-                        </button>
-
-                        <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#hintModal" tabindex="0"
-                                data-bs-toggle="tooltip" data-bs-placement="top"
-                                title="Click here for a hint if enabled" disabled>
-                            <i class="fa-solid fa-question fa-2xl"></i>
-                        </button>
-
-
+    <div id="home" class="tab-pane overflow-auto" style="display: none;">
+        <div class="container">
+            <h1 class="text-center mb-5 fw-bold">✨ Coding Activities ✨</h1>
+            <h3 class="text-center mb-5 fw-bold activeUserName"></h3>
+            <div class="row row-cols-1 row-cols-md-3 row-cols-lg-3 g-4">
+                <div class="col">
+                    <div class="grade-card h-100">
+                        <div class="grade-title">Grade K</div>
+                        <div>
+                            <div class="section-title">Sequencing</div>
+                            <a href="javascript:void(0);" class="exercise-link" onclick="setNextExercise('taxiDriverSequencingK')">Mr. Cab
+                                Driver</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Loops</div>
+                            <a>Coming soon</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Debugging</div>
+                            <a>Coming soon</a>
+                        </div>
                     </div>
-
                 </div>
 
-                <!-- Live Feedback Container -->
-                <div class="d-flex align-items-center mt-2">
-                    <div class="pre-hint-container" id="liveFeedback"></div>
+                <div class="col">
+                    <div class="grade-card h-100">
+                        <div class="grade-title">Grade 1</div>
+                        <div>
+                            <div class="section-title">Sequencing</div>
+                            <a href="javascript:void(0);" class="exercise-link" onclick="setNextExercise('taxiDriverSequencing1')">Mr. Cab
+                                Driver</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Loops</div>
+                            <a>Coming soon</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Debugging</div>
+                            <a>Coming soon</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Events</div>
+                            <a>Coming soon</a>
+                        </div>
+                    </div>
                 </div>
 
-            </div>
+                <div class="col">
+                    <div class="grade-card h-100">
+                        <div class="grade-title">Grade 2</div>
+                        <div>
+                            <div class="section-title">Sequencing</div>
+                            <a href="javascript:void(0);" class="exercise-link" onclick="setNextExercise('taxiDriverSequencing2')">Mr. Cab
+                                Driver</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Loops</div>
+                            <a>Coming soon</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Debugging</div>
+                            <a>Coming soon</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Events</div>
+                            <a>Coming soon</a>
+                        </div>
+                    </div>
+                </div>
 
-            <div class="border rounded bg-white p-2 flex-grow-1">
-                <div id="blocklyDiv" style="height: 90%; width: 100%;"></div>
+                <div class="col">
+                    <div class="grade-card h-100">
+                        <div class="grade-title">Grade 3</div>
+                        <div>
+                            <div class="section-title">Sequencing</div>
+                            <a href="javascript:void(0);" class="exercise-link" onclick="setNextExercise('taxiDriverSequencing3')">Mr. Cab
+                                Driver</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Loops</div>
+                            <a>Coming soon</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Debugging</div>
+                            <a>Coming soon</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Events</div>
+                            <a>Coming soon</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Conditionals</div>
+                            <a>Coming soon</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="grade-card h-100">
+                        <div class="grade-title">Grade 4</div>
+                        <div>
+                            <div class="section-title">Sequencing</div>
+                            <a href="javascript:void(0);" class="exercise-link" onclick="setNextExercise('taxiDriverSequencing4')">Mr. Cab
+                                Driver</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Loops</div>
+                            <a>Coming soon</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Debugging</div>
+                            <a>Coming soon</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Events</div>
+                            <a>Coming soon</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Conditionals</div>
+                            <a>Coming soon</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Nested Loops</div>
+                            <a>Coming soon</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Operators</div>
+                            <a>Coming soon</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Variables</div>
+                            <a>Coming soon</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="grade-card h-100">
+                        <div class="grade-title">Grade 5</div>
+                        <div>
+                            <div class="section-title">Sequencing</div>
+                            <a href="javascript:void(0);" class="exercise-link" onclick="setNextExercise('taxiDriverSequencing5')">Mr. Cab
+                                Driver</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Loops</div>
+                            <a>Coming soon</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Debugging</div>
+                            <a>Coming soon</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Events</div>
+                            <a>Coming soon</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Conditionals</div>
+                            <a>Coming soon</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Nested Loops</div>
+                            <a>Coming soon</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Conditional Loops</div>
+                            <a>Coming soon</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Advanced Loops</div>
+                            <a>Coming soon</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Functions</div>
+                            <a>Coming soon</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Operators</div>
+                            <a>Coming soon</a>
+                        </div>
+                        <div>
+                            <div class="section-title">Variables</div>
+                            <a>Coming soon</a>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
+    <div id="codingPane" class="tab-pane overflow-auto" style="display: none;">
+        <div class="container-fluid vh-100 d-flex flex-row content">
+            <!-- Left Side (Visualization) -->
+            <div class="d-flex flex-column overflow-auto">
+                <div id="visualisation" class="border rounded bg-light p-2"></div>
+
+                <div class="mt-3 d-flex justify-content-between">
+                    <button class="btn btn-lg btn-primary" id="btnRun">
+                        <i class="fa-solid fa-play"></i> RUN
+                    </button>
+                    <button class="btn btn-lg btn-reset" id="btnReset">
+                        <i class="fa-solid fa-rotate-right"></i> RESET
+                    </button>
+                    <button class="btn btn-lg btn-primary" id="btnStep">
+                        <i class="fa-solid fa-forward-step"></i> STEP
+                    </button>
+                </div>
+                <label for="speed" class="form-label"></label>
+                <input type="range" class="form-range" min="0" max="10" step="1" id="speed" style="display: none">
+
+            </div>
+
+            <div class="d-flex flex-column flex-grow-1 mx-3">
+                <div class="bg-warning p-3 ml-5 sticky-top">
+
+                    <!-- EVERYTHING IN ONE HORIZONTAL LINE -->
+                    <div class="d-flex align-items-center gap-3 flex-wrap">
+                        <!-- Dot Progress Bar -->
+                        <div class="d-flex justify-content-center progress-container" style="gap: 10px;"></div>
+
+                        <!-- Button Group -->
+                        <div class="d-flex gap-2 flex-wrap">
+
+
+                            <button class="btn btn-lg btn-primary" id="blocksLeftover" data-bs-toggle="tooltip"
+                                    data-bs-placement="top" title="See here the blocks you have left.">
+                                <span id="numberBlockCapacity"></span> block(s)
+                                <span id="contentBlockCapacity"></span>
+                            </button>
+                            <button class="btn btn-lg btn-primary" id="nextLevel" tabindex="0" data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Click here to go to the next level when the level completed" disabled>
+                                <i class="fa-solid fa-right-long fa-2xl"></i>
+                            </button>
+
+                            <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#omgTeacherModal"
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="OMG Mr.Thorben!! I found an error and you should fix it!!">
+                                <i class="fa-solid fa-bug fa-2xl"></i>
+                            </button>
+
+                            <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#instructionsModal"
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="Click here for instructions">
+                                <i class="fa-solid fa-person-chalkboard fa-2xl"></i>
+                            </button>
+
+                            <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#hintModal"
+                                    tabindex="0"
+                                    data-bs-toggle="tooltip" data-bs-placement="top"
+                                    title="Click here for a hint if enabled" disabled>
+                                <i class="fa-solid fa-question fa-2xl"></i>
+                            </button>
+
+
+                        </div>
+
+                    </div>
+
+                    <!-- Live Feedback Container -->
+                    <div class="d-flex align-items-center mt-2">
+                        <div class="pre-hint-container" id="liveFeedback"></div>
+                    </div>
+
+                </div>
+
+                <div class="border rounded bg-white p-2 flex-grow-1">
+                    <div id="blocklyDiv" style="height: 90%; width: 100%;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+
 <!-- Warning Modal -->
 <div class="modal fade" id="warningModal" tabindex="-1" role="dialog" aria-labelledby="warningModalLabel"
      aria-hidden="true">
@@ -849,9 +888,12 @@
     let studentId = null;
     let className = null;
     let grade = null;
-    let studentProgress = {  'taxiDriverSequencing1': { '1': false, '2': true, '3': false, '4': false, '5': false }, 'taxiDriverSequencing2': { '1': true, '2': true, '3': true, '4': true, '5': false } };
+    let studentProgress = {
+        'taxiDriverSequencing1': {'1': false, '2': true, '3': false, '4': false, '5': false},
+        'taxiDriverSequencing2': {'1': true, '2': true, '3': true, '4': true, '5': false}
+    };
     let currentExercise = null;
-
+    disableLinks();
     function loadUser() {
         console.log("loadUser() called"); // Step 1
         try {
@@ -869,17 +911,26 @@
                     document.querySelectorAll(".activeUserName").forEach(el => {
                         el.innerText = "💛 Hi " + firstname + " " + lastname + " (" + className + ") 💛";
                     });
+                    setTimeout(() => {
+                        handleLoginStatus(true);
+                    }, 100);
+                    enableLinks();
+
 
                 })
                 .withFailureHandler(function (error) {
                     console.error("Failed to get user email:", error.message || error);
                     document.getElementById("activeUserEmail").innerText = "Please login with your Google account!";
+                    setTimeout(() => {
+                        handleLoginStatus(false);
+                    }, 100);
                 })
                 .getStudentData();
         } catch (e) {
             document.getElementById("activeUserEmail").innerText = "Login failed, Mr. Thorben must fix this.";
+            showPane("codingPane");
+            enableLinks();
         }
-
 
 
     }
@@ -890,8 +941,8 @@
 
     let configData = null; // Global variable to store JSON
     async function fetchData() {
-        const response = await fetch('https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/blocks.json');
-        // const response = await fetch('blocks.json');
+        // const response = await fetch('https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/blocks.json');
+        const response = await fetch('blocks.json');
         configData = await response.json();
     }
 
@@ -967,7 +1018,6 @@
                 this.resetCode();
             });
             this.init();
-
 
 
         }
@@ -1175,21 +1225,16 @@
 
 
         resetActivity() {
-            if (this.app) {
-                this.app.destroy(true, { children: true });
-                this.app = null;
-            }
+            BlockManager.workspace.clear();
 
-            if (this.map.workspace) {
-                this.map.workspace.clear();
-                this.map.workspace = null;
+            if (this.app) {
+                this.app.destroy(true, {children: true});
+                this.app = null;
             }
 
             this.player = null;
             this.people = [];
             this.sprites = [];
-            this.mapLayout = null;
-
             buttonVisualisationElement.innerHTML = "";
         }
 
@@ -1214,7 +1259,7 @@
         move_east() {
             return new Promise(resolve => this.player.moveBy(1, 0, this.getMapLayout(), this.speed, this.isRunning, resolve));
         }
-
+        innerHTML = "";
         runCodeBlock() {
             return new Promise(resolve => {
                 this.giveHint("The code has started RUNNING", "3000");
@@ -1230,14 +1275,14 @@
             this.player.initialize();
             buttonRunElement.style.display = "none";
             buttonResetElement.style.display = "inline-block";
-            let runEventBlock = this.blockManager.workspace.getAllBlocks().find(block => block.type === 'run_event');
+            let runEventBlock = BlockManager.workspace.getAllBlocks().find(block => block.type === 'run_event');
             if (!runEventBlock) {
                 this.giveHint("Error: Run block is missing. Please add the Run block.", "15000");
                 this.hasFailed();
                 this.isRunning = false; // Allow execution again
                 return;
             }
-            javascript.javascriptGenerator.init(this.blockManager.workspace);
+            javascript.javascriptGenerator.init(BlockManager.workspace);
             let code = javascript.javascriptGenerator.blockToCode(runEventBlock);
             try {
                 await eval(`(async () => {
@@ -1252,7 +1297,7 @@
             }
 
             try {
-                const xmlDom = Blockly.Xml.workspaceToDom(this.blockManager.workspace);
+                const xmlDom = Blockly.Xml.workspaceToDom(BlockManager.workspace);
                 const xmlText = Blockly.Xml.domToText(xmlDom);
                 const blockExcess = numberBlockCapacityElement.innerText === "over";
                 const blocksOver = blockExcess ? parseInt(numberBlockCapacityElement.innerText) : 0;
@@ -1260,6 +1305,7 @@
                 google.script.run
                     .withSuccessHandler(function (nextLevel) {
                         console.log("Progress submitted successfully.");
+                        currentExercise = nextLevel;
                     })
                     .withFailureHandler(function (error) {
                         console.error("Error submitting progress:", error);
@@ -1332,8 +1378,9 @@
             if (!configData) {
                 await fetchData();
             }
-            this.blockManager = new BlockManager(blocklyDivElement, this.maxBlocks);
-            this.blockManager.loadBlocks(this.blocks);
+            const blockManager = new BlockManager(blocklyDivElement);
+            blockManager.loadActivity(this);
+            blockManager.setupResizeObserver(); // Once
         }
 
 
@@ -1460,34 +1507,13 @@
     }
 
     class BlockManager {
-        constructor(blocklyDiv, maxBlocks) {
-            this.blocklyDiv = blocklyDiv;
-            this.maxBlocks = maxBlocks;
-            this.workspace = null;
-            this.customTheme = null;
-        }
+        static workspace = null;
+        static customTheme = null;
 
-        loadBlocks(blocks) {
-            try {
-                const filteredBlocks = blocks
-                    .map(type => configData.blocks.find(block => block.type === type))
-                    .filter(Boolean);
-                this.loadTheme(configData.blocklyThemeSettings);
-                this.defineBlocks(filteredBlocks);
-                this.createToolbox(filteredBlocks);
-                this.injectWorkspace();
-                this.setupChangeListener();
-                this.setupResizeObserver(); // Add resize listener
-
-            } catch (error) {
-                console.error('Error loading Blockly settings:', error);
-            }
-        }
-
-        loadTheme(themeSettings) {
-            if (themeSettings && themeSettings.length > 0) {
+        static initializeTheme(themeSettings) {
+            if (themeSettings?.length > 0) {
                 const themeData = themeSettings[0];
-                this.customTheme = Blockly.Theme.defineTheme(themeData.themeName, {
+                BlockManager.customTheme = Blockly.Theme.defineTheme(themeData.themeName, {
                     base: Blockly.Themes[themeData.base] || Blockly.Themes.Classic,
                     fontStyle: themeData.fontStyle,
                     componentStyles: themeData.componentStyles,
@@ -1498,38 +1524,19 @@
             }
         }
 
-        defineBlocks(blocks) {
-            if (!blocks || blocks.length === 0) {
-                throw new Error('No blocks found in JSON.');
-            }
-            blocks.forEach(block => {
-                Blockly.common.defineBlocksWithJsonArray([{...block}]);
-                javascript.javascriptGenerator.forBlock[block.type] = () => block.javascript_function;
-            });
-            javascript.javascriptGenerator.forBlock['controls_repeat_ext'] = function (block) {
-                let times = block.getFieldValue('TIMES') || 10; // Get number of repeats
-                let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO'); // Get inner blocks
-                let repeatCode = `
-                for (let i = 0; i < ${times}; i++) {
-                    ${innerCode}
-                }
-            `;
-                return repeatCode; // ✅ Returns JavaScript code instead of calling repeat_10(block);
-            };
-        }
-
-        createToolbox(blocks) {
-            this.toolbox = {
-                'kind': 'flyoutToolbox',
-                'contents': blocks.map(block => ({'kind': 'block', 'type': block.type}))
-            };
-        }
-
-        injectWorkspace() {
-            this.workspace = Blockly.inject(this.blocklyDiv, {
-                toolbox: this.toolbox,
-                theme: this.customTheme,
+        static injectStaticWorkspace(blocklyDiv, initialToolbox) {
+            BlockManager.workspace = Blockly.inject(blocklyDiv, {
+                toolbox: initialToolbox,
+                theme: BlockManager.customTheme,
                 trashcan: true,
+                zoom: {
+                    controls: true,     // ✅ Adds zoom in/out buttons
+                    wheel: true,
+                    startScale: 1.0,
+                    maxScale: 1.5,
+                    minScale: 0.8,
+                    scaleSpeed: 1.2
+                },
                 move: {
                     scrollbars: {
                         horizontal: true,
@@ -1537,80 +1544,117 @@
                     },
                     drag: true,
                     wheel: true
-                }
+                },
+                grid: {
+                    spacing: 20,
+                    length: 3,
+                    colour: '#ffac31',
+                    snap: true
+                },
+                sounds: true,         // Optional: enable Blockly sound effects
+                renderer: 'zelos',    // Optional: choose a specific renderer
+                horizontalLayout: false,
+                toolboxPosition: 'start',
+                collapse: true,
+                comments: false,
+                disable: false,
+                maxBlocks: Infinity,
+                rtl: false,
+                scrollbars: true,
+                css: true,
+                // media: 'media/',
+                oneBasedIndex: true
             });
+        }
+
+        loadActivity(activity) {
+            try {
+                this.maxBlocks = activity.maxBlocks || 0;
+
+                const filteredBlocks = activity.blocks
+                    .map(type => configData.blocks.find(block => block.type === type))
+                    .filter(Boolean);
+
+                this.defineBlocks(filteredBlocks);
+                this.updateToolbox(filteredBlocks);
+                this.setupChangeListener();
+                this.resizeBlocklyWorkspace(); // Immediate resize on activity load
+            } catch (error) {
+                console.error('Error loading activity:', error);
+            }
+        }
+
+        defineBlocks(blocks) {
+            if (!blocks?.length) throw new Error('No blocks found in activity.');
+
+            blocks.forEach(block => {
+                Blockly.common.defineBlocksWithJsonArray([{ ...block }]);
+                javascript.javascriptGenerator.forBlock[block.type] = () => block.javascript_function;
+            });
+
+            javascript.javascriptGenerator.forBlock['controls_repeat_ext'] = function (block) {
+                let times = block.getFieldValue('TIMES') || 10;
+                let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO');
+                return `for (let i = 0; i < ${times}; i++) {\n${innerCode}\n}`;
+            };
+        }
+
+        updateToolbox(blocks) {
+            const toolbox = {
+                kind: 'flyoutToolbox',
+                contents: blocks.map(block => ({ kind: 'block', type: block.type }))
+            };
+            BlockManager.workspace.updateToolbox(toolbox);
         }
 
         countAttachedBlocks(block) {
             if (!block) return 0;
-
-            let count = 1; // Count this block
-
-            // Go through each input (statement, value, dummy)
+            let count = 1;
             for (const input of block.inputList) {
                 const connected = input.connection?.targetBlock();
-                if (connected) {
-                    count += this.countAttachedBlocks(connected);
-                }
+                if (connected) count += this.countAttachedBlocks(connected);
             }
-
-            // Also go through the next block in the sequence (outside of inputs)
             const nextBlock = block.getNextBlock();
-            if (nextBlock) {
-                count += this.countAttachedBlocks(nextBlock);
-            }
-
+            if (nextBlock) count += this.countAttachedBlocks(nextBlock);
             return count;
         }
 
-
         setupChangeListener() {
             const updateCapacity = () => {
-                const allBlocks = this.workspace.getAllBlocks();
+                const allBlocks = BlockManager.workspace.getAllBlocks();
                 const runEventBlock = allBlocks.find(block => block.type === 'run_event');
-                let usedBlocks = 0;
-                if (runEventBlock) {
-                    usedBlocks = this.countAttachedBlocks(runEventBlock);
-                }
-
+                const usedBlocks = runEventBlock ? this.countAttachedBlocks(runEventBlock) : 0;
                 const remaining = this.maxBlocks - usedBlocks;
 
                 numberBlockCapacityElement.textContent = Math.abs(remaining);
-
                 if (remaining < 0) {
-                    buttonCapacityElement.classList.remove("btn-primary");
-                    buttonCapacityElement.classList.add("btn-warning");
+                    buttonCapacityElement.classList.replace("btn-primary", "btn-warning");
                     contentBlockCapacityElement.textContent = "over";
                 } else {
-                    buttonCapacityElement.classList.remove("btn-warning");
-                    buttonCapacityElement.classList.add("btn-primary");
+                    buttonCapacityElement.classList.replace("btn-warning", "btn-primary");
                     contentBlockCapacityElement.textContent = "left";
                 }
             };
-            // Initial capacity update
-            this.workspace.addChangeListener(updateCapacity);
-            updateCapacity(); // initial run
+
+            BlockManager.workspace.addChangeListener(updateCapacity);
+            updateCapacity(); // Run once initially
         }
 
+        resizeBlocklyWorkspace() {
+            if (BlockManager.workspace) {
+                Blockly.svgResize(BlockManager.workspace);
+            }
+        }
 
         setupResizeObserver() {
             if (!buttonVisualisationElement) {
                 console.error("ResizeObserver error: visualisation element not found.");
                 return;
             }
-
             const resizeObserver = new ResizeObserver(() => {
                 this.resizeBlocklyWorkspace();
             });
-
             resizeObserver.observe(buttonVisualisationElement);
-        }
-
-        // Resizes the Blockly workspace
-        resizeBlocklyWorkspace() {
-            if (this.workspace) {
-                Blockly.svgResize(this.workspace);
-            }
         }
     }
 
@@ -1860,20 +1904,23 @@
             let person = listOfSprites.find(p => this.isNextTo(p));
             if (person) {
                 if (person.notif_number > 1) {
+                    // console.log("person.notif_number > 1");
                     Activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/pop-268648.mp3");
                     activity.giveHint("Removed 1 person", "3000");
                     await new Promise(resolve => setTimeout(resolve, speed * 100)); // 0.5 sec delay
                     Sprite.decreaseNumberOfEnvironmentSprites();
                     person.notify(person.notif_number - 1);
                 } else if (person.notif_number === 1) {
+                    // console.log("person.notif_number = 1");
                     Activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/pop-268648.mp3");
                     // console.log("Leftover sprites: " + Sprite.getNumberOfEnvironmentSprites());
                     activity.giveHint("Everyone is inside", "3000");
                     person.notify(person.notif_number - 1);
+                    await new Promise(resolve => setTimeout(resolve, speed * 100)); // 0.5 sec delay
                     Sprite.decreaseNumberOfEnvironmentSprites();
                     person.hide();
                 } else if (person.notif_number <= 0) {
-
+                    // console.log("person.notif_number <= 0");
                     // console.log("3 person exists, notif: " + person.notif_number);
                     activity.giveHint("No person to be picked up", "3000");
                     activity.hasFailed();
@@ -1894,7 +1941,7 @@
 
             const dRow = Math.abs(this.row - otherSprite.row);
             const dCol = Math.abs(this.col - otherSprite.col);
-            console.log(`Checking next-to: this (${this.row}, ${this.col}) vs other (${otherSprite.row}, ${otherSprite.col}) → dRow: ${dRow}, dCol: ${dCol}`);
+            // console.log(`Checking next-to: this (${this.row}, ${this.col}) vs other (${otherSprite.row}, ${otherSprite.col}) → dRow: ${dRow}, dCol: ${dCol}`);
 
             return (dRow === 1 && dCol === 0) || (dRow === 0 && dCol === 1);
         }
@@ -1925,8 +1972,8 @@
         });
 
         // Restore previously saved pane
-        const savedPane = sessionStorage.getItem('activePane') || 'home';
-        showPane(savedPane);
+        // const savedPane = sessionStorage.getItem('activePane') || 'home';
+        // showPane(savedPane);
 
         // Animate grade cards
         gsap.from(".grade-card", {
@@ -1947,6 +1994,11 @@
 
 
     async function init() {
+        if (!configData) {
+            await fetchData();
+        }
+        BlockManager.initializeTheme(configData.blocklyThemeSettings);
+        BlockManager.injectStaticWorkspace(blocklyDivElement, { kind: 'flyoutToolbox', contents: [] });
         buttonNextLevelElement.addEventListener("click", () => {
             // TODO add backend script to get the next level name and set it to a cookie
         });
@@ -1976,20 +2028,119 @@
     });
 
 
-    function showPane(id) {
+    function showPane(paneId) {
+        // Hide all panes and reset z-index and pointer events
         document.querySelectorAll('.tab-pane').forEach(pane => {
-            pane.classList.remove('active');
+            pane.style.display = 'none';
+            pane.style.zIndex = '0';
+            pane.style.pointerEvents = 'none';
+            pane.style.backgroundColor = ''; // Reset background color for other panes
         });
-        const activePane = document.getElementById(id);
-        if (activePane) {
-            activePane.classList.add('active');
-            sessionStorage.setItem('activePane', id);
+
+        // Show the target pane and add the necessary styles
+        const targetPane = document.getElementById(paneId);
+        targetPane.style.display = 'flex'; // or 'block', based on layout
+        targetPane.style.zIndex = '1';
+        targetPane.style.pointerEvents = 'auto';
+
+        // Specific style for the home pane (white background)
+        if (paneId === 'home') {
+            targetPane.style.backgroundColor = 'white'; // Add white background
         }
-        let isSidebarOpen = document.getElementById("sidebar").classList.contains("show");
-        if (isSidebarOpen) {
-            toggleMenu();
+
+        // If loadingPane is showing, animate loading text
+        if (paneId === 'loadingPane') {
+            gsap.fromTo("#loadingText",
+                { opacity: 0, y: 10 },
+                { opacity: 1, y: 0, duration: 0.6, ease: "power2.out", repeat: -1, yoyo: true }
+            );
+        } else {
+            // Stop animation and hide success text for other panes
+            gsap.killTweensOf("#loadingText");
+            document.getElementById('successText').style.display = 'none';
         }
     }
+
+
+    function handleLoginStatus(isLoggedIn) {
+        try {
+            gsap.killTweensOf("#loadingText");
+            console.log("🔄 Killed loading text animation");
+        } catch (err) {
+            console.warn("⚠️ Failed to kill loading animation:", err);
+        }
+
+        // Stop the spinner if it's still visible
+        const spinner = document.querySelector(".spinner-border");
+        if (spinner) {
+            spinner.style.display = "none"; // Hide the spinner on login failure or success
+        }
+
+        // Hide the success/error message text when needed
+        const successText = document.getElementById("successText");
+        const errorText = document.getElementById("loadingText");
+
+        if (isLoggedIn) {
+            // Show success message
+            if (successText) {
+                successText.style.display = "block";
+                successText.style.opacity = 0;
+
+                gsap.fromTo(successText,
+                    { opacity: 0, y: 20 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        ease: "power3.out",
+                        onStart: () => console.log("🎉 Showing success text"),
+                        onComplete: () => console.log("✅ Success text animation complete")
+                    }
+                );
+            } else {
+                console.error("❌ successText element not found!");
+            }
+
+            // Hide error message if any
+            if (errorText) {
+                errorText.style.display = "none";
+            }
+
+            // Wait 2 seconds, then switch to the next pane
+            setTimeout(() => {
+                console.log("⏳ Switching to 'home' pane...");
+                showPane('home');
+            }, 2000);
+
+        } else {
+            // Show error message for login failure
+            if (errorText) {
+                errorText.innerHTML = `Login Failed. <br>Please log in with your Google Account. <br><a href="https://accounts.google.com/ServiceLogin" target="_blank">Log in here</a>`;
+                errorText.style.display = "block"; // Show error message
+
+                gsap.fromTo(errorText,
+                    { opacity: 0, y: 10 },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.8,
+                        ease: "power3.out",
+                        onStart: () => console.log("🚨 Showing error text"),
+                        onComplete: () => console.log("❌ Error text animation complete")
+                    }
+                );
+            } else {
+                console.error("❌ loadingText element not found!");
+            }
+
+            // Hide success message if any
+            if (successText) {
+                successText.style.display = "none";
+            }
+        }
+    }
+
+
     let activity = null;
 
     function setNextExercise(type) {
@@ -2009,7 +2160,7 @@
         }
 
         activity = new Activity(type, level);
-        renderProgressBar(type,level);
+        renderProgressBar(type, level);
         showPane('codingPane');
     }
 
@@ -2036,13 +2187,32 @@
                         activity.resetActivity();
                         activity = null;
                     }
-                    activity = new Activity(type, level);
+                    activity = new Activity(type, level); // if not set, visualisation disappears but workspace not
                     showPane('codingPane');
                 });
 
                 container.appendChild(div);
             }
         }
+    }
+    // Disable all clickable links and buttons
+    function disableLinks() {
+        // Disable anchor links
+        const links = document.querySelectorAll('a, button, select');
+        links.forEach(link => {
+            link.style.pointerEvents = 'none'; // Disable clicking
+            link.style.opacity = '0.5'; // Visual indication of being disabled
+        });
+    }
+
+    // Enable all clickable links and buttons
+    function enableLinks() {
+        // Enable anchor links
+        const links = document.querySelectorAll('a, button, select');
+        links.forEach(link => {
+            link.style.pointerEvents = ''; // Enable clicking
+            link.style.opacity = ''; // Remove the disabled opacity
+        });
     }
 
     init();

@@ -193,7 +193,7 @@
         "notification": 0
       },
       "movable_sprites": null,
-      "positions":  [[8, 5, 1], [8, 9, 1]]
+      "positions":  [[8, 5, 3], [8, 9, 1]]
     },
     {
       "name": "taxi_pickup_two",
@@ -284,7 +284,7 @@
       "instructions": "Pick up all the passengers.",
       "feedback": "Good job!",
       "hints": "Use the pick up block to get everyone in your taxi.",
-      "blocks": ["run_event","move_north","move_south","move_west","move_east","pick_up","controls_repeat_ext"],
+      "blocks": ["run_event","move_south","move_west","move_east","pick_up","controls_repeat_ext"],
       "playerInfo": {
         "image":"https://i.postimg.cc/8C5cQSb0/taxi.png",
         "row":1,
