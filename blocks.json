@@ -194,7 +194,7 @@
       "hints": "Use the pick up block to get everyone in your taxi.",
       "blocks": ["run_event","move_north","move_south","move_west","move_east","pick_up","controls_repeat_ext"],
       "playerInfo": {
-        "image":"https://i.postimg.cc/8C5cQSb0/taxi.png",
+        "image":"https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi2.svg",
         "row":7,
         "col":1,
         "setNotification":false,
@@ -219,7 +219,7 @@
       "hints": "Use the pick up block to get everyone in your taxi.",
       "blocks": ["run_event","move_north","move_south","move_west","move_east","pick_up","controls_repeat_ext"],
       "playerInfo": {
-        "image":"https://i.postimg.cc/8C5cQSb0/taxi.png",
+        "image":"https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi2.svg",
         "row":0,
         "col":2,
         "setNotification":false,
@@ -244,7 +244,7 @@
       "hints": "Use the pick up block TWICE to get everyone in your taxi.",
       "blocks": ["run_event","move_north","move_south","move_west","move_east","pick_up","controls_repeat_ext"],
       "playerInfo": {
-        "image":"https://i.postimg.cc/8C5cQSb0/taxi.png",
+        "image":"https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi2.svg",
         "row":1,
         "col":4,
         "setNotification":false,
@@ -269,7 +269,7 @@
       "hints": "Use the pick up block to get everyone in your taxi.",
       "blocks": ["run_event","move_north","move_south","move_west","move_east","pick_up","controls_repeat_ext"],
       "playerInfo": {
-        "image":"https://i.postimg.cc/8C5cQSb0/taxi.png",
+        "image":"https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi2.svg",
         "row":8,
         "col":10,
         "setNotification":false,
@@ -294,7 +294,7 @@
       "hints": "Use the pick up block to get everyone in your taxi.",
       "blocks": ["run_event","move_south","move_west","move_east","pick_up","controls_repeat_ext"],
       "playerInfo": {
-        "image":"https://i.postimg.cc/8C5cQSb0/taxi.png",
+        "image":"https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi2.svg",
         "row":1,
         "col":1,
         "setNotification":false,

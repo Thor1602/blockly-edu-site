@@ -1334,7 +1334,6 @@
         resetCode() {
             this.isRunning = false;
             this.removeOverlay();
-            // this.getMap().setGridSize();
             // this.initializeEnvironment();
             buttonResetElement.disabled = true;
             buttonStepElement.disabled = true;
@@ -1347,12 +1346,15 @@
                     <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                     LOAD
                 `;
-            setTimeout(() => {
+            setTimeout(async () => {
                 // Draw the sprites (including the new player)
+
                 this.map.drawSprites(this.sprites);
                 Sprite.restoreNotifactionNumberForAllSprites();
+
                 // Initialize the new player (taxi)
-                // this.player.initialize();
+                this.player.initialize();
+
                 // Reset other elements (e.g., people notifications)
                 this.people.forEach(sprite => sprite.notify(sprite.original_notif_number));
                 this.people.forEach(sprite => sprite.show());
@@ -1492,7 +1494,9 @@
         drawSprites(listOfSprites) {
             if (listOfSprites) {
                 listOfSprites.forEach((sprite) => {
-                    if (sprite) this.app.stage.addChild(sprite.container);
+                    if (sprite && sprite.container) {
+                        this.app.stage.addChild(sprite.container);
+                    }
                 });
             }
         }
@@ -1537,7 +1541,7 @@
                 },
                 move: {
                     scrollbars: {
-                        horizontal: true,
+                        horizontal: false,
                         vertical: true
                     },
                     drag: true,
@@ -2185,7 +2189,7 @@
                         activity.resetActivity();
                         activity = null;
                     }
-                    activity = new Activity(type, level); // if not set, visualisation disappears but workspace not
+                    activity = new Activity(type, level);
                     showPane('codingPane');
                 });
 
