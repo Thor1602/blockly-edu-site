@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blockly by Mr. Thorben</title>
+    <base target="_top">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
           integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
@@ -380,14 +381,14 @@
     </style>
 
 </head>
-<body onload="loadUser()">
+<body>
 
 <nav class="navbar navbar-dark bg-warning">
     <div class="container-fluid d-flex justify-content-between align-items-center">
 
         <!-- Left side -->
         <div class="d-flex align-items-center">
-            <a href="javascript:void(0);" class="navbar-brand me-3 expand" onclick="event.preventDefault(); showPane('home')">
+            <a href="#" class="navbar-brand me-3 expand" onclick="event.preventDefault(); showPane('home')">
                 <img src="https://i.postimg.cc/qMKT5SS9/logo.png" height="40px" width="40px" alt=""/>
                 Seoul Academy Apgujeong
             </a>
@@ -425,54 +426,54 @@
         <!-- Grades with Submenus -->
         <li class="nav-item"><h3 class="activeUserName"></h3></li>
         <li class="nav-item">
-            <a href="javascript:void(0);" class="nav-link" data-parent="#sidebarMenu" onclick="event.preventDefault(); showPane('home')">HOME</a>
+            <a href="#" class="nav-link" data-parent="#sidebarMenu" onclick="event.preventDefault(); showPane('home')">HOME</a>
         </li>
         <li class="nav-item">
-            <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#kinderMenu"
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#kinderMenu"
                data-parent="#sidebarMenu">Kinder</a>
             <div id="kinderMenu" class="collapse">
-                <a href="javascript:void(0);" class="nav-link pl-4">Sequencing</a>
+                <a href="#" class="nav-link pl-4">Sequencing</a>
             </div>
         </li>
         <li class="nav-item">
-            <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade1Menu"
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade1Menu"
                data-parent="#sidebarMenu">Grade 1</a>
             <div id="grade1Menu" class="collapse">
-                <a href="javascript:void(0);" class="nav-link pl-4">Sequencing</a>
+                <a href="#" class="nav-link pl-4">Sequencing</a>
             </div>
         </li>
         <li class="nav-item">
-            <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade2Menu"
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade2Menu"
                data-parent="#sidebarMenu">Grade 2</a>
             <div id="grade2Menu" class="collapse">
-                <a href="javascript:void(0);" class="nav-link pl-4">Sequencing</a>
+                <a href="#" class="nav-link pl-4">Sequencing</a>
                 <div class="pl-5">
                     <a href="#taxiDriverSequencing2" class="nav-link">Mr. Cab Driver</a>
                 </div>
             </div>
         </li>
         <li class="nav-item">
-            <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade3Menu"
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade3Menu"
                data-parent="#sidebarMenu">Grade 3</a>
             <div id="grade3Menu" class="collapse">
-                <a href="javascript:void(0);" class="nav-link pl-4">Sequencing</a>
+                <a href="#" class="nav-link pl-4">Sequencing</a>
                 <div class="pl-5">
                     <a href="#taxiDriverSequencing3" class="nav-link">Mr. Cab Driver</a>
                 </div>
             </div>
         </li>
         <li class="nav-item">
-            <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade4Menu"
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade4Menu"
                data-parent="#sidebarMenu">Grade 4</a>
             <div id="grade4Menu" class="collapse">
-                <a href="javascript:void(0);" class="nav-link pl-4">Sequencing</a>
+                <a href="#" class="nav-link pl-4">Sequencing</a>
             </div>
         </li>
         <li class="nav-item">
-            <a href="javascript:void(0);" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade5Menu"
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade5Menu"
                data-parent="#sidebarMenu">Grade 5</a>
             <div id="grade5Menu" class="collapse">
-                <a href="javascript:void(0);" class="nav-link pl-4">Sequencing</a>
+                <a href="#" class="nav-link pl-4">Sequencing</a>
             </div>
         </li>
     </ul>
@@ -499,7 +500,7 @@
                         <div class="grade-title">Grade K</div>
                         <div>
                             <div class="section-title">Sequencing</div>
-                            <a href="javascript:void(0);" class="exercise-link" onclick="setNextExercise('taxiDriverSequencingK')">Mr. Cab
+                            <a href="#" class="exercise-link" onclick="event.preventDefault(); setNextExercise('taxiDriverSequencingK')">Mr. Cab
                                 Driver</a>
                         </div>
                         <div>
@@ -518,7 +519,7 @@
                         <div class="grade-title">Grade 1</div>
                         <div>
                             <div class="section-title">Sequencing</div>
-                            <a href="javascript:void(0);" class="exercise-link" onclick="setNextExercise('taxiDriverSequencing1')">Mr. Cab
+                            <a href="#" class="exercise-link" onclick="event.preventDefault(); setNextExercise('taxiDriverSequencing1')">Mr. Cab
                                 Driver</a>
                         </div>
                         <div>
@@ -531,7 +532,10 @@
                         </div>
                         <div>
                             <div class="section-title">Events</div>
-                            <a>Coming soon</a>
+                            <a>Redirect</a>
+
+
+
                         </div>
                     </div>
                 </div>
@@ -541,12 +545,12 @@
                         <div class="grade-title">Grade 2</div>
                         <div>
                             <div class="section-title">Sequencing</div>
-                            <a href="javascript:void(0);" class="exercise-link" onclick="setNextExercise('taxiDriverSequencing2')">Mr. Cab
+                            <a href="#" class="exercise-link" onclick="event.preventDefault(); setNextExercise('taxiDriverSequencing2')">Mr. Cab
                                 Driver</a>
                         </div>
                         <div>
                             <div class="section-title">Loops</div>
-                            <a>Coming soon</a>
+                            <a>Contact</a>
                         </div>
                         <div>
                             <div class="section-title">Debugging</div>
@@ -564,7 +568,7 @@
                         <div class="grade-title">Grade 3</div>
                         <div>
                             <div class="section-title">Sequencing</div>
-                            <a href="javascript:void(0);" class="exercise-link" onclick="setNextExercise('taxiDriverSequencing3')">Mr. Cab
+                            <a href="#" class="exercise-link" onclick="event.preventDefault(); setNextExercise('taxiDriverSequencing3')">Mr. Cab
                                 Driver</a>
                         </div>
                         <div>
@@ -591,7 +595,7 @@
                         <div class="grade-title">Grade 4</div>
                         <div>
                             <div class="section-title">Sequencing</div>
-                            <a href="javascript:void(0);" class="exercise-link" onclick="setNextExercise('taxiDriverSequencing4')">Mr. Cab
+                            <a href="#" class="exercise-link" onclick="event.preventDefault(); setNextExercise('taxiDriverSequencing4')">Mr. Cab
                                 Driver</a>
                         </div>
                         <div>
@@ -630,7 +634,7 @@
                         <div class="grade-title">Grade 5</div>
                         <div>
                             <div class="section-title">Sequencing</div>
-                            <a href="javascript:void(0);" class="exercise-link" onclick="setNextExercise('taxiDriverSequencing5')">Mr. Cab
+                            <a href="#" class="exercise-link" onclick="event.preventDefault(); setNextExercise('taxiDriverSequencing5')">Mr. Cab
                                 Driver</a>
                         </div>
                         <div>
@@ -878,41 +882,67 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
 <script>
+
+
+    window.onload = function () {
+        if (sessionStorage.getItem("loggedIn")==="true") {
+            loadUser();
+        }
+        else if (){
+            // load next level when continue is pressed
+        }
+        else{
+            // load level that is clicked
+        }
+
+    }
+
+
+    //sessionStorage.setItem("currentExerciseType", {{currentExerciseType}});
+    //sessionStorage.setItem("currentExerciseLevel", {{currentExerciseLevel}});
+    //console.log(sessionStorage.getItem("currentExerciseLevel"));
     // TODO getPerson sometimes gets the last person wrong. Change it by the len of a list where sprites.hide are skipped
     // TODO change grid size 12 and 16 to the size length of the map
     // TODO taxi can get people sometimes. It can get people from the hood side but not here in the second loop taxi_pickup_five
     // TODO add code in case there is no user logged in,
-    let email = null;
-    let firstname = null;
-    let lastname = null;
-    let studentId = null;
-    let className = null;
-    let grade = null;
     let studentProgress = {
         'taxiDriverSequencing1': {'1': false, '2': true, '3': false, '4': false, '5': false},
         'taxiDriverSequencing2': {'1': true, '2': true, '3': true, '4': true, '5': false}
     };
-    let currentExercise = null;
+
     disableLinks();
     function loadUser() {
+        console.log("loadUser() called"); // Step 1
         try {
             google.script.run
                 .withSuccessHandler(function (studentData) {
-                    email = studentData[0][0];
-                    firstname = studentData[0][1];
-                    lastname = studentData[0][2];
-                    studentId = studentData[0][3];
-                    className = studentData[0][4];
-                    grade = studentData[0][5];
-                    studentProgress = null;
-                    studentProgress = studentData[1];
+                    const email = studentData[0][0];
+                    const firstname = studentData[0][1];
+                    const lastname = studentData[0][2];
+                    const studentId = studentData[0][3];
+                    const className = studentData[0][4];
+                    const grade = studentData[0][5];
+                    const studentProgress = studentData[1];
+                    init(studentData[2],studentData[3]);
+
+                    sessionStorage.setItem("loggedIn", "true");
+                    sessionStorage.setItem("currentLessonType", studentData[2]);
+                    sessionStorage.setItem("currentLessonLevel", studentData[3]);
+                    sessionStorage.setItem("email", email);
+                    sessionStorage.setItem("firstname", firstname);
+                    sessionStorage.setItem("lastname", lastname);
+                    sessionStorage.setItem("studentId", studentId);
+                    sessionStorage.setItem("className", className);
+                    sessionStorage.setItem("grade", grade);
+                    sessionStorage.setItem("studentProgress", JSON.stringify(studentProgress));
+
                     document.getElementById("activeUserEmail").innerText = email;
                     document.querySelectorAll(".activeUserName").forEach(el => {
                         el.innerText = "💛 Hi " + firstname + " " + lastname + " (" + className + ") 💛";
                     });
                     setTimeout(() => {
                         handleLoginStatus(true);
-                    }, 100);
+                    }, 200);
                     enableLinks();
 
 
@@ -922,26 +952,24 @@
                     document.getElementById("activeUserEmail").innerText = "Please login with your Google account!";
                     setTimeout(() => {
                         handleLoginStatus(false);
-                    }, 100);
+                    }, 200);
                 })
                 .getStudentData();
         } catch (e) {
             document.getElementById("activeUserEmail").innerText = "Login failed, Mr. Thorben must fix this.";
-            showPane("codingPane");
+            setTimeout(() => {
+                handleLoginStatus(true);
+            }, 200);
             enableLinks();
         }
 
 
     }
 
-    window.onload = function () {
-        loadUser();
-    }
-
     let configData = null; // Global variable to store JSON
     async function fetchData() {
-        // const response = await fetch('https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/blocks.json');
-        const response = await fetch('blocks.json');
+        const response = await fetch('https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/blocks.json');
+        // const response = await fetch('blocks.json');
         configData = await response.json();
     }
 
@@ -977,6 +1005,8 @@
         static allActivities = [];
 
         constructor(type, level) {
+            console.log(type);
+            console.log(level);
             this.name = null;
             this.type = type;
             this.level = level;
@@ -1224,7 +1254,9 @@
 
 
         resetActivity() {
-            BlockManager.workspace.clear();
+            if (this.blockManager.workspace) {
+                this.blockManager.workspace.dispose();
+            }
 
             if (this.app) {
                 this.app.destroy(true, {children: true});
@@ -1274,20 +1306,21 @@
             this.player.initialize();
             buttonRunElement.style.display = "none";
             buttonResetElement.style.display = "inline-block";
-            let runEventBlock = BlockManager.workspace.getAllBlocks().find(block => block.type === 'run_event');
+            let runEventBlock = this.blockManager.workspace.getAllBlocks().find(block => block.type === 'run_event');
             if (!runEventBlock) {
                 this.giveHint("Error: Run block is missing. Please add the Run block.", "15000");
                 this.hasFailed();
                 this.isRunning = false; // Allow execution again
                 return;
             }
-            javascript.javascriptGenerator.init(BlockManager.workspace);
+            javascript.javascriptGenerator.init(this.blockManager.workspace);
             let code = javascript.javascriptGenerator.blockToCode(runEventBlock);
             try {
                 await eval(`(async () => {
                     let checkRunning = () => this.isRunning; // Closure to check the flag
                     ${code.split("await").join("if (!checkRunning()) return; await")} // Insert check before each await
                 })();`);
+                console.log("evaluated");
             } catch (error) {
                 console.error("Error executing code:", error);
             } finally {
@@ -1295,25 +1328,27 @@
             }
 
             try {
-                const xmlDom = Blockly.Xml.workspaceToDom(BlockManager.workspace);
+                const xmlDom = Blockly.Xml.workspaceToDom(this.blockManager.workspace);
                 const xmlText = Blockly.Xml.domToText(xmlDom);
                 const blockExcess = numberBlockCapacityElement.innerText === "over";
                 const blocksOver = blockExcess ? parseInt(numberBlockCapacityElement.innerText) : 0;
 
                 google.script.run
-                    .withSuccessHandler(function (nextLevel) {
+                    .withSuccessHandler(function (nextType, nextLevel) {
                         console.log("Progress submitted successfully.");
-                        currentExercise = nextLevel;
+                        // sessionStorage.setItem("currentExerciseType", nextType);
+                        //sessionStorage.setItem("currentExerciseLevel", nextLevel);
+                        location.href = "{{link}}";
                     })
                     .withFailureHandler(function (error) {
                         console.error("Error submitting progress:", error);
 
                     })
                     .insertProgress({
-                        email: email,
-                        className: className,
-                        grade: grade,
-                        studentId: studentId,
+                        email: sessionStorage.getItem("email"),
+                        className: sessionStorage.getItem("className"),
+                        grade: sessionStorage.getItem("grade"),
+                        studentId: sessionStorage.getItem("studentId"),
                         type: this.type,
                         level: this.level,
                         workspaceXml: xmlText,
@@ -1334,6 +1369,7 @@
         resetCode() {
             this.isRunning = false;
             this.removeOverlay();
+            // this.getMap().setGridSize();
             // this.initializeEnvironment();
             buttonResetElement.disabled = true;
             buttonStepElement.disabled = true;
@@ -1346,15 +1382,12 @@
                     <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                     LOAD
                 `;
-            setTimeout(async () => {
+            setTimeout(() => {
                 // Draw the sprites (including the new player)
-
                 this.map.drawSprites(this.sprites);
                 Sprite.restoreNotifactionNumberForAllSprites();
-
                 // Initialize the new player (taxi)
                 this.player.initialize();
-
                 // Reset other elements (e.g., people notifications)
                 this.people.forEach(sprite => sprite.notify(sprite.original_notif_number));
                 this.people.forEach(sprite => sprite.show());
@@ -1378,9 +1411,8 @@
             if (!configData) {
                 await fetchData();
             }
-            const blockManager = new BlockManager(blocklyDivElement);
-            blockManager.loadActivity(this);
-            blockManager.setupResizeObserver(); // Once
+            this.blockManager = new BlockManager(blocklyDivElement, this.maxBlocks);
+            this.blockManager.loadBlocks(this.blocks);
         }
 
 
@@ -1494,9 +1526,7 @@
         drawSprites(listOfSprites) {
             if (listOfSprites) {
                 listOfSprites.forEach((sprite) => {
-                    if (sprite && sprite.container) {
-                        this.app.stage.addChild(sprite.container);
-                    }
+                    if (sprite) this.app.stage.addChild(sprite.container);
                 });
             }
         }
@@ -1509,13 +1539,34 @@
     }
 
     class BlockManager {
-        static workspace = null;
-        static customTheme = null;
+        constructor(blocklyDiv, maxBlocks) {
+            this.blocklyDiv = blocklyDiv;
+            this.maxBlocks = maxBlocks;
+            this.workspace = null;
+            this.customTheme = null;
+        }
 
-        static initializeTheme(themeSettings) {
-            if (themeSettings?.length > 0) {
+        loadBlocks(blocks) {
+            try {
+                const filteredBlocks = blocks
+                    .map(type => configData.blocks.find(block => block.type === type))
+                    .filter(Boolean);
+                this.loadTheme(configData.blocklyThemeSettings);
+                this.defineBlocks(filteredBlocks);
+                this.createToolbox(filteredBlocks);
+                this.injectWorkspace();
+                this.setupChangeListener();
+                this.setupResizeObserver(); // Add resize listener
+
+            } catch (error) {
+                console.error('Error loading Blockly settings:', error);
+            }
+        }
+
+        loadTheme(themeSettings) {
+            if (themeSettings && themeSettings.length > 0) {
                 const themeData = themeSettings[0];
-                BlockManager.customTheme = Blockly.Theme.defineTheme(themeData.themeName, {
+                this.customTheme = Blockly.Theme.defineTheme(themeData.themeName, {
                     base: Blockly.Themes[themeData.base] || Blockly.Themes.Classic,
                     fontStyle: themeData.fontStyle,
                     componentStyles: themeData.componentStyles,
@@ -1526,146 +1577,121 @@
             }
         }
 
-        static injectStaticWorkspace(blocklyDiv, initialToolbox) {
-            BlockManager.workspace = Blockly.inject(blocklyDiv, {
-                toolbox: initialToolbox,
-                theme: BlockManager.customTheme,
+        defineBlocks(blocks) {
+            if (!blocks || blocks.length === 0) {
+                throw new Error('No blocks found in JSON.');
+            }
+            blocks.forEach(block => {
+                Blockly.common.defineBlocksWithJsonArray([{...block}]);
+                javascript.javascriptGenerator.forBlock[block.type] = () => block.javascript_function;
+            });
+            javascript.javascriptGenerator.forBlock['controls_repeat_ext'] = function (block) {
+                let times = block.getFieldValue('TIMES') || 10; // Get number of repeats
+                let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO'); // Get inner blocks
+                let repeatCode = `
+                for (let i = 0; i < ${times}; i++) {
+                    ${innerCode}
+                }
+            `;
+                return repeatCode; // ✅ Returns JavaScript code instead of calling repeat_10(block);
+            };
+        }
+
+        createToolbox(blocks) {
+            this.toolbox = {
+                'kind': 'flyoutToolbox',
+                'contents': blocks.map(block => ({'kind': 'block', 'type': block.type}))
+            };
+        }
+
+        injectWorkspace() {
+            this.workspace = Blockly.inject(this.blocklyDiv, {
+                toolbox: this.toolbox,
+                theme: this.customTheme,
                 trashcan: true,
-                zoom: {
-                    controls: true,     // ✅ Adds zoom in/out buttons
-                    wheel: true,
-                    startScale: 0.8,
-                    maxScale: 1.5,
-                    minScale: 0.4,
-                    scaleSpeed: 1.2
-                },
                 move: {
                     scrollbars: {
-                        horizontal: false,
+                        horizontal: true,
                         vertical: true
                     },
                     drag: true,
                     wheel: true
-                },
-                grid: {
-                    spacing: 20,
-                    length: 3,
-                    colour: '#ffac31',
-                    snap: true
-                },
-                sounds: true,         // Optional: enable Blockly sound effects
-                renderer: 'zelos',    // Optional: choose a specific renderer
-                horizontalLayout: false,
-                toolboxPosition: 'start',
-                collapse: true,
-                comments: false,
-                disable: false,
-                maxBlocks: Infinity,
-                rtl: false,
-                scrollbars: true,
-                css: true,
-                // media: 'media/',
-                oneBasedIndex: true
-            });
-        }
-
-        loadActivity(activity) {
-            try {
-                this.maxBlocks = activity.maxBlocks || 0;
-
-                const filteredBlocks = activity.blocks
-                    .map(type => configData.blocks.find(block => block.type === type))
-                    .filter(Boolean);
-
-                this.defineBlocks(filteredBlocks);
-                this.updateToolbox(filteredBlocks);
-                if (BlockManager.workspace) {
-                    const runEventBlock = BlockManager.workspace.newBlock('run_event');
-                    runEventBlock.setDeletable(false);
-                    runEventBlock.setMovable(false);
-                    runEventBlock.initSvg();
-                    runEventBlock.render();
-                    runEventBlock.moveBy(50, 50); // Set to a good spot
                 }
-                this.setupChangeListener();
-                this.resizeBlocklyWorkspace(); // Immediate resize on activity load
-            } catch (error) {
-                console.error('Error loading activity:', error);
-            }
-        }
-
-        defineBlocks(blocks) {
-            if (!blocks?.length) throw new Error('No blocks found in activity.');
-
-            blocks.forEach(block => {
-                Blockly.common.defineBlocksWithJsonArray([{ ...block }]);
-                javascript.javascriptGenerator.forBlock[block.type] = () => block.javascript_function;
             });
-
-            javascript.javascriptGenerator.forBlock['controls_repeat_ext'] = function (block) {
-                let times = block.getFieldValue('TIMES') || 10;
-                let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO');
-                return `for (let i = 0; i < ${times}; i++) {\n${innerCode}\n}`;
-            };
-        }
-
-        updateToolbox(blocks) {
-            const toolbox = {
-                kind: 'flyoutToolbox',
-                contents: blocks.map(block => ({ kind: 'block', type: block.type }))
-            };
-            BlockManager.workspace.updateToolbox(toolbox);
         }
 
         countAttachedBlocks(block) {
             if (!block) return 0;
-            let count = 1;
+
+            let count = 1; // Count this block
+
+            // Go through each input (statement, value, dummy)
             for (const input of block.inputList) {
                 const connected = input.connection?.targetBlock();
-                if (connected) count += this.countAttachedBlocks(connected);
+                if (connected) {
+                    count += this.countAttachedBlocks(connected);
+                }
             }
+
+            // Also go through the next block in the sequence (outside of inputs)
             const nextBlock = block.getNextBlock();
-            if (nextBlock) count += this.countAttachedBlocks(nextBlock);
+            if (nextBlock) {
+                count += this.countAttachedBlocks(nextBlock);
+            }
+
             return count;
         }
 
+
         setupChangeListener() {
             const updateCapacity = () => {
-                const allBlocks = BlockManager.workspace.getAllBlocks();
+                const allBlocks = this.workspace.getAllBlocks();
                 const runEventBlock = allBlocks.find(block => block.type === 'run_event');
-                const usedBlocks = runEventBlock ? this.countAttachedBlocks(runEventBlock) : 0;
+                let usedBlocks = 0;
+                if (runEventBlock) {
+                    usedBlocks = this.countAttachedBlocks(runEventBlock);
+                }
+
                 const remaining = this.maxBlocks - usedBlocks;
 
                 numberBlockCapacityElement.textContent = Math.abs(remaining);
+
                 if (remaining < 0) {
-                    buttonCapacityElement.classList.replace("btn-primary", "btn-warning");
+                    buttonCapacityElement.classList.remove("btn-primary");
+                    buttonCapacityElement.classList.add("btn-warning");
                     contentBlockCapacityElement.textContent = "over";
                 } else {
-                    buttonCapacityElement.classList.replace("btn-warning", "btn-primary");
+                    buttonCapacityElement.classList.remove("btn-warning");
+                    buttonCapacityElement.classList.add("btn-primary");
                     contentBlockCapacityElement.textContent = "left";
                 }
             };
-
-            BlockManager.workspace.addChangeListener(updateCapacity);
-            updateCapacity(); // Run once initially
+            // Initial capacity update
+            this.workspace.addChangeListener(updateCapacity);
+            updateCapacity(); // initial run
         }
 
-        resizeBlocklyWorkspace() {
-            if (BlockManager.workspace) {
-                Blockly.svgResize(BlockManager.workspace);
-            }
-        }
 
         setupResizeObserver() {
             if (!buttonVisualisationElement) {
                 console.error("ResizeObserver error: visualisation element not found.");
                 return;
             }
+
             const resizeObserver = new ResizeObserver(() => {
                 this.resizeBlocklyWorkspace();
             });
+
             resizeObserver.observe(buttonVisualisationElement);
         }
+
+        // Resizes the Blockly workspace
+        resizeBlocklyWorkspace() {
+            if (this.workspace) {
+                Blockly.svgResize(this.workspace);
+            }
+        }
+
     }
 
 
@@ -1715,6 +1741,7 @@
             this.app.stage.addChild(this.container);
             Sprite.listOfSprites.push(this);
             Sprite.#numberOfEnvironmentSprites += notif_number;
+            console.log(this.app);
         }
 
         static restoreNotifactionNumberForAllSprites() {
@@ -1913,23 +1940,20 @@
             let person = listOfSprites.find(p => this.isNextTo(p));
             if (person) {
                 if (person.notif_number > 1) {
-                    // console.log("person.notif_number > 1");
                     Activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/pop-268648.mp3");
                     activity.giveHint("Removed 1 person", "3000");
                     await new Promise(resolve => setTimeout(resolve, speed * 100)); // 0.5 sec delay
                     Sprite.decreaseNumberOfEnvironmentSprites();
                     person.notify(person.notif_number - 1);
                 } else if (person.notif_number === 1) {
-                    // console.log("person.notif_number = 1");
                     Activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/pop-268648.mp3");
                     // console.log("Leftover sprites: " + Sprite.getNumberOfEnvironmentSprites());
                     activity.giveHint("Everyone is inside", "3000");
                     person.notify(person.notif_number - 1);
-                    await new Promise(resolve => setTimeout(resolve, speed * 100)); // 0.5 sec delay
                     Sprite.decreaseNumberOfEnvironmentSprites();
                     person.hide();
                 } else if (person.notif_number <= 0) {
-                    // console.log("person.notif_number <= 0");
+
                     // console.log("3 person exists, notif: " + person.notif_number);
                     activity.giveHint("No person to be picked up", "3000");
                     activity.hasFailed();
@@ -1950,7 +1974,7 @@
 
             const dRow = Math.abs(this.row - otherSprite.row);
             const dCol = Math.abs(this.col - otherSprite.col);
-            // console.log(`Checking next-to: this (${this.row}, ${this.col}) vs other (${otherSprite.row}, ${otherSprite.col}) → dRow: ${dRow}, dCol: ${dCol}`);
+            console.log(`Checking next-to: this (${this.row}, ${this.col}) vs other (${otherSprite.row}, ${otherSprite.col}) → dRow: ${dRow}, dCol: ${dCol}`);
 
             return (dRow === 1 && dCol === 0) || (dRow === 0 && dCol === 1);
         }
@@ -1967,16 +1991,6 @@
             $('#sidebarMenu .nav-item').removeClass('active-bg-sidebar');
             $('#sidebarMenu .nav-item').addClass('bg-sidebar');
             $(this).parent().removeClass('bg-sidebar').addClass('active-bg-sidebar');
-        });
-
-        // Handle sequencing links
-        const sidebar = document.getElementById("sidebar");
-        const sequencingLinks = sidebar.querySelectorAll('a[href^="#taxiDriverSequencing"]');
-        sequencingLinks.forEach(link => {
-            link.addEventListener("click", function (e) {
-                e.preventDefault();
-                const target = link.getAttribute("href");
-            });
         });
 
         // Restore previously saved pane
@@ -2001,12 +2015,9 @@
     }
 
 
-    async function init() {
-        if (!configData) {
-            await fetchData();
-        }
-        BlockManager.initializeTheme(configData.blocklyThemeSettings);
-        BlockManager.injectStaticWorkspace(blocklyDivElement, { kind: 'flyoutToolbox', contents: [] });
+    async function init(type, level) {
+        // let type = sessionStorage.getItem("currentExerciseType");
+        new Activity(type, level);
         buttonNextLevelElement.addEventListener("click", () => {
             // TODO add backend script to get the next level name and set it to a cookie
         });
@@ -2070,9 +2081,12 @@
     }
 
 
+
+
     function handleLoginStatus(isLoggedIn) {
         try {
             gsap.killTweensOf("#loadingText");
+            console.log("🔄 Killed loading text animation");
         } catch (err) {
             console.warn("⚠️ Failed to kill loading animation:", err);
         }
@@ -2099,7 +2113,9 @@
                         opacity: 1,
                         y: 0,
                         duration: 0.8,
-                        ease: "power3.out"
+                        ease: "power3.out",
+                        onStart: () => console.log("🎉 Showing success text"),
+                        onComplete: () => console.log("✅ Success text animation complete")
                     }
                 );
             } else {
@@ -2113,8 +2129,9 @@
 
             // Wait 2 seconds, then switch to the next pane
             setTimeout(() => {
+                console.log("⏳ Switching to 'home' pane...");
                 showPane('home');
-            }, 2000);
+            }, 1000);
 
         } else {
             // Show error message for login failure
@@ -2128,7 +2145,9 @@
                         opacity: 1,
                         y: 0,
                         duration: 0.8,
-                        ease: "power3.out"
+                        ease: "power3.out",
+                        onStart: () => console.log("🚨 Showing error text"),
+                        onComplete: () => console.log("❌ Error text animation complete")
                     }
                 );
             } else {
@@ -2143,27 +2162,9 @@
     }
 
 
-    let activity = null;
 
     function setNextExercise(type) {
-        if (activity) {
-            activity.resetActivity();
-            activity = null;
-        }
 
-        let level = "1"; // default fallback
-        if (studentProgress[type]) {
-            for (const key in studentProgress[type]) {
-                if (!studentProgress[type][key]) {
-                    level = key;
-                    break;
-                }
-            }
-        }
-
-        activity = new Activity(type, level);
-        renderProgressBar(type, level);
-        showPane('codingPane');
     }
 
     function renderProgressBar(type, currentLevel) {
@@ -2185,11 +2186,7 @@
 
                 // Make the dot clickable
                 div.addEventListener('click', () => {
-                    if (activity) {
-                        activity.resetActivity();
-                        activity = null;
-                    }
-                    activity = new Activity(type, level);
+                    // connect to server for this particular level
                     showPane('codingPane');
                 });
 
@@ -2217,7 +2214,6 @@
         });
     }
 
-    init();
 </script>
 </body>
 </html>

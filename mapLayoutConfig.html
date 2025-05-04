@@ -1,124 +1,518 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PixiJS Tile Map</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.3.2/pixi.min.js"></script>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Map Layout Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        textarea {
+            font-family: monospace;
+        }
+
+        label {
+            font-weight: bold;
+        }
+        body {
+            padding-top: 70px; /* Adjust padding to avoid content under the navbar */
+        }
+
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pixi.js/7.3.2/pixi.min.js"></script>
 </head>
 <body>
+<nav class="navbar navbar-light bg-light fixed-top border-bottom">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">HOME</a>
+        <ul class="navbar-nav flex-row">
+            <li class="nav-item mx-2">
+                <a class="nav-link" href="#exerciseGenerator">Exercise Generator</a>
+            </li>
+            <li class="nav-item mx-2">
+                <a class="nav-link" href="#mapLayoutGenerator">MapLayout Generator</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 
+<div class="container mt-4 p-4 bg-primary text-white" id="exerciseGenerator">
+    <h3>Edit JSON Form (Live Update)</h3>
+    <form id="jsonForm" class="row g-3">
+        <!-- Basic Fields -->
+        <div class="col-md-4"><label>Name</label><input type="text" class="form-control json-input" id="name"
+                                                        value="taxiDriverSequencing2_"></div>
+        <div class="col-md-4"><label>Type</label><input type="text" class="form-control json-input" id="type"
+                                                        value="taxiDriverSequencing"></div>
+        <div class="col-md-2"><label>Level</label><input type="text" class="form-control json-input" id="level"
+                                                         value="5"></div>
+        <div class="col-md-2"><label>Grid Size</label><input type="number" class="form-control json-input" id="gridSize"
+                                                             value="30"></div>
+        <div class="col-md-2"><label>Row Length</label><input type="number" class="form-control json-input"
+                                                              id="rowLength" value="12"></div>
+        <div class="col-md-2"><label>Col Length</label><input type="number" class="form-control json-input"
+                                                              id="colLength" value="16"></div>
+        <div class="col-md-2"><label>Max Blocks</label><input type="number" class="form-control json-input"
+                                                              id="maxBlocks" value="30"></div>
+        <div class="col-md-4"><label>Goal</label><input type="text" class="form-control json-input" id="goal" value="">
+        </div>
+        <div class="col-md-4"><label>Map Layout</label><input type="text" class="form-control json-input"
+                                                              id="mapLayoutForm"
+                                                              value="taxi_pickup_map_"></div>
+        <div class="col-md-12"><label>Instructions</label><input type="text" class="form-control json-input"
+                                                                 id="instructions" value="Pick up all the passengers.">
+        </div>
+        <div class="col-md-12"><label>Feedback</label><input type="text" class="form-control json-input" id="feedback"
+                                                             value="Good job!"></div>
+        <div class="col-md-12"><label>Hints</label><input type="text" class="form-control json-input" id="hints"
+                                                          value="Use the pick up block to get everyone in your taxi.">
+        </div>
+        <div class="col-md-12">
+            <label class="form-label">Blocks</label>
+            <div id="blockCheckboxes" class="row row-cols-2"></div>
+        </div>
 
-<div>{<br>"name": "taxi_pickup_map_five", <br>"layout": <br>   {</div>
-<pre id="mapLayout"></pre>
-<div>   }<br>}</div>
-<button onclick="initialize(0)">Black</button>
-<button onclick="initialize(1)">Grey</button>
-<button onclick="initialize(2)">Green</button>
+        <!-- Player Info -->
+        <div class="col-md-12"><h5>Player Info</h5></div>
+        <div class="col-md-6"><label>Image URL</label><input type="text" class="form-control json-input"
+                                                             id="playerImage"
+                                                             value="taxi2.svg">
+        </div>
+        <div class="col-md-2"><label>Row</label><input type="number" class="form-control json-input" id="playerRow"
+                                                       value="1"></div>
+        <div class="col-md-2"><label>Col</label><input type="number" class="form-control json-input" id="playerCol"
+                                                       value="1"></div>
+        <div class="col-md-2"><label>Notification</label><input type="number" class="form-control json-input"
+                                                                id="playerNotification" value="0"></div>
+        <div class="col-md-2 form-check pt-4"><input type="checkbox" class="form-check-input json-input"
+                                                     id="playerSetNotification"><label class="form-check-label"
+                                                                                       for="playerSetNotification">Set
+            Notification</label></div>
+
+        <!-- Positions -->
+        <div class="col-md-12"><label>Positions (array of arrays)</label><input type="text"
+                                                                                class="form-control json-input"
+                                                                                id="positions"
+                                                                                readonly>
+        </div>
+    </form>
+    <div id="grid"></div>
+    <hr>
+    <h5>Live JSON Output</h5>
+    <textarea id="jsonOutput" class="form-control" rows="15" readonly></textarea>
+</div>
+<div class="container mt-4 p-4 bg-success text-white" id="mapLayoutGenerator">
+    <h3>MapLayout Generator</h3>
+    <div>{<br>"name": "taxiDriverSequencing2_", <br>"layout": <br> {</div>
+    <pre id="mapLayout"></pre>
+    <div> }<br>}</div>
+    <div class="row g-3 align-items-center">
+        <!-- Color Picker -->
+        <div class="col-auto">
+            <label for="colorPicker" class="form-label">Pick a Color</label>
+            <select id="colorPicker" class="form-select">
+                <option value="0">Black</option>
+                <option value="1">Grey</option>
+                <option value="2">Green</option>
+            </select>
+        </div>
+
+        <!-- Fill Mode Checkbox -->
+        <div class="col-auto">
+            <div class="form-check mt-4">
+                <input class="form-check-input" type="checkbox" id="fillMode">
+                <label class="form-check-label" for="fillMode">
+                    Fill mode (bucket)
+                </label>
+            </div>
+        </div>
+
+        <!-- Initialize Button -->
+        <div class="col-auto mt-4">
+            <button class="btn btn-primary"
+                    onclick="initialize(parseInt(document.getElementById('colorPicker').value))">
+                Initialize with selected color
+            </button>
+        </div>
+    </div>
+    <div class="mt-5 p-1" id="mapVisualisation"></div>
+</div>
+
 <script>
-  // Map layout from the provided data
-  const mapLayout = {
-    "A": {"1": 2, "2": 2, "3": 0, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 0, "12": 2},
-    "B": {"1": 2, "2": 2, "3": 0, "4": 1, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 1, "11": 0, "12": 2},
-    "C": {"1": 0, "2": 0, "3": 0, "4": 1, "5": 0, "6": 1, "7": 1, "8": 1, "9": 0, "10": 1, "11": 0, "12": 0},
-    "D": {"1": 1, "2": 1, "3": 1, "4": 1, "5": 0, "6": 1, "7": 0, "8": 1, "9": 0, "10": 1, "11": 1, "12": 1},
-    "E": {"1": 1, "2": 0, "3": 0, "4": 0, "5": 0, "6": 1, "7": 0, "8": 1, "9": 0, "10": 0, "11": 0, "12": 1},
-    "F": {"1": 1, "2": 0, "3": 1, "4": 1, "5": 1, "6": 1, "7": 0, "8": 1, "9": 1, "10": 1, "11": 0, "12": 1},
-    "G": {"1": 1, "2": 0, "3": 1, "4": 0, "5": 0, "6": 0, "7": 0, "8": 1, "9": 0, "10": 1, "11": 0, "12": 1},
-    "H": {"1": 1, "2": 0, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 0, "10": 1, "11": 0, "12": 1},
-    "I": {"1": 1, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 1, "11": 0, "12": 1},
-    "J": {"1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 0, "12": 1},
-    "K": {"1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 1, "11": 0, "12": 0},
-    "L": {"1": 2, "2": 2, "3": 0, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 0, "12": 2},
-    "M": {"1": 2, "2": 2, "3": 0, "4": 1, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 1, "11": 0, "12": 2},
-    "N": {"1": 2, "2": 2, "3": 0, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 0, "12": 2},
-    "O": {"1": 2, "2": 2, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0, "11": 0, "12": 2},
-    "P": {"1": 2, "2": 2, "3": 2, "4": 2, "5": 2, "6": 2, "7": 2, "8": 2, "9": 2, "10": 2, "11": 2, "12": 2}
-  };
 
-  const TILE_SIZE = 50;
-  const COLORS = { 0: 0x333333, 1: 0xAAAAAA, 2: 0x00AA00 };
-  function updateMapLayoutDisplay() {
-    const mapLayoutElement = document.getElementById('mapLayout');
+    // -----EXERCISE GENERATOR---------------------------------------------------------------------------------------------
 
-    // Create formatted string for mapLayout in the desired style
-    let formattedMap = '';
-    for (const [row, cols] of Object.entries(mapLayout)) {
-      let rowString = `"${row}": { `;
-      for (const [col, value] of Object.entries(cols)) {
-        rowString += `"${col}": ${value}, `;
-      }
-      rowString = rowString.slice(0, -2) + ' },\n'; // Remove last comma and space, then add closing bracket
-      formattedMap += rowString;
+    const selectedBlocks = new Set();
+
+    fetch('blocks.json')
+        .then(res => res.json())
+        .then(jsonfile => {
+            const container = document.getElementById("blockCheckboxes");
+            jsonfile.blocks.forEach(block => {
+                const checkboxDiv = document.createElement("div");
+                checkboxDiv.className = "form-check";
+
+                const checkbox = document.createElement("input");
+                checkbox.type = "checkbox";
+                checkbox.className = "form-check-input";
+                checkbox.id = `block-${block.type}`;
+                checkbox.value = block.type;
+
+                checkbox.addEventListener("change", () => {
+                    if (checkbox.checked) {
+                        selectedBlocks.add(block.type);
+                    } else {
+                        selectedBlocks.delete(block.type);
+                    }
+                    updateBlocksInJson(); // update your JSON with the selected blocks
+                });
+
+                const label = document.createElement("label");
+                label.className = "form-check-label";
+                label.htmlFor = checkbox.id;
+                label.textContent = block.type;
+
+                checkboxDiv.appendChild(checkbox);
+                checkboxDiv.appendChild(label);
+                container.appendChild(checkboxDiv);
+            });
+        });
+
+
+    function updateJSON() {
+        try {
+            const json = {
+                name: document.getElementById("name").value,
+                type: document.getElementById("type").value,
+                level: document.getElementById("level").value,
+                gridSize: parseInt(document.getElementById("gridSize").value),
+                rowLength: parseInt(document.getElementById("rowLength").value),
+                colLength: parseInt(document.getElementById("colLength").value),
+                maxBlocks: parseInt(document.getElementById("maxBlocks").value),
+                sounds: [],
+                goal: document.getElementById("goal").value,
+                mapLayout: document.getElementById("mapLayoutForm").value,
+                instructions: document.getElementById("instructions").value,
+                feedback: document.getElementById("feedback").value,
+                hints: document.getElementById("hints").value,
+                blocks: Array.from(document.querySelectorAll("#blockCheckboxes input:checked")).map(cb => cb.value),
+                playerInfo: {
+                    image: "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/" + document.getElementById("playerImage").value,
+                    row: parseInt(document.getElementById("playerRow").value),
+                    col: parseInt(document.getElementById("playerCol").value),
+                    setNotification: document.getElementById("playerSetNotification").checked,
+                    notification: parseInt(document.getElementById("playerNotification").value)
+                },
+                movable_sprites: null
+            };
+
+            const positions = JSON.parse(document.getElementById("positions").value);
+
+            // Convert everything but positions using JSON.stringify
+            let output = JSON.stringify(json, null, 2);
+
+            // Inject positions manually (1-line format)
+            const positionsString = `"positions": ${JSON.stringify(positions)}`;
+            output = output.replace(/}$/, `  ,\n  ${positionsString}\n}`);
+
+            document.getElementById("jsonOutput").value = output;
+        } catch (e) {
+            document.getElementById("jsonOutput").value = "// Error in JSON format (check 'positions')\n" + e.message;
+        }
     }
 
-    // Update the text content with formatted string
-    mapLayoutElement.textContent = formattedMap;
-  }
-  const app = new PIXI.Application({
-    width: TILE_SIZE * 12,
-    height: TILE_SIZE * 16,
-    backgroundColor: 0x000000
-  });
-  document.body.appendChild(app.view);
+    // Attach listeners to all fields
+    document.querySelectorAll(".json-input").forEach(input => {
+        input.addEventListener("input", updateJSON);
+    });
 
-  let tiles = [];
+    // Initialize on page load
+    updateJSON();
 
-  Object.entries(mapLayout).forEach(([row, cols], rowIndex) => {
-    Object.entries(cols).forEach(([col, value], colIndex) => {
-      let tile = new PIXI.Graphics();
-      tile.beginFill(COLORS[value]);
-      tile.drawRect(0, 0, TILE_SIZE, TILE_SIZE);
-      tile.endFill();
-      tile.x = colIndex * TILE_SIZE;
-      tile.y = rowIndex * TILE_SIZE;
-      tile.interactive = true;
-      tile.buttonMode = true;
-      tile.value = value;
-      tile.row = row;
-      tile.col = col;
+    // -----MAPLAYOUT DESIGN---------------------------------------------------------------------------------------------
 
-      tile.on('pointerdown', function() {
-        // Toggle value and update mapLayout
-        this.value = (this.value + 1) % 3;
+    let mapLayout = {
+        "A": {"1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 1, "12": 1},
+        "B": {"1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 1, "12": 1},
+        "C": {"1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 1, "12": 1},
+        "D": {"1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 1, "12": 1},
+        "E": {"1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 1, "12": 1},
+        "F": {"1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 1, "12": 1},
+        "G": {"1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 1, "12": 1},
+        "H": {"1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 1, "12": 1},
+        "I": {"1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 1, "12": 1},
+        "J": {"1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 1, "12": 1},
+        "K": {"1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 1, "12": 1},
+        "L": {"1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 1, "12": 1},
+        "M": {"1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 1, "12": 1},
+        "N": {"1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 1, "12": 1},
+        "O": {"1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 1, "12": 1},
+        "P": {"1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 1, "12": 1}
+    };
 
-        // Update the mapLayout with the new value
-        mapLayout[this.row][this.col] = this.value;
 
-        // Update the tile color
-        this.clear();
-        this.beginFill(COLORS[this.value]);
-        this.drawRect(0, 0, TILE_SIZE, TILE_SIZE);
-        this.endFill();
+    function generateMapLayout(rows, cols) {
+        let tempMapLayout = {};
 
-        // Optionally log the updated mapLayout to the console to see the changes live
+        for (let i = 0; i < rows; i++) {
+            const rowKey = numberToLetters(i);
+            tempMapLayout[rowKey] = {};
+            for (let j = 1; j <= cols; j++) {
+                tempMapLayout[rowKey][j] = 1;
+            }
+        }
+        mapLayout = tempMapLayout;
+    }
+
+    // Converts 0 → 'A', 25 → 'Z', 26 → 'AA', etc.
+    function numberToLetters(num) {
+        let letters = '';
+        while (num >= 0) {
+            letters = String.fromCharCode((num % 26) + 65) + letters;
+            num = Math.floor(num / 26) - 1;
+        }
+        return letters;
+    }
+
+
+    const TILE_SIZE = 50;
+    const COLORS = {0: 0x333333, 1: 0xAAAAAA, 2: 0x00AA00};
+
+    const app = new PIXI.Application({
+        width: TILE_SIZE * parseInt(document.getElementById('rowLength').value),
+        height: TILE_SIZE * parseInt(document.getElementById('colLength').value),
+        backgroundColor: 0x1099bb
+    });
+    const mapVisualisation = document.getElementById("mapVisualisation");
+    mapVisualisation.appendChild(app.view);
+    app.view.style.border = "5px solid white"; // Set a white border around the canvas
+    app.view.style.display = "block";  // Ensure it's a block-level element for better control
+    app.view.style.margin = "0 auto";  // Center it if necessary
+
+    function updateCanvasSizeAndLayout() {
+        const cols = parseInt(document.getElementById("colLength").value);
+        const rows = parseInt(document.getElementById("rowLength").value);
+        app.renderer.resize(TILE_SIZE * rows, TILE_SIZE * cols);
+        generateMapLayout(cols, rows);
+        regenerateTilesFromMapLayout();
         updateMapLayoutDisplay();
-      });
+        createGridFromMapLayout();
+    }
 
-      app.stage.addChild(tile);
-      tiles.push(tile);
-    });
-  });
-  function initialize(value) {
-    Object.keys(mapLayout).forEach(row => {
-      Object.keys(mapLayout[row]).forEach(col => {
-        mapLayout[row][col] = value;
-      });
+
+    let tiles = [];
+
+    function updateMapLayoutDisplay() {
+        const mapLayoutElement = document.getElementById('mapLayout');
+        let formattedMap = '';
+        for (const [row, cols] of Object.entries(mapLayout)) {
+            let rowString = `"${row}": { `;
+            for (const [col, value] of Object.entries(cols)) {
+                rowString += `"${col}": ${value}, `;
+            }
+            formattedMap += rowString.slice(0, -2) + ' },\n';
+        }
+        mapLayoutElement.textContent = formattedMap;
+    }
+
+    function floodFill(startTile, targetValue, replacementValue) {
+        if (targetValue === replacementValue) return;
+
+        const stack = [startTile];
+        while (stack.length > 0) {
+            const current = stack.pop();
+            const {row, col} = current;
+
+            const rIndex = Object.keys(mapLayout).indexOf(row);
+            const cIndex = parseInt(col) - 1;
+
+            if (
+                mapLayout[row][col] === targetValue
+            ) {
+                mapLayout[row][col] = replacementValue;
+                current.value = replacementValue;
+                current.clear();
+                current.beginFill(COLORS[replacementValue]);
+                current.drawRect(0, 0, TILE_SIZE, TILE_SIZE);
+                current.endFill();
+
+                // Check neighbors (up, down, left, right)
+                const directions = [
+                    [rIndex - 1, cIndex],
+                    [rIndex + 1, cIndex],
+                    [rIndex, cIndex - 1],
+                    [rIndex, cIndex + 1]
+                ];
+
+                directions.forEach(([ri, ci]) => {
+                    const r = Object.keys(mapLayout)[ri];
+                    const c = (ci + 1).toString();
+                    if (r && mapLayout[r][c] === targetValue) {
+                        const neighbor = tiles.find(t => t.row === r && t.col === c);
+                        if (neighbor) stack.push(neighbor);
+                    }
+                });
+            }
+        }
+    }
+
+    Object.entries(mapLayout).forEach(([row, cols], rowIndex) => {
+        Object.entries(cols).forEach(([col, value], colIndex) => {
+            let tile = new PIXI.Graphics();
+            tile.beginFill(COLORS[value]);
+            tile.drawRect(0, 0, TILE_SIZE, TILE_SIZE);
+            tile.endFill();
+            tile.x = colIndex * TILE_SIZE;
+            tile.y = rowIndex * TILE_SIZE;
+            tile.interactive = true;
+            tile.buttonMode = true;
+            tile.value = value;
+            tile.row = row;
+            tile.col = col;
+
+            tile.on('pointerdown', function () {
+                const selectedValue = parseInt(document.getElementById('colorPicker').value);
+                const fillMode = document.getElementById('fillMode').checked;
+
+                if (fillMode) {
+                    floodFill(this, this.value, selectedValue);
+                } else {
+                    this.value = selectedValue;
+                    mapLayout[this.row][this.col] = selectedValue;
+                    this.clear();
+                    this.beginFill(COLORS[selectedValue]);
+                    this.drawRect(0, 0, TILE_SIZE, TILE_SIZE);
+                    this.endFill();
+                }
+
+                updateMapLayoutDisplay();
+            });
+
+            app.stage.addChild(tile);
+            tiles.push(tile);
+        });
     });
 
-    // Update PIXI tiles
-    tiles.forEach(tile => {
-      tile.value = value;
-      tile.clear();
-      tile.beginFill(COLORS[value]);
-      tile.drawRect(0, 0, TILE_SIZE, TILE_SIZE);
-      tile.endFill();
-    });
+    function initialize(value) {
+        Object.keys(mapLayout).forEach(row => {
+            Object.keys(mapLayout[row]).forEach(col => {
+                mapLayout[row][col] = value;
+            });
+        });
+
+        tiles.forEach(tile => {
+            tile.value = value;
+            tile.clear();
+            tile.beginFill(COLORS[value]);
+            tile.drawRect(0, 0, TILE_SIZE, TILE_SIZE);
+            tile.endFill();
+        });
+        updateMapLayoutDisplay();
+    }
+
+    function regenerateTilesFromMapLayout() {
+        // Remove old tiles from stage
+        tiles.forEach(tile => app.stage.removeChild(tile));
+        tiles = [];
+
+        // Recreate tiles based on updated mapLayout
+        Object.entries(mapLayout).forEach(([row, cols], rowIndex) => {
+            Object.entries(cols).forEach(([col, value], colIndex) => {
+                let tile = new PIXI.Graphics();
+                tile.beginFill(COLORS[value]);
+                tile.drawRect(0, 0, TILE_SIZE, TILE_SIZE);
+                tile.endFill();
+                tile.x = colIndex * TILE_SIZE;
+                tile.y = rowIndex * TILE_SIZE;
+                tile.interactive = true;
+                tile.buttonMode = true;
+                tile.value = value;
+                tile.row = row;
+                tile.col = col;
+
+                tile.on('pointerdown', function () {
+                    const selectedValue = parseInt(document.getElementById('colorPicker').value);
+                    const fillMode = document.getElementById('fillMode').checked;
+
+                    if (fillMode) {
+                        floodFill(this, this.value, selectedValue);
+                    } else {
+                        this.value = selectedValue;
+                        mapLayout[this.row][this.col] = selectedValue;
+                        this.clear();
+                        this.beginFill(COLORS[selectedValue]);
+                        this.drawRect(0, 0, TILE_SIZE, TILE_SIZE);
+                        this.endFill();
+                    }
+
+                    updateMapLayoutDisplay();
+                });
+
+                app.stage.addChild(tile);
+                tiles.push(tile);
+            });
+        });
+    }
 
     updateMapLayoutDisplay();
-  }
-  updateMapLayoutDisplay();
+    createGridFromMapLayout();
 
+    function createGridFromMapLayout() {
+        const gridContainer = document.getElementById('grid');
+        gridContainer.innerHTML = ''; // Clear existing grid
+
+        const positionsInput = document.getElementById('positions');
+        const rowLetters = Object.keys(mapLayout);
+        const numRows = rowLetters.length;
+        const numCols = Object.keys(mapLayout[rowLetters[0]]).length;
+
+        const table = document.createElement('table');
+        table.style.borderCollapse = 'collapse';
+
+        const inputs = []; // 2D array to hold references to input elements
+
+        for (let row = 0; row < numRows; row++) {
+            const tr = document.createElement('tr');
+            const rowInputs = [];
+
+            for (let col = 0; col < numCols; col++) {
+                const td = document.createElement('td');
+                const input = document.createElement('input');
+                input.type = 'number';
+                input.value = 0;
+                input.style.width = '40px';
+                input.style.textAlign = 'center';
+
+                // Update positions array on input
+                input.addEventListener('input', () => {
+                    const positions = [];
+                    inputs.forEach((rowArr, r) => {
+                        rowArr.forEach((cell, c) => {
+                            const val = parseInt(cell.value);
+                            if (!isNaN(val) && val !== 0) {
+                                positions.push([r, c + 1, val]); // col is 1-indexed
+                            }
+                        });
+                    });
+                    positionsInput.value = JSON.stringify(positions);
+                });
+
+                td.appendChild(input);
+                tr.appendChild(td);
+                rowInputs.push(input);
+            }
+
+            inputs.push(rowInputs);
+            table.appendChild(tr);
+        }
+
+        gridContainer.appendChild(table);
+    }
+
+
+    // Update canvas on input change
+    document.getElementById("colLength").addEventListener("input", updateCanvasSizeAndLayout);
+    document.getElementById("rowLength").addEventListener("input", updateCanvasSizeAndLayout);
 </script>
+
 </body>
 </html>
