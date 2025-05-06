@@ -38,61 +38,70 @@
 <div class="container mt-4 p-4 bg-primary text-white" id="exerciseGenerator">
     <h3>Edit JSON Form (Live Update)</h3>
     <form id="jsonForm" class="row g-3">
+
         <!-- Basic Fields -->
-        <div class="col-md-4"><label>Name</label><input type="text" class="form-control json-input" id="name"
-                                                        value="taxiDriverSequencing2_"></div>
-        <div class="col-md-4"><label>Type</label><input type="text" class="form-control json-input" id="type"
-                                                        value="taxiDriverSequencing"></div>
-        <div class="col-md-2"><label>Level</label><input type="text" class="form-control json-input" id="level"
-                                                         value="5"></div>
-        <div class="col-md-2"><label>Grid Size</label><input type="number" class="form-control json-input" id="gridSize"
-                                                             value="30"></div>
-        <div class="col-md-2"><label>Row Length</label><input type="number" class="form-control json-input"
-                                                              id="rowLength" value="12"></div>
-        <div class="col-md-2"><label>Col Length</label><input type="number" class="form-control json-input"
-                                                              id="colLength" value="16"></div>
-        <div class="col-md-2"><label>Max Blocks</label><input type="number" class="form-control json-input"
-                                                              id="maxBlocks" value="30"></div>
-        <div class="col-md-4"><label>Goal</label><input type="text" class="form-control json-input" id="goal" value="">
+        <div class="col-md-2"><label>Grade</label>
+            <label for="grade"></label>
+            <select class="form-control json-input" id="grade">
+                <option value="K">K</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
         </div>
-        <div class="col-md-4"><label>Map Layout</label><input type="text" class="form-control json-input"
-                                                              id="mapLayoutForm"
-                                                              value="taxi_pickup_map_"></div>
-        <div class="col-md-12"><label>Instructions</label><input type="text" class="form-control json-input"
-                                                                 id="instructions" value="Pick up all the passengers.">
+        <div class="col-md-4"><label for="name">Name</label>
+            <input type="text" class="form-control json-input" id="name" value="taxiDriverSequencing2_"></div>
+        <div class="col-md-4"><label for="type">Type</label>
+            <input type="text" class="form-control json-input" id="type" value="taxiDriverSequencing"></div>
+        <div class="col-md-2"><label for="level">Level</label>
+            <input type="text" class="form-control json-input" id="level" value="5"></div>
+        <div class="col-md-2"><label for="gridSize">Grid Size</label>
+            <input type="number" class="form-control json-input" id="gridSize" value="30"></div>
+        <div class="col-md-2"><label for="rowLength">Row Length</label>
+            <input type="number" class="form-control json-input" id="rowLength" value="12"></div>
+        <div class="col-md-2"><label for="colLength">Col Length</label>
+            <input type="number" class="form-control json-input" id="colLength" value="16"></div>
+        <div class="col-md-2"><label for="maxBlocks">Max Blocks</label>
+            <input type="number" class="form-control json-input"  id="maxBlocks" value="30"></div>
+        <div class="col-md-4"><label for="goal">Goal</label>
+            <input type="text" class="form-control json-input" id="goal" value="">
         </div>
-        <div class="col-md-12"><label>Feedback</label><input type="text" class="form-control json-input" id="feedback"
+        <div class="col-md-4"><label for="mapLayoutForm">Map Layout</label>
+            <input type="text" class="form-control json-input" id="mapLayoutForm" value="taxi_pickup_map_"></div>
+        <div class="col-md-12"><label for="instructions">Instructions</label>
+            <input type="text" class="form-control json-input" id="instructions" value="Pick up all the passengers.">
+        </div>
+        <div class="col-md-12"><label for="feedback">Feedback</label>
+            <input type="text" class="form-control json-input" id="feedback"
                                                              value="Good job!"></div>
-        <div class="col-md-12"><label>Hints</label><input type="text" class="form-control json-input" id="hints"
+        <div class="col-md-12"><label for="hints">Hints</label>
+            <input type="text" class="form-control json-input" id="hints"
                                                           value="Use the pick up block to get everyone in your taxi.">
         </div>
         <div class="col-md-12">
-            <label class="form-label">Blocks</label>
+            <label class="form-label" for="grade">Blocks</label>
             <div id="blockCheckboxes" class="row row-cols-2"></div>
         </div>
 
         <!-- Player Info -->
         <div class="col-md-12"><h5>Player Info</h5></div>
-        <div class="col-md-6"><label>Image URL</label><input type="text" class="form-control json-input"
-                                                             id="playerImage"
-                                                             value="taxi2.svg">
+        <div class="col-md-6"><label for="playerImage">Image URL</label>
+            <input type="text" class="form-control json-input" id="playerImage"  value="taxi2.svg">
         </div>
-        <div class="col-md-2"><label>Row</label><input type="number" class="form-control json-input" id="playerRow"
-                                                       value="1"></div>
-        <div class="col-md-2"><label>Col</label><input type="number" class="form-control json-input" id="playerCol"
-                                                       value="1"></div>
-        <div class="col-md-2"><label>Notification</label><input type="number" class="form-control json-input"
-                                                                id="playerNotification" value="0"></div>
-        <div class="col-md-2 form-check pt-4"><input type="checkbox" class="form-check-input json-input"
-                                                     id="playerSetNotification"><label class="form-check-label"
-                                                                                       for="playerSetNotification">Set
-            Notification</label></div>
-
+        <div class="col-md-2"><label for="playerRow">Row</label>
+            <input type="number" class="form-control json-input" id="playerRow" value="1"></div>
+        <div class="col-md-2"><label for="playerCol">Col</label>
+            <input type="number" class="form-control json-input" id="playerCol" value="1"></div>
+        <div class="col-md-2"><label for="playerNotification">Notification</label>
+            <input type="number" class="form-control json-input" id="playerNotification" value="0"></div>
+        <div class="col-md-2 form-check pt-4">
+            <input type="checkbox" class="form-check-input json-input"  id="playerSetNotification">
+            <label class="form-check-label" for="playerSetNotification">Set Notification</label></div>
         <!-- Positions -->
-        <div class="col-md-12"><label>Positions (array of arrays)</label><input type="text"
-                                                                                class="form-control json-input"
-                                                                                id="positions"
-                                                                                readonly>
+        <div class="col-md-12"><label for="positions">Positions (array of arrays)</label>
+            <input type="text" class="form-control json-input" id="positions" readonly>
         </div>
     </form>
     <div id="grid"></div>
@@ -102,7 +111,7 @@
 </div>
 <div class="container mt-4 p-4 bg-success text-white" id="mapLayoutGenerator">
     <h3>MapLayout Generator</h3>
-    <div>{<br>"name": "taxiDriverSequencing2_", <br>"layout": <br> {</div>
+    <div>{<br>"name": "<span id="mapLayoutName"></span>", <br>"layout": <br> {</div>
     <pre id="mapLayout"></pre>
     <div> }<br>}</div>
     <div class="row g-3 align-items-center">
@@ -219,14 +228,37 @@
             document.getElementById("jsonOutput").value = "// Error in JSON format (check 'positions')\n" + e.message;
         }
     }
+    // Initialize on page load
+    updateJSON();
 
     // Attach listeners to all fields
     document.querySelectorAll(".json-input").forEach(input => {
         input.addEventListener("input", updateJSON);
     });
 
-    // Initialize on page load
-    updateJSON();
+
+    document.getElementById("grade").addEventListener("input", function (e) {
+        const name = document.getElementById("name");
+        const type = document.getElementById("type");
+        const grade = document.getElementById("grade");
+        const level = document.getElementById("level");
+        const gridSize = document.getElementById("gridSize");
+        const rowLength = document.getElementById("rowLength");
+        const colLength = document.getElementById("colLength");
+        const mapLayout = document.getElementById("mapLayoutForm");
+        name.value = type.value + grade + "_" + level;
+        mapLayout.value = "mapLayout_" + type.value + "_" + grade.value + "_" + level.value;
+        const rows = {"K": 8, "1": 9, "2": 11, "3": 11, "4": 12, "5": 12};
+        const cols = {"K": 8, "1": 9, "2": 11, "3": 14, "4": 16, "5": 16};
+        const sizes = {"K": 40, "1": 40, "2": 35, "3": 35, "4": 30, "5": 30};
+        rowLength.value =rows[grade.value];
+        colLength.value =cols[grade.value];
+        gridSize.value =sizes[grade.value];
+        const output = document.getElementById("mapLayoutName");
+        output.textContent = mapLayout.value;
+        updateCanvasSizeAndLayout();
+
+    });
 
     // -----MAPLAYOUT DESIGN---------------------------------------------------------------------------------------------
 
@@ -296,6 +328,7 @@
         regenerateTilesFromMapLayout();
         updateMapLayoutDisplay();
         createGridFromMapLayout();
+        updateJSON();
     }
 
 

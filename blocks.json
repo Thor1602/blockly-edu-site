@@ -188,7 +188,7 @@
       "maxBlocks": 10,
       "sounds": [],
       "goal": "",
-      "mapLayout": "taxi_pickup_map_one",
+      "mapLayout": "mapLayout_taxiDriverSequencing_one",
       "instructions": "Pick up all the passengers.",
       "feedback": "Good job!",
       "hints": "Use the pick up block to get everyone in your taxi.",
@@ -213,7 +213,7 @@
       "maxBlocks": 19,
       "sounds": [],
       "goal": "",
-      "mapLayout": "taxi_pickup_map_two",
+      "mapLayout": "mapLayout_taxiDriverSequencing_two",
       "instructions": "Pick up all the passengers.",
       "feedback": "Good job!",
       "hints": "Use the pick up block to get everyone in your taxi.",
@@ -238,7 +238,7 @@
       "maxBlocks": 15,
       "sounds": [],
       "goal": "",
-      "mapLayout": "taxi_pickup_map_three",
+      "mapLayout": "mapLayout_taxiDriverSequencing_three",
       "instructions": "Pick up all the passengers.",
       "feedback": "Good job!",
       "hints": "Use the pick up block TWICE to get everyone in your taxi.",
@@ -263,7 +263,7 @@
       "maxBlocks": 21,
       "sounds": [],
       "goal": "",
-      "mapLayout": "taxi_pickup_map_four",
+      "mapLayout": "mapLayout_taxiDriverSequencing_four",
       "instructions": "Pick up all the passengers.",
       "feedback": "Good job!",
       "hints": "Use the pick up block to get everyone in your taxi.",
@@ -288,7 +288,7 @@
       "maxBlocks": 30,
       "sounds": [],
       "goal": "",
-      "mapLayout": "taxi_pickup_map_five",
+      "mapLayout": "mapLayout_taxiDriverSequencing_five",
       "instructions": "Pick up all the passengers.",
       "feedback": "Good job!",
       "hints": "Use the pick up block to get everyone in your taxi.",
@@ -310,10 +310,10 @@
       "gridSize": 35,
       "rowLength": 9,
       "colLength": 9,
-      "maxBlocks": 5,
+      "maxBlocks": 8,
       "sounds": [],
       "goal": "Pick up all the passengers.",
-      "mapLayout": "taxi_pickup_map_K_1",
+      "mapLayout": "mapLayout_taxiDriverSequencing_K_1",
       "instructions": "Pick up all the passengers.",
       "feedback": "Good job!",
       "hints": "Use the pick up block to get everyone in your taxi.",
@@ -342,10 +342,10 @@
       "gridSize": 35,
       "rowLength": 9,
       "colLength": 9,
-      "maxBlocks": 5,
+      "maxBlocks": 12,
       "sounds": [],
       "goal": "Pick up all the passengers.",
-      "mapLayout": "taxi_pickup_map_K_1",
+      "mapLayout": "mapLayout_taxiDriverSequencing_K_1",
       "instructions": "Pick up all the passengers.",
       "feedback": "Good job!",
       "hints": "Use the pick up block to get everyone in your taxi.",
@@ -374,10 +374,10 @@
       "gridSize": 35,
       "rowLength": 9,
       "colLength": 9,
-      "maxBlocks": 5,
+      "maxBlocks": 15,
       "sounds": [],
       "goal": "Pick up all the passengers.",
-      "mapLayout": "taxi_pickup_map_K_3",
+      "mapLayout": "mapLayout_taxiDriverSequencing_K_3",
       "instructions": "Pick up all the passengers.",
       "feedback": "Good job!",
       "hints": "Use the pick up block to get everyone in your taxi.",
@@ -406,10 +406,10 @@
       "gridSize": 35,
       "rowLength": 9,
       "colLength": 9,
-      "maxBlocks": 10,
+      "maxBlocks": 25,
       "sounds": [],
       "goal": "Pick up all the passengers.",
-      "mapLayout": "taxi_pickup_map_K_3",
+      "mapLayout": "mapLayout_taxiDriverSequencing_K_3",
       "instructions": "Pick up all the passengers.",
       "feedback": "Good job!",
       "hints": "Use the pick up block to get everyone in your taxi.",
@@ -438,10 +438,10 @@
       "gridSize": 35,
       "rowLength": 9,
       "colLength": 9,
-      "maxBlocks": 10,
+      "maxBlocks": 30,
       "sounds": [],
       "goal": "Pick up all the passengers.",
-      "mapLayout": "taxi_pickup_map_K_5",
+      "mapLayout": "mapLayout_taxiDriverSequencing_K_5",
       "instructions": "Pick up all the passengers.",
       "feedback": "Good job!",
       "hints": "Use the pick up block to get everyone in your taxi.",
@@ -462,11 +462,78 @@
       },
       "movable_sprites": null,
       "positions": [[1,1,1],[1,9,1],[2,3,1],[2,7,1],[6,3,1],[6,7,1],[7,1,1],[7,9,1]]
+    },
+    {
+      "name": "taxiDriverSequencing1_1",
+      "type": "taxiDriverSequencing1",
+      "level": "1",
+      "gridSize": 30,
+      "rowLength": 12,
+      "colLength": 12,
+      "maxBlocks": 10,
+      "sounds": [],
+      "goal": "",
+      "mapLayout": "mapLayout_taxiDriverSequencing_1_5",
+      "instructions": "Pick up all the passengers.",
+      "feedback": "Good job!",
+      "hints": "Use the pick up block to get everyone in your taxi.",
+      "blocks": [
+        "run_event",
+        "move_north",
+        "move_south",
+        "move_west",
+        "move_east",
+        "pick_up"
+      ],
+      "playerInfo": {
+        "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi2.svg",
+        "row": 6,
+        "col": 1,
+        "setNotification": false,
+        "notification": 0
+      },
+      "movable_sprites": null
+    ,
+      "positions": [[5,5,1],[5,8,1]]
+    },
+    {
+      "name": "leo",
+      "type": "taxiDriverSequencing6",
+      "level": "5",
+      "gridSize": 30,
+      "rowLength": 12,
+      "colLength": 16,
+      "maxBlocks": 30,
+      "sounds": [],
+      "goal": "p",
+      "mapLayout": "mapLayout_bingle_bingle_Leo_1",
+      "instructions": "Pick up all the passengers.",
+      "feedback": "Good job!",
+      "hints": "Use the pick up block to get everyone in your taxi.",
+      "blocks": [
+        "run_event",
+        "controls_repeat_ext",
+        "move_north",
+        "move_south",
+        "move_west",
+        "move_east",
+        "pick_up"
+      ],
+      "playerInfo": {
+        "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi2.svg",
+        "row": 0,
+        "col": 12,
+        "setNotification": false,
+        "notification": 0
+      },
+      "movable_sprites": null
+    ,
+      "positions": [[5,4,1],[5,7,1]]
     }
   ],
   "map_layouts": [
     {
-      "name": "taxi_pickup_map_one",
+      "name": "mapLayout_taxiDriverSequencing_one",
       "layout":
       {
         "A": { "1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 1, "12": 1 },
@@ -488,7 +555,7 @@
       }
     },
     {
-      "name": "taxi_pickup_map_two",
+      "name": "mapLayout_taxiDriverSequencing_two",
       "layout":
       {
         "A": { "1": 2, "2": 0, "3": 1, "4": 0, "5": 2, "6": 2, "7": 2, "8": 2, "9": 2, "10": 2, "11": 2, "12": 2 },
@@ -510,7 +577,7 @@
       }
     },
     {
-      "name": "taxi_pickup_map_three",
+      "name": "mapLayout_taxiDriverSequencing_three",
       "layout":
       {
         "A": { "1": 2, "2": 2, "3": 2, "4": 0, "5": 1, "6": 1, "7": 0, "8": 2, "9": 2, "10": 2, "11": 2, "12": 2 },
@@ -532,7 +599,7 @@
       }
     },
     {
-      "name": "taxi_pickup_map_four",
+      "name": "mapLayout_taxiDriverSequencing_four",
       "layout":
       {
         "A": { "1": 2, "2": 2, "3": 2, "4": 2, "5": 2, "6": 2, "7": 2, "8": 2, "9": 2, "10": 2, "11": 2, "12": 2 },
@@ -554,7 +621,7 @@
       }
     },
     {
-      "name": "taxi_pickup_map_five",
+      "name": "mapLayout_taxiDriverSequencing_five",
       "layout":
       {
         "A": { "1": 1, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0, "11": 0, "12": 0 },
@@ -576,7 +643,7 @@
       }
     },
     {
-      "name": "taxi_pickup_map_K_1",
+      "name": "mapLayout_taxiDriverSequencing_K_1",
       "layout":
       {
         "A": { "1": 2, "2": 2, "3": 2, "4": 2, "5": 2, "6": 2, "7": 2, "8": 2, "9": 2 },
@@ -591,7 +658,7 @@
       }
     },
     {
-      "name": "taxi_pickup_map_K_3",
+      "name": "mapLayout_taxiDriverSequencing_K_3",
       "layout":
       {
         "A": { "1": 2, "2": 2, "3": 2, "4": 2, "5": 2, "6": 0, "7": 1, "8": 0, "9": 2 },
@@ -606,7 +673,7 @@
       }
     },
     {
-      "name": "taxi_pickup_map_K_5",
+      "name": "mapLayout_taxiDriverSequencing_K_5",
       "layout":
       {
         "A": { "1": 2, "2": 2, "3": 2, "4": 2, "5": 2, "6": 2, "7": 2, "8": 2, "9": 2 },
@@ -619,7 +686,68 @@
         "H": { "1": 0, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 0 },
         "I": { "1": 2, "2": 2, "3": 2, "4": 2, "5": 2, "6": 2, "7": 2, "8": 2, "9": 2 }
       }
+    },
+    {
+      "name": "mapLayout_taxiDriverSequencing_1_5",
+      "layout":
+      {
+        "A": { "1": 2, "2": 2, "3": 2, "4": 2, "5": 2, "6": 2, "7": 2, "8": 2, "9": 2, "10": 2, "11": 2, "12": 2 },
+        "B": { "1": 2, "2": 2, "3": 2, "4": 2, "5": 2, "6": 2, "7": 2, "8": 2, "9": 2, "10": 2, "11": 2, "12": 2 },
+        "C": { "1": 2, "2": 2, "3": 2, "4": 2, "5": 2, "6": 2, "7": 2, "8": 2, "9": 2, "10": 2, "11": 2, "12": 2 },
+        "D": { "1": 2, "2": 2, "3": 2, "4": 2, "5": 2, "6": 2, "7": 2, "8": 2, "9": 2, "10": 2, "11": 2, "12": 2 },
+        "E": { "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0, "11": 0, "12": 0 },
+        "F": { "1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 1, "12": 1 },
+        "G": { "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0, "11": 0, "12": 0 },
+        "H": { "1": 2, "2": 2, "3": 2, "4": 2, "5": 2, "6": 2, "7": 2, "8": 2, "9": 2, "10": 2, "11": 2, "12": 2 },
+        "I": { "1": 2, "2": 2, "3": 2, "4": 2, "5": 2, "6": 2, "7": 2, "8": 2, "9": 2, "10": 2, "11": 2, "12": 2 },
+        "J": { "1": 2, "2": 2, "3": 2, "4": 2, "5": 2, "6": 2, "7": 2, "8": 2, "9": 2, "10": 2, "11": 2, "12": 2 },
+        "K": { "1": 2, "2": 2, "3": 2, "4": 2, "5": 2, "6": 2, "7": 2, "8": 2, "9": 2, "10": 2, "11": 2, "12": 2 },
+        "L": { "1": 2, "2": 2, "3": 2, "4": 2, "5": 2, "6": 2, "7": 2, "8": 2, "9": 2, "10": 2, "11": 2, "12": 2 }
+      }
+    },
+    {
+      "name": "mapLayout_bingle_bingle_Leo_0",
+      "layout":
+      {
+        "A": { "1": 2, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 1, "8": 1, "9": 1, "10": 1, "11": 1, "12": 1 },
+        "B": { "1": 1, "2": 1, "3": 1, "4": 1, "5": 2, "6": 0, "7": 1, "8": 1, "9": 1, "10": 0, "11": 2, "12": 1 },
+        "C": { "1": 1, "2": 1, "3": 1, "4": 1, "5": 0, "6": 0, "7": 1, "8": 1, "9": 1, "10": 0, "11": 2, "12": 1 },
+        "D": { "1": 1, "2": 1, "3": 0, "4": 0, "5": 0, "6": 1, "7": 1, "8": 1, "9": 0, "10": 0, "11": 2, "12": 1 },
+        "E": { "1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 0, "10": 0, "11": 2, "12": 1 },
+        "F": { "1": 1, "2": 1, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0, "11": 2, "12": 1 },
+        "G": { "1": 1, "2": 1, "3": 1, "4": 0, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 0, "11": 2, "12": 1 },
+        "H": { "1": 1, "2": 1, "3": 1, "4": 0, "5": 1, "6": 1, "7": 0, "8": 1, "9": 1, "10": 0, "11": 2, "12": 1 },
+        "I": { "1": 1, "2": 0, "3": 1, "4": 1, "5": 0, "6": 1, "7": 1, "8": 1, "9": 1, "10": 0, "11": 2, "12": 1 },
+        "J": { "1": 1, "2": 1, "3": 1, "4": 0, "5": 1, "6": 1, "7": 0, "8": 1, "9": 1, "10": 0, "11": 2, "12": 1 },
+        "K": { "1": 1, "2": 2, "3": 2, "4": 1, "5": 0, "6": 1, "7": 1, "8": 1, "9": 1, "10": 0, "11": 2, "12": 1 },
+        "L": { "1": 1, "2": 0, "3": 0, "4": 1, "5": 1, "6": 1, "7": 0, "8": 1, "9": 1, "10": 0, "11": 2, "12": 1 },
+        "M": { "1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 0, "9": 1, "10": 0, "11": 2, "12": 1 },
+        "N": { "1": 1, "2": 0, "3": 0, "4": 1, "5": 0, "6": 0, "7": 0, "8": 1, "9": 1, "10": 0, "11": 1, "12": 1 },
+        "O": { "1": 1, "2": 1, "3": 1, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 1, "10": 0, "11": 1, "12": 1 },
+        "P": { "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0, "11": 1, "12": 1 }
+      }
+    },
+    {
+      "name": "mapLayout_bingle_bingle_Leo_1",
+      "layout":
+      {
+        "A": { "1": 0, "2": 0, "3": 0, "4": 0, "5": 0, "6": 0, "7": 1, "8": 1, "9": 1, "10": 1, "11": 1, "12": 1 },
+        "B": { "1": 0, "2": 1, "3": 0, "4": 1, "5": 1, "6": 0, "7": 1, "8": 1, "9": 1, "10": 0, "11": 0, "12": 1 },
+        "C": { "1": 0, "2": 0, "3": 1, "4": 1, "5": 0, "6": 0, "7": 1, "8": 1, "9": 1, "10": 0, "11": 1, "12": 1 },
+        "D": { "1": 1, "2": 1, "3": 0, "4": 1, "5": 1, "6": 1, "7": 1, "8": 0, "9": 1, "10": 1, "11": 1, "12": 1 },
+        "E": { "1": 0, "2": 1, "3": 1, "4": 1, "5": 1, "6": 0, "7": 1, "8": 1, "9": 1, "10": 0, "11": 0, "12": 1 },
+        "F": { "1": 1, "2": 1, "3": 1, "4": 0, "5": 0, "6": 0, "7": 1, "8": 1, "9": 1, "10": 1, "11": 1, "12": 1 },
+        "G": { "1": 1, "2": 1, "3": 1, "4": 0, "5": 1, "6": 1, "7": 0, "8": 1, "9": 0, "10": 0, "11": 1, "12": 1 },
+        "H": { "1": 1, "2": 0, "3": 1, "4": 0, "5": 1, "6": 1, "7": 0, "8": 1, "9": 1, "10": 1, "11": 1, "12": 1 },
+        "I": { "1": 1, "2": 0, "3": 1, "4": 0, "5": 0, "6": 0, "7": 0, "8": 0, "9": 0, "10": 0, "11": 0, "12": 1 },
+        "J": { "1": 1, "2": 0, "3": 0, "4": 1, "5": 1, "6": 0, "7": 1, "8": 1, "9": 0, "10": 1, "11": 0, "12": 1 },
+        "K": { "1": 1, "2": 0, "3": 1, "4": 1, "5": 0, "6": 0, "7": 1, "8": 0, "9": 1, "10": 1, "11": 0, "12": 1 },
+        "L": { "1": 1, "2": 0, "3": 0, "4": 0, "5": 1, "6": 1, "7": 1, "8": 1, "9": 0, "10": 1, "11": 1, "12": 1 },
+        "M": { "1": 0, "2": 1, "3": 1, "4": 1, "5": 0, "6": 1, "7": 0, "8": 1, "9": 1, "10": 1, "11": 0, "12": 1 },
+        "N": { "1": 0, "2": 1, "3": 0, "4": 1, "5": 1, "6": 1, "7": 1, "8": 1, "9": 0, "10": 1, "11": 0, "12": 1 },
+        "O": { "1": 1, "2": 0, "3": 1, "4": 1, "5": 0, "6": 1, "7": 1, "8": 1, "9": 1, "10": 1, "11": 0, "12": 1 },
+        "P": { "1": 1, "2": 1, "3": 1, "4": 0, "5": 1, "6": 1, "7": 1, "8": 0, "9": 1, "10": 1, "11": 0, "12": 1 }
+      }
     }
-
   ]
 }

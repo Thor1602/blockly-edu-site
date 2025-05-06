@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!--suppress JSUnusedGlobalSymbols, UnnecessaryLocalVariableJS, CssUnusedSymbol, JSUnusedLocalSymbols, JSUnresolvedReference -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -21,19 +22,6 @@
 
     <style>
 
-        #loading-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            display: none; /* Hidden initially */
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-        }
-
         body {
             padding: 0;
         }
@@ -41,30 +29,6 @@
         body, html {
             height: 100%;
             margin: 0;
-        }
-
-        .right-content {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-
-        .right-content .row {
-            width: 100%;
-        }
-
-        /* ... (other styles) ... */
-        .flex-container {
-            display: flex;
-            height: 100vh;
-        }
-
-        .flex-item-left { /* New class for the left item */
-            flex: 0 0 33%; /* Takes 33% of the width */
-        }
-
-        .flex-item-right { /* New class for the right item */
-            flex: 0 0 66%; /* Takes 66% of the width */
         }
 
         .btn-primary {
@@ -422,24 +386,21 @@
 <!-- OffCanvas Sidebar Menu -->
 <div id="sidebar" class="offcanvas">
     <span class="close-btn" onclick="toggleMenu()">&times;</span>
-    <ul class="nav flex-column" id="sidebarMenu">
+    <ul class="nav flex-column link-container" id="sidebarMenu">
         <!-- Grades with Submenus -->
         <li class="nav-item"><h3 class="activeUserName"></h3></li>
-        <li class="nav-item">
-            <a href="#" class="nav-link" data-parent="#sidebarMenu" onclick="event.preventDefault(); showPane('home')">HOME</a>
-        </li>
         <li class="nav-item">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#kinderMenu"
                data-parent="#sidebarMenu">Kinder</a>
             <div id="kinderMenu" class="collapse">
-                <a href="#" class="nav-link pl-4">Sequencing</a>
+                <a href="#" class="nav-link pl-4" data-param="taxiDriverSequencingK">Sequencing</a>
             </div>
         </li>
         <li class="nav-item">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade1Menu"
                data-parent="#sidebarMenu">Grade 1</a>
             <div id="grade1Menu" class="collapse">
-                <a href="#" class="nav-link pl-4">Sequencing</a>
+                <a href="#" class="nav-link pl-4" data-param="taxiDriverSequencing1">Sequencing</a>
             </div>
         </li>
         <li class="nav-item">
@@ -448,7 +409,7 @@
             <div id="grade2Menu" class="collapse">
                 <a href="#" class="nav-link pl-4">Sequencing</a>
                 <div class="pl-5">
-                    <a href="#taxiDriverSequencing2" class="nav-link">Mr. Cab Driver</a>
+                    <a href="#" class="nav-link" data-param="taxiDriverSequencing2">Mr. Cab Driver</a>
                 </div>
             </div>
         </li>
@@ -458,7 +419,7 @@
             <div id="grade3Menu" class="collapse">
                 <a href="#" class="nav-link pl-4">Sequencing</a>
                 <div class="pl-5">
-                    <a href="#taxiDriverSequencing3" class="nav-link">Mr. Cab Driver</a>
+                    <a href="#" class="nav-link" data-param="taxiDriverSequencing3">Mr. Cab Driver</a>
                 </div>
             </div>
         </li>
@@ -466,14 +427,14 @@
             <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade4Menu"
                data-parent="#sidebarMenu">Grade 4</a>
             <div id="grade4Menu" class="collapse">
-                <a href="#" class="nav-link pl-4">Sequencing</a>
+                <a href="#" class="nav-link pl-4" data-param="taxiDriverSequencing4">Sequencing</a>
             </div>
         </li>
         <li class="nav-item">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade5Menu"
                data-parent="#sidebarMenu">Grade 5</a>
             <div id="grade5Menu" class="collapse">
-                <a href="#" class="nav-link pl-4">Sequencing</a>
+                <a href="#" class="nav-link pl-4" data-param="taxiDriverSequencing5">Sequencing</a>
             </div>
         </li>
     </ul>
@@ -494,13 +455,13 @@
         <div class="container">
             <h1 class="text-center mb-5 fw-bold">✨ Coding Activities ✨</h1>
             <h3 class="text-center mb-5 fw-bold activeUserName"></h3>
-            <div class="row row-cols-1 row-cols-md-3 row-cols-lg-3 g-4">
+            <div class="row row-cols-1 row-cols-md-3 row-cols-lg-3 g-4 link-container">
                 <div class="col">
                     <div class="grade-card h-100">
                         <div class="grade-title">Grade K</div>
                         <div>
                             <div class="section-title">Sequencing</div>
-                            <a href="#" class="exercise-link" onclick="event.preventDefault(); setNextExercise('taxiDriverSequencingK')">Mr. Cab
+                            <a href="#" class="exercise-link" data-param="taxiDriverSequencingK">Mr. Cab
                                 Driver</a>
                         </div>
                         <div>
@@ -519,7 +480,7 @@
                         <div class="grade-title">Grade 1</div>
                         <div>
                             <div class="section-title">Sequencing</div>
-                            <a href="#" class="exercise-link" onclick="event.preventDefault(); setNextExercise('taxiDriverSequencing1')">Mr. Cab
+                            <a href="#" class="exercise-link" data-param='taxiDriverSequencing1'>Mr. Cab
                                 Driver</a>
                         </div>
                         <div>
@@ -545,7 +506,7 @@
                         <div class="grade-title">Grade 2</div>
                         <div>
                             <div class="section-title">Sequencing</div>
-                            <a href="#" class="exercise-link" onclick="event.preventDefault(); setNextExercise('taxiDriverSequencing2')">Mr. Cab
+                            <a href="#" class="exercise-link" data-param='taxiDriverSequencing2'>Mr. Cab
                                 Driver</a>
                         </div>
                         <div>
@@ -568,7 +529,7 @@
                         <div class="grade-title">Grade 3</div>
                         <div>
                             <div class="section-title">Sequencing</div>
-                            <a href="#" class="exercise-link" onclick="event.preventDefault(); setNextExercise('taxiDriverSequencing3')">Mr. Cab
+                            <a href="#" class="exercise-link" data-param='taxiDriverSequencing3'>Mr. Cab
                                 Driver</a>
                         </div>
                         <div>
@@ -595,7 +556,7 @@
                         <div class="grade-title">Grade 4</div>
                         <div>
                             <div class="section-title">Sequencing</div>
-                            <a href="#" class="exercise-link" onclick="event.preventDefault(); setNextExercise('taxiDriverSequencing4')">Mr. Cab
+                            <a href="#" class="exercise-link" data-param='taxiDriverSequencing4'>Mr. Cab
                                 Driver</a>
                         </div>
                         <div>
@@ -634,7 +595,7 @@
                         <div class="grade-title">Grade 5</div>
                         <div>
                             <div class="section-title">Sequencing</div>
-                            <a href="#" class="exercise-link" onclick="event.preventDefault(); setNextExercise('taxiDriverSequencing5')">Mr. Cab
+                            <a href="#" class="exercise-link" data-param='taxiDriverSequencing5'>Mr. Cab
                                 Driver</a>
                         </div>
                         <div>
@@ -722,10 +683,10 @@
                                 <span id="numberBlockCapacity"></span> block(s)
                                 <span id="contentBlockCapacity"></span>
                             </button>
-                            <button class="btn btn-lg btn-primary" id="nextLevel" tabindex="0" data-bs-toggle="tooltip"
+                            <button class="btn btn-lg btn-primary nextLevelBtn" tabindex="0" data-bs-toggle="tooltip"
                                     data-bs-placement="top"
                                     title="Click here to go to the next level when the level completed" disabled>
-                                <i class="fa-solid fa-right-long fa-2xl"></i>
+                                <i class="fa-solid fa-right-long fa-2xl"></i>Next
                             </button>
 
                             <button class="btn btn-lg btn-primary" data-toggle="modal" data-target="#omgTeacherModal"
@@ -872,7 +833,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id="retryBeforeNextLevel" data-dismiss="modal">Retry
                 </button>
-                <button type="button" class="btn btn-lg btn-primary" id="nextLevelModalBtn">Continue</button>
+                <button type="button" class="btn btn-lg btn-primary nextLevelBtn" disabled><i class="fa-solid fa-right-long fa-2xl"></i>Next</button>
             </div>
         </div>
     </div>
@@ -882,96 +843,10 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
 <script>
-
-
-    window.onload = function () {
-        if (sessionStorage.getItem("loggedIn")==="true") {
-            loadUser();
-        }
-        else if (){
-            // load next level when continue is pressed
-        }
-        else{
-            // load level that is clicked
-        }
-
-    }
-
-
-    //sessionStorage.setItem("currentExerciseType", {{currentExerciseType}});
-    //sessionStorage.setItem("currentExerciseLevel", {{currentExerciseLevel}});
-    //console.log(sessionStorage.getItem("currentExerciseLevel"));
     // TODO getPerson sometimes gets the last person wrong. Change it by the len of a list where sprites.hide are skipped
     // TODO change grid size 12 and 16 to the size length of the map
     // TODO taxi can get people sometimes. It can get people from the hood side but not here in the second loop taxi_pickup_five
     // TODO add code in case there is no user logged in,
-    let studentProgress = {
-        'taxiDriverSequencing1': {'1': false, '2': true, '3': false, '4': false, '5': false},
-        'taxiDriverSequencing2': {'1': true, '2': true, '3': true, '4': true, '5': false}
-    };
-
-    disableLinks();
-    function loadUser() {
-        console.log("loadUser() called"); // Step 1
-        try {
-            google.script.run
-                .withSuccessHandler(function (studentData) {
-                    const email = studentData[0][0];
-                    const firstname = studentData[0][1];
-                    const lastname = studentData[0][2];
-                    const studentId = studentData[0][3];
-                    const className = studentData[0][4];
-                    const grade = studentData[0][5];
-                    const studentProgress = studentData[1];
-                    init(studentData[2],studentData[3]);
-
-                    sessionStorage.setItem("loggedIn", "true");
-                    sessionStorage.setItem("currentLessonType", studentData[2]);
-                    sessionStorage.setItem("currentLessonLevel", studentData[3]);
-                    sessionStorage.setItem("email", email);
-                    sessionStorage.setItem("firstname", firstname);
-                    sessionStorage.setItem("lastname", lastname);
-                    sessionStorage.setItem("studentId", studentId);
-                    sessionStorage.setItem("className", className);
-                    sessionStorage.setItem("grade", grade);
-                    sessionStorage.setItem("studentProgress", JSON.stringify(studentProgress));
-
-                    document.getElementById("activeUserEmail").innerText = email;
-                    document.querySelectorAll(".activeUserName").forEach(el => {
-                        el.innerText = "💛 Hi " + firstname + " " + lastname + " (" + className + ") 💛";
-                    });
-                    setTimeout(() => {
-                        handleLoginStatus(true);
-                    }, 200);
-                    enableLinks();
-
-
-                })
-                .withFailureHandler(function (error) {
-                    console.error("Failed to get user email:", error.message || error);
-                    document.getElementById("activeUserEmail").innerText = "Please login with your Google account!";
-                    setTimeout(() => {
-                        handleLoginStatus(false);
-                    }, 200);
-                })
-                .getStudentData();
-        } catch (e) {
-            document.getElementById("activeUserEmail").innerText = "Login failed, Mr. Thorben must fix this.";
-            setTimeout(() => {
-                handleLoginStatus(true);
-            }, 200);
-            enableLinks();
-        }
-
-
-    }
-
-    let configData = null; // Global variable to store JSON
-    async function fetchData() {
-        const response = await fetch('https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/blocks.json');
-        // const response = await fetch('blocks.json');
-        configData = await response.json();
-    }
 
 
     buttonSpeedElement = document.getElementById('speed');
@@ -986,8 +861,9 @@
     buttonVisualisationElement = document.getElementById("visualisation");
     buttonLiveFeedbackElement = document.getElementById("liveFeedback");
     buttonHintModalElement = document.getElementById("hintModal");
-    buttonNextLevelElement = document.getElementById("nextLevel");
-    buttonNextLevelModalElement = document.getElementById("nextLevelModalBtn");
+
+    buttonNextLevelElements = document.querySelectorAll(".nextLevelBtn");
+
     buttonInstructionsModalElement = document.getElementById("instructionsModal");
     buttonSendBugFormElement = document.getElementById("sendBtnBugForm");
 
@@ -1000,10 +876,107 @@
     visualisationSize = document.getElementById("visualisationSize");
     $nextLevelModal = $("#nextLevelModal");
     $omgTeacherModal = $("#omgTeacherModal");
+    let studentProgress = null;
+
+    window.onload = function () {
+        disableLinks();
+        console.log(sessionStorage.getItem("loggedIn"));
+        buttonNextLevelElements.forEach(button => {
+            button.disabled = true;
+        });
+        if (sessionStorage.getItem("loggedIn") && sessionStorage.getItem("loggedIn")==="true") {
+            loadUser();
+        }
+        else{
+            initUserDataAndSession();
+        }
+
+    }
+
+
+    function initUserDataAndSession(){
+        console.log("initUserDataAndSession() called"); // Step 1
+        try {
+            // noinspection JSUnresolvedVariable
+            google.script.run
+                .withSuccessHandler(function (studentData) {
+                    Activity.playSound('Lenny%20Kravitz%20-%20Mr.%20Cab%20Driver%20%5BKaraoke%20Version%5D.mp3', true);
+                    const email = studentData[0][0];
+                    const firstname = studentData[0][1];
+                    const lastname = studentData[0][2];
+                    const studentId = studentData[0][3];
+                    const className = studentData[0][4];
+                    const grade = studentData[0][5];
+                    studentProgress = studentData[1];
+                    console.log(studentProgress);
+                    sessionStorage.setItem("loggedIn", "true");
+                    sessionStorage.setItem("currentLessonType", studentData[2]);
+                    sessionStorage.setItem("currentLessonLevel", studentData[3]);
+                    sessionStorage.setItem("email", email);
+                    sessionStorage.setItem("firstname", firstname);
+                    sessionStorage.setItem("lastname", lastname);
+                    sessionStorage.setItem("studentId", studentId);
+                    sessionStorage.setItem("className", className);
+                    sessionStorage.setItem("grade", grade);
+                    init(sessionStorage.getItem("currentLessonType"),sessionStorage.getItem("currentLessonLevel"));
+                    document.getElementById("activeUserEmail").innerText = email;
+                    document.querySelectorAll(".activeUserName").forEach(el => {
+                        el.innerText = "💛 Hi " + firstname + " " + lastname + " (" + className + ") 💛";
+                    });
+                    setTimeout(() => {
+                        handleLoginStatus(true);
+                    }, 200);
+                    enableLinks();
+
+                })
+                .withFailureHandler(function (error) {
+                    console.error("Failed to get user email:", error.message || error);
+                    document.getElementById("activeUserEmail").innerText = "Please login with your Google account!";
+                    setTimeout(() => {
+                        handleLoginStatus(false);
+                    }, 200);
+                })
+                .getStudentData();
+        } catch (e) {
+            document.getElementById("activeUserEmail").innerText = "Login failed, Mr. Thorben must fix this.";
+            setTimeout(() => {
+                handleLoginStatus(false);
+            }, 200);
+            enableLinks();
+        }
+    }
+    function loadUser() {
+        console.log("loadUser() called"); // Step 1
+        document.getElementById("activeUserEmail").innerText =  sessionStorage.getItem("email");
+        document.querySelectorAll(".activeUserName").forEach(el => {
+            el.innerText = "💛 Hi " + sessionStorage.getItem("firstname") + " " + sessionStorage.getItem("lastname") + " (" + sessionStorage.getItem("className") + ") 💛";
+        });
+        enableLinks();
+        Activity.playSound('Lenny%20Kravitz%20-%20Mr.%20Cab%20Driver%20%5BKaraoke%20Version%5D.mp3', true);
+        if (sessionStorage.getItem("setNextLevel") === "true"){
+            console.log("setNextLevel condition");
+            showPane('codingPane');
+            init(sessionStorage.getItem("currentLessonType"),sessionStorage.getItem("currentLessonLevel"));
+            sessionStorage.setItem("setNextLevel","false");
+        }
+        else if (sessionStorage.getItem("setNextLesson") === "true"){
+            console.log("setNextLesson condition");
+            console.log(sessionStorage.getItem("currentLessonType"));
+            console.log(sessionStorage.getItem("currentLessonLevel"));
+            init(sessionStorage.getItem("currentLessonType"),sessionStorage.getItem("currentLessonLevel"));
+            sessionStorage.setItem("setNextLesson","false");
+        }
+    }
+
+    let configData = null; // Global variable to store JSON
+    async function fetchData() {
+        const response = await fetch('https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/blocks.json');
+
+        // const response = await fetch('blocks.json');
+        configData = await response.json();
+    }
 
     class Activity {
-        static allActivities = [];
-
         constructor(type, level) {
             console.log(type);
             console.log(level);
@@ -1046,12 +1019,12 @@
             retryBeforeNextLevelElement.addEventListener("click", () => {
                 this.resetCode();
             });
-            this.init();
+            this.initActivity();
 
 
         }
 
-        async init() {
+        async initActivity() {
             await this.getExercise();
             await this.initializeActivity();
             await this.initializeBlocklyWorkspace();
@@ -1089,10 +1062,11 @@
         }
 
         async levelCompleted() {
-            Activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/level-up-enhancement-8-bit-retro-sound-effect-153002.mp3");
+            Activity.playSound("level-up-enhancement-8-bit-retro-sound-effect-153002.mp3");
             this.hasSucceededOverlay();
             this.isComplete = true;
-            buttonNextLevelElement.disabled = false;
+
+
             $nextLevelModal.modal({
                 backdrop: 'static',
                 keyboard: false,
@@ -1158,22 +1132,22 @@
             visualisationSize.addEventListener("change", () => {
                 if (visualisationSize.value === "Medium") {
                     this.resizeActivity(30);
-                    localStorage.setItem('visualisationSize', 30);
+                    localStorage.setItem('visualisationSize', "30");
                 } else if (visualisationSize.value === "Large") {
                     this.resizeActivity(40);
-                    localStorage.setItem('visualisationSize', 40);
+                    localStorage.setItem('visualisationSize', "40");
                 } else if (visualisationSize.value === "Small") {
                     this.resizeActivity(25);
-                    localStorage.setItem('visualisationSize', 25);
+                    localStorage.setItem('visualisationSize', "25");
                 } else if (visualisationSize.value === "Extra Small") {
                     this.resizeActivity(20);
-                    localStorage.setItem('visualisationSize', 20);
+                    localStorage.setItem('visualisationSize', "20");
                 } else if (visualisationSize.value === "Extra Large") {
                     this.resizeActivity(45);
-                    localStorage.setItem('visualisationSize', 45);
+                    localStorage.setItem('visualisationSize', "45");
                 } else {
                     this.resizeActivity(30);
-                    localStorage.setItem('visualisationSize', 30);
+                    localStorage.setItem('visualisationSize', "30");
                 }
             });
         }
@@ -1253,22 +1227,6 @@
         }
 
 
-        resetActivity() {
-            if (this.blockManager.workspace) {
-                this.blockManager.workspace.dispose();
-            }
-
-            if (this.app) {
-                this.app.destroy(true, {children: true});
-                this.app = null;
-            }
-
-            this.player = null;
-            this.people = [];
-            this.sprites = [];
-            buttonVisualisationElement.innerHTML = "";
-        }
-
 
         // what my sprites will do according to the blocks
         pick_up() {
@@ -1290,7 +1248,6 @@
         move_east() {
             return new Promise(resolve => this.player.moveBy(1, 0, this.getMapLayout(), this.speed, this.isRunning, resolve));
         }
-        innerHTML = "";
         runCodeBlock() {
             return new Promise(resolve => {
                 this.giveHint("The code has started RUNNING", "3000");
@@ -1326,19 +1283,31 @@
             } finally {
                 this.isRunning = false;
             }
-
+            buttonNextLevelElements.forEach(button => {
+                button.innerHTML = `
+              <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> SAVING`;
+            });
+            const currentLevelIsCompleted = this.isComplete; // this.isComplete doesnt work in withSuccessHandler
             try {
                 const xmlDom = Blockly.Xml.workspaceToDom(this.blockManager.workspace);
                 const xmlText = Blockly.Xml.domToText(xmlDom);
                 const blockExcess = numberBlockCapacityElement.innerText === "over";
                 const blocksOver = blockExcess ? parseInt(numberBlockCapacityElement.innerText) : 0;
-
+                // noinspection JSUnresolvedVariable
                 google.script.run
-                    .withSuccessHandler(function (nextType, nextLevel) {
-                        console.log("Progress submitted successfully.");
-                        // sessionStorage.setItem("currentExerciseType", nextType);
-                        //sessionStorage.setItem("currentExerciseLevel", nextLevel);
-                        location.href = "{{link}}";
+                    .withSuccessHandler(function (allStudentProgress, nextType, nextLevel) {
+                        if (currentLevelIsCompleted){
+                            console.log("Progress submitted successfully.");
+                            studentProgress = allStudentProgress;
+                            sessionStorage.setItem("currentLessonType", nextType); // undefined
+                            sessionStorage.setItem("currentLessonLevel", nextLevel);// undefined
+                            console.log(sessionStorage.getItem("currentLessonType"));
+                            console.log(sessionStorage.getItem("currentLessonLevel"));
+                            buttonNextLevelElements.forEach(button => {
+                                button.disabled = false;
+                                button.innerHTML = `<i class="fa-solid fa-right-long fa-2xl"></i>Next`
+                            });
+                        }
                     })
                     .withFailureHandler(function (error) {
                         console.error("Error submitting progress:", error);
@@ -1456,19 +1425,20 @@
             });
         }
 
-        static playSound(link) {
-            const audio = new Audio(link);
+        static playSound(link, isBackground = false) {
+            const audio = new Audio("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/" + link);
+
+            if (isBackground) {
+                audio.loop = true;
+                audio.volume = 0.4;
+                window.backgroundMusic = audio;
+            }
+
             audio.play().catch(err => {
                 console.warn("Playback failed:", err);
             });
         }
 
-        static async fetchAllActivities() {
-            if (!configData) {
-                await fetchData();
-            }
-            Activity.allActivities = configData.exercises.map(exercise => exercise.name);
-        }
 
     }
 
@@ -1486,14 +1456,15 @@
 
         async initialize(mapLayoutName) {
             this.mapLayout = await this.loadMapLayout(mapLayoutName); // Asynchronous operation
-            this.mapRows = Object.keys(this.mapLayout).length;
-            this.mapCols = Object.keys(this.mapLayout[Object.keys(this.mapLayout)[0]]).length;
+            //this.mapRows = Object.keys(this.mapLayout).length;
+            //this.mapCols = Object.keys(this.mapLayout[Object.keys(this.mapLayout)[0]]).length;
         }
 
 
         async loadMapLayout(mapLayoutNameParam) {
             try {
                 await fetchData();
+                // noinspection JSUnresolvedVariable
                 const layoutObj = configData.map_layouts.find(layout => layout.name === mapLayoutNameParam);
                 return layoutObj ? layoutObj.layout : null;
             } catch (error) {
@@ -1551,6 +1522,7 @@
                 const filteredBlocks = blocks
                     .map(type => configData.blocks.find(block => block.type === type))
                     .filter(Boolean);
+                // noinspection JSUnresolvedVariable
                 this.loadTheme(configData.blocklyThemeSettings);
                 this.defineBlocks(filteredBlocks);
                 this.createToolbox(filteredBlocks);
@@ -1927,7 +1899,7 @@
                 this.moveSmoothly(newRow, newCol, speed, isRunning, callback);
             } else {
                 this.moveSmoothlyHalfStep(newRow, newCol, speed, isRunning, callback);
-                Activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/bang-crash-103775.mp3");
+                Activity.playSound("bang-crash-103775.mp3");
                 this.activity.addOverlay("Crashed!!", 0xE30000)
             }
         }
@@ -1935,18 +1907,18 @@
 
         async getPerson(activity, listOfSprites, speed, callback) {
             if (!Sprite.hasEnvironmentSprites()) {
-                activity.levelCompleted();
+                await activity.levelCompleted();
             }
             let person = listOfSprites.find(p => this.isNextTo(p));
             if (person) {
                 if (person.notif_number > 1) {
-                    Activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/pop-268648.mp3");
+                    Activity.playSound("pop-268648.mp3");
                     activity.giveHint("Removed 1 person", "3000");
                     await new Promise(resolve => setTimeout(resolve, speed * 100)); // 0.5 sec delay
                     Sprite.decreaseNumberOfEnvironmentSprites();
                     person.notify(person.notif_number - 1);
                 } else if (person.notif_number === 1) {
-                    Activity.playSound("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/pop-268648.mp3");
+                    Activity.playSound("pop-268648.mp3");
                     // console.log("Leftover sprites: " + Sprite.getNumberOfEnvironmentSprites());
                     activity.giveHint("Everyone is inside", "3000");
                     person.notify(person.notif_number - 1);
@@ -1988,8 +1960,7 @@
 
         // Change background of active dropdown
         $('#sidebarMenu .dropdown-toggle').on('click', function () {
-            $('#sidebarMenu .nav-item').removeClass('active-bg-sidebar');
-            $('#sidebarMenu .nav-item').addClass('bg-sidebar');
+            $sidebarItems.removeClass('active-bg-sidebar').addClass('bg-sidebar');
             $(this).parent().removeClass('bg-sidebar').addClass('active-bg-sidebar');
         });
 
@@ -2016,19 +1987,21 @@
 
 
     async function init(type, level) {
-        // let type = sessionStorage.getItem("currentExerciseType");
         new Activity(type, level);
-        buttonNextLevelElement.addEventListener("click", () => {
-            // TODO add backend script to get the next level name and set it to a cookie
+        buttonNextLevelElements.forEach(button => {
+            button.addEventListener("click", function() {
+                setNextLevel();
+            });
         });
-        buttonNextLevelModalElement.addEventListener("click", () => {
-            buttonNextLevelElement.disabled = true;
-            $nextLevelModal.modal('hide');
-        });
+    }
+
+    function reloadWindow(){
+        window.open("{{link}}",'_top');
     }
 
     buttonSendBugFormElement.addEventListener("click", () => {
         try {
+            // noinspection JSUnresolvedVariable
             google.script.run
                 .withSuccessHandler(() => {
                     console.log("Report submitted successfully.");
@@ -2065,7 +2038,20 @@
         // Specific style for the home pane (white background)
         if (paneId === 'home') {
             targetPane.style.backgroundColor = 'white'; // Add white background
+            if (window.backgroundMusic && !window.backgroundMusic.paused) {
+                window.backgroundMusic.pause();
+            }
         }
+
+        if (paneId === 'codingPane') {
+            if (window.backgroundMusic && window.backgroundMusic.paused) {
+                window.backgroundMusic.play().catch(err => {
+                    console.warn("Playback failed:", err);
+                });
+            }
+        }
+
+
 
         // If loadingPane is showing, animate loading text
         if (paneId === 'loadingPane') {
@@ -2161,10 +2147,28 @@
         }
     }
 
+    document.querySelectorAll('.link-container').forEach(function(container) {
+        container.addEventListener('click', function(event) {
+            const link = event.target.closest('.nav-link, .exercise-link');
+            if (link) {
+                event.preventDefault();
+                const param = link.getAttribute('data-param');
+                setNextLesson(param, "1");
+            }
+        });
+    });
 
 
-    function setNextExercise(type) {
+    function setNextLesson(type, level) {
+        sessionStorage.setItem("currentLessonType", type);
+        sessionStorage.setItem("currentLessonLevel", level);
+        sessionStorage.setItem("setNextLesson", "true");
+        reloadWindow();
+    }
 
+    function setNextLevel() {
+        sessionStorage.setItem("setNextLevel", "true");
+        reloadWindow();
     }
 
     function renderProgressBar(type, currentLevel) {
