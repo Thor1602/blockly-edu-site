@@ -499,7 +499,7 @@
     {
       "name": "leo",
       "type": "taxiDriverSequencing6",
-      "level": "5",
+      "level": "1",
       "gridSize": 30,
       "rowLength": 12,
       "colLength": 16,
