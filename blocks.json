@@ -470,7 +470,7 @@
       "gridSize": 40,
       "rowLength": 10,
       "colLength": 10,
-      "maxBlocks": 30,
+      "maxBlocks": 7,
       "sounds": [],
       "goal": "",
       "mapLayout": "mapLayout_taxiDriverSequencing_1_1",
@@ -488,7 +488,7 @@
       ],
       "playerInfo": {
         "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi2.svg",
-        "row": 6,
+        "row": 5,
         "col": 2,
         "setNotification": false,
         "notification": 0
@@ -504,7 +504,7 @@
       "gridSize": 40,
       "rowLength": 10,
       "colLength": 10,
-      "maxBlocks": 9,
+      "maxBlocks": 10,
       "sounds": [],
       "goal": "",
       "mapLayout": "mapLayout_taxiDriverSequencing_1_1",
@@ -521,7 +521,7 @@
       ],
       "playerInfo": {
         "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi2.svg",
-        "row": 6,
+        "row": 5,
         "col": 2,
         "setNotification": false,
         "notification": 0
