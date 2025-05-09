@@ -464,75 +464,8 @@
       "positions": [[1,0,1],[1,8,1],[2,2,1],[2,6,1],[6,2,1],[6,6,1],[7,0,1],[7,8,1]]
     },
     {
-      "name": "taxiDriverSequencing1_2",
-      "type": "taxiDriverSequencing2",
-      "level": "2",
-      "gridSize": 30,
-      "rowLength": 10,
-      "colLength": 10,
-      "maxBlocks": 10,
-      "sounds": [],
-      "goal": "",
-      "mapLayout": "mapLayout_taxiDriverSequencing_1_2",
-      "instructions": "Pick up all the passengers.",
-      "feedback": "Good job!",
-      "hints": "Use the pick up block to get everyone in your taxi.",
-      "blocks": [
-        "run_event",
-        "move_north",
-        "move_south",
-        "move_west",
-        "move_east",
-        "pick_up"
-      ],
-      "playerInfo": {
-        "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi2.svg",
-        "row": 5,
-        "col": 1,
-        "setNotification": false,
-        "notification": 0
-      },
-      "movable_sprites": null
-    ,
-      "positions": [[4,5,1],[4,8,1]]
-    },
-    {
-      "name": "taxiDriverSequencing1_4",
-      "type": "taxiDriverSequencing",
-      "level": "4",
-      "gridSize": 40,
-      "rowLength": 9,
-      "colLength": 9,
-      "maxBlocks": 14,
-      "sounds": [],
-      "goal": "Pick up all the passengers.",
-      "mapLayout": "mapLayout_taxiDriverSequencing_1_4",
-      "instructions": "Pick up all the passengers.",
-      "feedback": "Good job!",
-      "hints": "Use the pick up block to get everyone in your taxi.",
-      "blocks": [
-        "run_event",
-        "controls_repeat_ext",
-        "move_north",
-        "move_south",
-        "move_west",
-        "move_east",
-        "pick_up"
-      ],
-      "playerInfo": {
-        "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi2.svg",
-        "row": 1,
-        "col": 2,
-        "setNotification": false,
-        "notification": 0
-      },
-      "movable_sprites": null
-    ,
-      "positions": [[1,4,1],[2,5,1],[3,6,1],[4,7,1]]
-    },
-    {
       "name": "taxiDriverSequencing1_1",
-      "type": "taxiDriverSequencing",
+      "type": "taxiDriverSequencing1",
       "level": "1",
       "gridSize": 40,
       "rowLength": 10,
@@ -563,6 +496,106 @@
       "movable_sprites": null
     ,
       "positions": [[5,8,1]]
+    },
+    {
+      "name": "taxiDriverSequencing1_2",
+      "type": "taxiDriverSequencing1",
+      "level": "2",
+      "gridSize": 40,
+      "rowLength": 10,
+      "colLength": 10,
+      "maxBlocks": 9,
+      "sounds": [],
+      "goal": "",
+      "mapLayout": "mapLayout_taxiDriverSequencing_1_1",
+      "instructions": "Pick up all the passengers.",
+      "feedback": "Good job!",
+      "hints": "Use the pick up block to get everyone in your taxi.",
+      "blocks": [
+        "run_event",
+        "move_north",
+        "move_south",
+        "move_west",
+        "move_east",
+        "pick_up"
+      ],
+      "playerInfo": {
+        "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi2.svg",
+        "row": 6,
+        "col": 2,
+        "setNotification": false,
+        "notification": 0
+      },
+      "movable_sprites": null
+    ,
+      "positions": [[4,5,1],[4,6,1],[4,7,1]]
+    },
+    {
+      "name": "taxiDriverSequencing1_3",
+      "type": "taxiDriverSequencing1",
+      "level": "2",
+      "gridSize": 30,
+      "rowLength": 10,
+      "colLength": 10,
+      "maxBlocks": 10,
+      "sounds": [],
+      "goal": "",
+      "mapLayout": "mapLayout_taxiDriverSequencing_1_3",
+      "instructions": "Pick up all the passengers.",
+      "feedback": "Good job!",
+      "hints": "Use the pick up block to get everyone in your taxi.",
+      "blocks": [
+        "run_event",
+        "move_north",
+        "move_south",
+        "move_west",
+        "move_east",
+        "pick_up"
+      ],
+      "playerInfo": {
+        "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi2.svg",
+        "row": 5,
+        "col": 1,
+        "setNotification": false,
+        "notification": 0
+      },
+      "movable_sprites": null
+    ,
+      "positions": [[4,5,1],[4,8,1]]
+    },
+    {
+      "name": "taxiDriverSequencing1_4",
+      "type": "taxiDriverSequencing1",
+      "level": "4",
+      "gridSize": 40,
+      "rowLength": 9,
+      "colLength": 9,
+      "maxBlocks": 14,
+      "sounds": [],
+      "goal": "Pick up all the passengers.",
+      "mapLayout": "mapLayout_taxiDriverSequencing_1_4",
+      "instructions": "Pick up all the passengers.",
+      "feedback": "Good job!",
+      "hints": "Use the pick up block to get everyone in your taxi.",
+      "blocks": [
+        "run_event",
+        "controls_repeat_ext",
+        "move_north",
+        "move_south",
+        "move_west",
+        "move_east",
+        "pick_up"
+      ],
+      "playerInfo": {
+        "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi2.svg",
+        "row": 1,
+        "col": 2,
+        "setNotification": false,
+        "notification": 0
+      },
+      "movable_sprites": null
+    ,
+      "positions": [[1,4,1],[2,5,1],[3,6,1],[4,7,1]]
     }
   ],
   "map_layouts": [
