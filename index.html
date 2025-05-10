@@ -114,6 +114,23 @@
             border-radius: 20px;
         }
 
+        .progress-dot {
+            width: 15px;
+            height: 15px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            color: white;
+        }
+
+        .progress-dot.current-level {
+            width: 30px;
+            height: 30px;
+            font-size: 14px;
+        }
+
         .hint-container {
             margin-left: 20px;
             height: 25px;
@@ -683,7 +700,11 @@
 
                         <!-- Button Group -->
                         <div class="d-flex gap-2 flex-wrap">
-
+                            <button class="btn btn-lg btn-primary" tabindex="0" data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    title="Turn the sound on/off" id="soundButton">
+                                <i class="fa-solid fa-volume-high"></i>
+                            </button>
 
                             <button class="btn btn-lg btn-primary" id="blocksLeftover" data-bs-toggle="tooltip"
                                     data-bs-placement="top" title="See here the blocks you have left.">
@@ -864,6 +885,8 @@
     numberBlockCapacityElement = document.getElementById("numberBlockCapacity");
     contentBlockCapacityElement = document.getElementById("contentBlockCapacity");
     buttonCapacityElement = document.getElementById("blocksLeftover");
+    soundButtonElement = document.getElementById("soundButton");
+
 
     buttonVisualisationElement = document.getElementById("visualisation");
     buttonLiveFeedbackElement = document.getElementById("liveFeedback");
@@ -922,7 +945,7 @@
                     sessionStorage.setItem("className", className);
                     sessionStorage.setItem("grade", grade);
                     showPane('codingPane');
-                    renderProgressBar(sessionStorage.getItem("currentLessonType"),sessionStorage.getItem("currentLessonLevel"));
+                    renderProgressBar(sessionStorage.getItem("currentLessonType"));
                     init(sessionStorage.getItem("currentLessonType"),sessionStorage.getItem("currentLessonLevel"));
                     document.getElementById("activeUserEmail").innerText = email;
                     document.querySelectorAll(".activeUserName").forEach(el => {
@@ -958,7 +981,7 @@
         });
         enableLinks();
         Activity.playSound('Lenny%20Kravitz%20-%20Mr.%20Cab%20Driver%20%5BKaraoke%20Version%5D.mp3', true);
-        renderProgressBar(sessionStorage.getItem("currentLessonType"),sessionStorage.getItem("currentLessonLevel"));
+        renderProgressBar(sessionStorage.getItem("currentLessonType"));
         init(sessionStorage.getItem("currentLessonType"),sessionStorage.getItem("currentLessonLevel"));
         if (sessionStorage.getItem("setNextLevel") === "true"){
             showPane('codingPane');
@@ -1022,8 +1045,28 @@
             retryBeforeNextLevelElement.addEventListener("click", () => {
                 this.resetCode();
             });
-            this.initActivity();
 
+            buttonSendBugFormElement.addEventListener("click", () => {
+                try {
+                    // noinspection JSUnresolvedVariable
+                    google.script.run
+                        .withSuccessHandler(() => {
+                            console.log("Report submitted successfully.");
+                            $('#omgTeacherModal').modal('hide');
+                            this.giveHint("💙💛Thank you!!💛💙", "8000");
+                        })
+                        .withFailureHandler((error) => {
+                            console.error("Error submitting report:", error);
+                            $('#omgTeacherModal').modal('hide');
+                            this.giveHint("An error happened. Say it to me in person please.", "8000");
+                        })
+                        .sendSupportEmail("Debug Report from a Student", sessionStorage.getItem("email"), document.getElementById("bugContent").value);
+                } catch (e) {
+                    console.error("Unexpected error in script.run:", e);
+                }
+            });
+
+            this.initActivity();
 
         }
 
@@ -1065,7 +1108,7 @@
         }
         async levelCompleted() {
             Activity.playSound("level-up-enhancement-8-bit-retro-sound-effect-153002.mp3");
-            this.addOverlay("Challenge\nCompleted!", 0x000000);
+            await this.addOverlay("Challenge\nCompleted!", 0x000000);
             this.isComplete = true;
 
 
@@ -1078,7 +1121,7 @@
         }
 
         hasFailed() {
-            Activity.playSound("level-up-enhancement-8-bit-retro-sound-effect-153002.mp3");
+            Activity.playSound("slap-failure.mp3");
             this.addOverlay("🤔", 0x000000);
             this.isComplete = false;
             console.log("Level Failed");
@@ -1299,13 +1342,12 @@
                 // noinspection JSUnresolvedVariable
                 google.script.run
                     .withSuccessHandler(function (submission) {
+                        console.log("Progress submitted successfully.");
                         if (currentLevelIsCompleted){
-                            console.log("Progress submitted successfully.");
                             sessionStorage.setItem("studentProgress", JSON.stringify(submission.allStudentProgress));
                             sessionStorage.setItem("currentLessonType", submission.nextType); // undefined
                             sessionStorage.setItem("currentLessonLevel", submission.nextLevel);// undefined
-                            console.log(sessionStorage.getItem("currentLessonType"));
-                            console.log(sessionStorage.getItem("currentLessonLevel"));
+                            renderProgressBar(sessionStorage.getItem("currentLessonType"));
                             buttonNextLevelElements.forEach(button => {
                                 button.disabled = false;
                                 button.innerHTML = `<i class="fa-solid fa-right-long fa-2xl"></i>Next`
@@ -1320,6 +1362,10 @@
                     })
                     .withFailureHandler(function (error) {
                         console.error("Error submitting progress:", error);
+                        buttonNextLevelElements.forEach(button => {
+                            button.disabled = true;
+                            button.innerHTML = `<i class="fa-solid fa-right-long fa-2xl"></i>Next`
+                        });
 
                     })
                     .insertProgress({
@@ -1485,17 +1531,56 @@
         drawMap(gridSize) {
             this.reset();
             const parkColors = [0x00FF00, 0x228B22, 0x32CD32]; // Different shades of green
-            let rowIndex = 0; // Track the numerical row index
+            let rowIndex = 0;
+
             for (const rowKey in this.mapLayout) {
-                let colIndex = 0; // Track the numerical column index
+                let colIndex = 0;
+
                 for (const colKey in this.mapLayout[rowKey]) {
-                    let tile = new PIXI.Graphics();
+                    const tile = new PIXI.Graphics();
                     const tileValue = this.mapLayout[rowKey][colKey];
-                    if (this.grid) tile.lineStyle(1, 0x9b9b9b, 1); // (width, color, alpha)
-                    const parkColor = parkColors[Math.floor(Math.random() * parkColors.length)];
-                    tile.beginFill(tileValue === 1 ? 0xCCCCCC : (tileValue === 2 ? parkColor : 0x555555));
-                    tile.drawRect(colIndex * gridSize, rowIndex * gridSize, gridSize, gridSize);
+                    const x = colIndex * gridSize;
+                    const y = rowIndex * gridSize;
+
+                    let fillColor = 0x555555;
+                    let selectedParkColor = null;
+
+                    if (tileValue === 1) {
+                        fillColor = 0xCCCCCC;
+                    } else if (tileValue === 2) {
+                        selectedParkColor = parkColors[Math.floor(Math.random() * parkColors.length)];
+                        fillColor = selectedParkColor;
+                    }
+
+                    // Draw base tile
+                    if (this.grid) {
+                        tile.lineStyle(1, 0x9b9b9b, 1); // base grid
+                    }
+
+                    tile.beginFill(fillColor);
+                    tile.drawRect(x, y, gridSize, gridSize);
                     tile.endFill();
+
+                    // ✨ Elevation effect: ONLY for tileValue === 1 and fillColor === 0x228B22
+                    if (tileValue === 1 && fillColor === 0x228B22) {
+                        // Simulate light at the top-left (light border)
+                        tile.lineStyle(2, 0x444444, 1); // dark outer edge
+                        tile.drawRect(x, y, gridSize, gridSize);
+
+                        tile.lineStyle(1, 0x999999, 1); // lighter highlight on top-left
+                        tile.moveTo(x, y);
+                        tile.lineTo(x + gridSize, y); // top
+                        tile.moveTo(x, y);
+                        tile.lineTo(x, y + gridSize); // left
+
+                        // Optional shadow effect on bottom-right (deeper feel)
+                        tile.lineStyle(1, 0x111111, 0.6);
+                        tile.moveTo(x + gridSize, y);
+                        tile.lineTo(x + gridSize, y + gridSize); // right
+                        tile.moveTo(x, y + gridSize);
+                        tile.lineTo(x + gridSize, y + gridSize); // bottom
+                    }
+
                     this.mapContainer.addChild(tile);
                     colIndex++;
                 }
@@ -1590,6 +1675,8 @@
                 toolbox: this.toolbox,
                 theme: this.customTheme,
                 trashcan: true,
+
+                // Scroll, drag, and wheel behavior
                 move: {
                     scrollbars: {
                         horizontal: true,
@@ -1597,7 +1684,56 @@
                     },
                     drag: true,
                     wheel: true
-                }
+                },
+
+                // Zoom behavior
+                zoom: {
+                    controls: true,         // show zoom in/out buttons
+                    wheel: true,            // allow mouse wheel zoom
+                    startScale: 1.0,        // initial zoom scale
+                    maxScale: 3.0,          // max zoom
+                    minScale: 0.3,          // min zoom
+                    scaleSpeed: 1.2         // zoom speed
+                },
+
+                // Grid setup
+                grid: {
+                    spacing: 20,            // pixels between grid lines
+                    length: 1,              // line length (0 = no lines)
+                    colour: '#ccc',         // grid line color
+                    snap: true              // snap blocks to grid
+                },
+
+                // Path to Blockly media assets (like sounds, icons)
+                //media: 'https://unpkg.com/blockly/media/',
+
+                // Renderer (default: "geras", others: "zelos", "thrasos")
+                renderer: 'geras',
+
+                // Font and text direction options
+                rtl: false,                // right-to-left mode
+                fontFamily: 'Arial, sans-serif',
+
+                // Sounds (on/off)
+                sounds: true,
+
+                // Collapse blocks option
+                collapse: true,
+
+                // Comments enabled
+                comments: true,
+
+                // Disable blocks
+                disable: true,
+
+                // Scrollbars visible even without overflow
+                scrollbars: true,
+
+                // Max blocks (set to null for no limit)
+                maxBlocks: Infinity,
+
+                // Optional: inject plugins here
+                // plugins: {}
             });
         }
 
@@ -1916,6 +2052,7 @@
 
         async getPerson(activity, listOfSprites, speed, callback) {
             if (!Sprite.hasEnvironmentSprites()) {
+                await new Promise(resolve => setTimeout(resolve, speed * 100)); // 0.5 sec delay
                 await activity.levelCompleted();
             }
             let person = listOfSprites.find(p => this.isNextTo(p));
@@ -1931,11 +2068,11 @@
                     // console.log("Leftover sprites: " + Sprite.getNumberOfEnvironmentSprites());
                     activity.giveHint("Everyone is inside", "3000");
                     person.notify(person.notif_number - 1);
+                    await new Promise(resolve => setTimeout(resolve, speed * 100)); // 0.5 sec delay
                     Sprite.decreaseNumberOfEnvironmentSprites();
+                    person.notify(person.notif_number - 1);
                     person.hide();
                 } else if (person.notif_number <= 0) {
-
-                    // console.log("3 person exists, notif: " + person.notif_number);
                     activity.giveHint("No person to be picked up", "3000");
                     activity.hasFailed();
                 }
@@ -2003,23 +2140,19 @@
         window.open("{{link}}",'_top');
     }
 
-    buttonSendBugFormElement.addEventListener("click", () => {
-        try {
-            // noinspection JSUnresolvedVariable
-            google.script.run
-                .withSuccessHandler(() => {
-                    console.log("Report submitted successfully.");
-                    $omgTeacherModal.hide();
-                    Activity.giveHint("Thank you!!", "8000");
-                })
-                .withFailureHandler((error) => {
-                    console.error("Error submitting report:", error);
-                    $omgTeacherModal.hide();
-                    Activity.giveHint("An error happened. Say it to me in person please.", "8000");
-                })
-                .sendSupportEmail("Debug Report from a Student", document.getElementById("activeUser").innerText, document.getElementById("bugContent").value);
-        } catch (e) {
-            console.error("Unexpected error in script.run:", e);
+
+
+
+    soundButtonElement.addEventListener("click", () => {
+        if (window.backgroundMusic && window.backgroundMusic.paused) {
+            soundButtonElement.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+            window.backgroundMusic.play().catch(err => {
+                console.warn("Playback failed:", err);
+            });
+        }
+        else{
+            window.backgroundMusic.pause();
+            soundButtonElement.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
         }
     });
 
@@ -2055,8 +2188,6 @@
             }
         }
 
-
-
         // If loadingPane is showing, animate loading text
         if (paneId === 'loadingPane') {
             gsap.fromTo("#loadingText",
@@ -2070,9 +2201,6 @@
         }
     }
 
-
-
-
     function handleLoginStatus(isLoggedIn) {
         try {
             gsap.killTweensOf("#loadingText");
@@ -2080,18 +2208,15 @@
             console.warn("⚠️ Failed to kill loading animation:", err);
         }
 
-        // Stop the spinner if it's still visible
         const spinner = document.querySelector(".spinner-border");
         if (spinner) {
-            spinner.style.display = "none"; // Hide the spinner on login failure or success
+            spinner.style.display = "none";
         }
 
-        // Hide the success/error message text when needed
         const successText = document.getElementById("successText");
         const errorText = document.getElementById("loadingText");
 
         if (isLoggedIn) {
-            // Show success message
             if (successText) {
                 successText.style.display = "block";
                 successText.style.opacity = 0;
@@ -2115,11 +2240,7 @@
             if (errorText) {
                 errorText.style.display = "none";
             }
-
-            // Wait 2 seconds, then switch to the next pane
-            setTimeout(() => {
-                showPane('home');
-            }, 1000);
+            showPane('home');
 
         } else {
             // Show error message for login failure
@@ -2160,7 +2281,6 @@
         });
     });
 
-
     function setNextLesson(type, level) {
         sessionStorage.setItem("currentLessonType", type);
         sessionStorage.setItem("currentLessonLevel", level);
@@ -2171,29 +2291,28 @@
     function setNextLevel() {
         let nextLevel = Number(sessionStorage.getItem("currentLessonLevel")) + 1;
         sessionStorage.setItem("currentLessonLevel", nextLevel.toString());
-        essionStorage.setItem("setNextLevel", "true");
+        sessionStorage.setItem("setNextLevel", "true");
         reloadWindow();
     }
 
-    function renderProgressBar(type, currentLevel) {
-
+    function renderProgressBar(type) {
         const container = document.querySelector('.progress-container');
-        container.innerHTML = ''; // Clear previous contents
+        container.innerHTML = '';
         const studentProgress = JSON.parse(sessionStorage.getItem("studentProgress"));
         if (studentProgress[type]) {
             const levels = studentProgress[type];
             for (const level in levels) {
                 const div = document.createElement('div');
 
-                // Decide the color
                 let colorClass = levels[level] ? 'bg-success' : 'bg-secondary';
 
-                // Make the current level slightly bigger
-                let style = 'width: 20px; height: 20px; cursor: pointer;';
-                div.className = `rounded-circle ${colorClass}`;
-                div.style = style;
+                div.className = `rounded-circle progress-dot ${colorClass}`;
 
-                // Make the dot clickable
+                if (sessionStorage.getItem("currentLessonLevel") === level) {
+                    div.classList.add('current-level');
+                    div.textContent = level;
+                }
+
                 div.addEventListener('click', () => {
                     setNextLesson(type, level);
                 });
@@ -2221,6 +2340,7 @@
             link.style.opacity = ''; // Remove the disabled opacity
         });
     }
+
 
 </script>
 </body>

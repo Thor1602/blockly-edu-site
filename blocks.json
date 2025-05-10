@@ -17,7 +17,7 @@
       "size": "large"
     },
     {
-      "type": "controls_repeat_ext",
+      "type": "repeat_loop_K_2",
       "message0": "%1 \n %2 %3",
       "args0": [
 
@@ -59,6 +59,104 @@
       "javascript_function": "repeat_10(block);\n",
       "size": "large"
     },
+
+    {
+      "type": "repeat_loop_2_5",
+      "tooltip": "",
+      "helpUrl": "",
+      "message0": "repeat %1 times %2 %3",
+      "args0": [
+        {
+          "type": "field_number",
+          "name": "NAME",
+          "value": 0,
+          "min": 2,
+          "max": 100
+        },
+        {
+          "type": "input_dummy",
+          "name": "NAME"
+        },
+        {
+          "type": "input_statement",
+          "name": "NAME"
+        }
+      ],
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": "#f322a6",
+      "javascript_function": "repeat_number(block);\n",
+      "size": "medium"
+    },
+    {
+      "type": "while_path_ahead",
+      "tooltip": "",
+      "helpUrl": "",
+      "message0": "while path ahead %1 %2",
+      "args0": [
+        {
+          "type": "input_dummy",
+          "name": "NAME"
+        },
+        {
+          "type": "input_statement",
+          "name": "NAME"
+        }
+      ],
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": "#f322a6",
+      "javascript_function": "while_path_ahead(block);\n",
+      "size": "medium"
+    },
+
+    {
+      "type": "while_objects",
+      "tooltip": "",
+      "helpUrl": "",
+      "message0": "while objects %1 %2 %3 %4",
+      "args0": [
+        {
+          "type": "field_dropdown",
+          "name": "NAME",
+          "options": [
+            [
+              "option",
+              "≥"
+            ],
+            [
+              "option",
+              "≤"
+            ],
+            [
+              "option",
+              "="
+            ]
+          ]
+        },
+        {
+          "type": "field_number",
+          "name": "NAME",
+          "value": 0,
+          "min": 0,
+          "max": 100
+        },
+        {
+          "type": "input_dummy",
+          "name": "NAME"
+        },
+        {
+          "type": "input_statement",
+          "name": "NAME"
+        }
+      ],
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": "#f322a6",
+      "javascript_function": "while_books(block);\n",
+      "size": "medium"
+    },
+
     {
       "type": "move_north",
       "tooltip": "",
@@ -143,7 +241,178 @@
       "colour": "#08b5bd",
       "javascript_function": "await this.pick_up();\n",
       "size": "large"
-    }
+    },
+    {
+      "type": "if_else_statement",
+      "tooltip": "",
+      "helpUrl": "",
+      "message0": "if at %1 %2 do %3 else %4 do %5",
+      "args0": [
+        {
+          "type": "field_dropdown",
+          "name": "NAME",
+          "options": [
+            [
+              "option",
+              "Dementor"
+            ],
+            [
+              "option",
+              "Boggart"
+            ],
+            [
+              "option",
+              " Mandrake"
+            ]
+          ]
+        },
+        {
+          "type": "input_dummy",
+          "name": "NAME"
+        },
+        {
+          "type": "input_statement",
+          "name": "NAME"
+        },
+        {
+          "type": "input_dummy",
+          "name": "NAME"
+        },
+        {
+          "type": "input_statement",
+          "name": "NAME"
+        }
+      ],
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": "#08b5bd",
+      "javascript_function": "await this.if_else();\n",
+      "size": "medium"
+    },
+
+    {
+      "type": "if_statement",
+      "tooltip": "",
+      "helpUrl": "",
+      "message0": "if at %1 %2 do %3",
+      "args0": [
+        {
+          "type": "field_dropdown",
+          "name": "NAME",
+          "options": [
+            [
+              "option",
+              "Dementor"
+            ],
+            [
+              "option",
+              "Boggart"
+            ],
+            [
+              "option",
+              " Mandrake"
+            ]
+          ]
+        },
+        {
+          "type": "input_dummy",
+          "name": "NAME"
+        },
+        {
+          "type": "input_statement",
+          "name": "NAME"
+        }
+      ],
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": "#08b5bd",
+      "javascript_function": "await this.if_statement();\n",
+      "size": "medium"
+    },
+    {
+      "type": "move_choice_action",
+      "tooltip": "",
+      "helpUrl": "",
+      "message0": "move %1 %2",
+      "args0": [
+        {
+          "type": "field_dropdown",
+          "name": "choose",
+          "options": [
+            [
+              "option",
+              "forward"
+            ],
+            [
+              "option",
+              "backward"
+            ]
+          ]
+        },
+        {
+          "type": "input_dummy",
+          "name": "NAME"
+        }
+      ],
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": "#08b5bd",
+      "javascript_function": "await this.move_choice_action();\n",
+      "size": "medium"
+
+    },
+    {
+      "type": "move_forward",
+      "tooltip": "",
+      "helpUrl": "",
+      "message0": "move forward %1",
+      "args0": [
+        {
+          "type": "input_dummy",
+          "name": "NAME"
+        }
+      ],
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": "#08b5bd",
+      "javascript_function": "await this.move_forward();\n",
+      "size": "medium"
+
+    },
+    {
+      "type": "move_forward",
+      "tooltip": "",
+      "helpUrl": "",
+      "message0": "turn %1 %2",
+      "args0": [
+        {
+          "type": "field_dropdown",
+          "name": "NAME",
+          "options": [
+            [
+              "option",
+              "left"
+            ],
+            [
+              "option",
+              "right"
+            ]
+          ]
+        },
+        {
+          "type": "input_dummy",
+          "name": "NAME"
+        }
+      ],
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": "#08b5bd",
+      "javascript_function": "await this.move_forward();\n",
+      "size": "medium"    }
+
+
+
+
 
   ],
   "blocklyThemeSettings": [
@@ -192,7 +461,7 @@
       "instructions": "Pick up all the passengers.",
       "feedback": "Good job!",
       "hints": "Use the pick up block to get everyone in your taxi.",
-      "blocks": ["run_event","move_north","move_south","move_west","move_east","pick_up","controls_repeat_ext"],
+      "blocks": ["run_event","move_north","move_south","move_west","move_east","pick_up","repeat_loop_K_2"],
       "playerInfo": {
         "image":"https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi2.svg",
         "row":7,
@@ -217,7 +486,7 @@
       "instructions": "Pick up all the passengers.",
       "feedback": "Good job!",
       "hints": "Use the pick up block to get everyone in your taxi.",
-      "blocks": ["run_event","move_north","move_south","move_west","move_east","pick_up","controls_repeat_ext"],
+      "blocks": ["run_event","move_north","move_south","move_west","move_east","pick_up","repeat_loop_K_2"],
       "playerInfo": {
         "image":"https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi2.svg",
         "row":0,
@@ -235,14 +504,14 @@
       "gridSize": 30,
       "rowLength": 12,
       "colLength": 16,
-      "maxBlocks": 15,
+      "maxBlocks": 20,
       "sounds": [],
       "goal": "",
       "mapLayout": "mapLayout_taxiDriverSequencing_three",
       "instructions": "Pick up all the passengers.",
       "feedback": "Good job!",
       "hints": "Use the pick up block TWICE to get everyone in your taxi.",
-      "blocks": ["run_event","move_north","move_south","move_west","move_east","pick_up","controls_repeat_ext"],
+      "blocks": ["run_event","move_north","move_south","move_west","move_east","pick_up","repeat_loop_K_2"],
       "playerInfo": {
         "image":"https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi2.svg",
         "row":1,
@@ -267,7 +536,7 @@
       "instructions": "Pick up all the passengers.",
       "feedback": "Good job!",
       "hints": "Use the pick up block to get everyone in your taxi.",
-      "blocks": ["run_event","move_north","move_south","move_west","move_east","pick_up","controls_repeat_ext"],
+      "blocks": ["run_event","move_north","move_south","move_west","move_east","pick_up","repeat_loop_K_2"],
       "playerInfo": {
         "image":"https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi2.svg",
         "row":8,
@@ -292,7 +561,7 @@
       "instructions": "Pick up all the passengers.",
       "feedback": "Good job!",
       "hints": "Use the pick up block to get everyone in your taxi.",
-      "blocks": ["run_event","move_south","move_west","move_east","pick_up","controls_repeat_ext"],
+      "blocks": ["run_event","move_south","move_west","move_east","pick_up","repeat_loop_K_2"],
       "playerInfo": {
         "image":"https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi2.svg",
         "row":1,
@@ -479,7 +748,7 @@
       "hints": "Use the pick up block to get everyone in your taxi.",
       "blocks": [
         "run_event",
-        "controls_repeat_ext",
+        "repeat_loop_K_2",
         "move_north",
         "move_south",
         "move_west",
@@ -579,7 +848,7 @@
       "hints": "Use the pick up block to get everyone in your taxi.",
       "blocks": [
         "run_event",
-        "controls_repeat_ext",
+        "repeat_loop_K_2",
         "move_north",
         "move_south",
         "move_west",
