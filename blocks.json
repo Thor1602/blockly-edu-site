@@ -380,7 +380,7 @@
 
     },
     {
-      "type": "move_forward",
+      "type": "turn",
       "tooltip": "",
       "helpUrl": "",
       "message0": "turn %1 %2",
@@ -389,14 +389,8 @@
           "type": "field_dropdown",
           "name": "NAME",
           "options": [
-            [
-              "option",
-              "left"
-            ],
-            [
-              "option",
-              "right"
-            ]
+            [ "left", "left" ],
+            [ "right", "right" ]
           ]
         },
         {
@@ -407,13 +401,9 @@
       "previousStatement": null,
       "nextStatement": null,
       "colour": "#08b5bd",
-      "javascript_function": "await this.move_forward();\n",
-      "size": "medium"    }
-
-
-
-
-
+      "javascript_function": "await this.turn(direction);\n",
+      "size": "medium"
+    }
   ],
   "blocklyThemeSettings": [
     {

@@ -465,7 +465,8 @@
 </div>
 <div id="paneWrapper">
 
-    <div id="loadingPane" class="tab-pane d-flex justify-content-center align-items-center flex-column" style="display: none;">
+    <div id="loadingPane" class="tab-pane d-flex justify-content-center align-items-center flex-column"
+         style="display: none;">
         <div class="text-center">
             <div class="spinner-border text-primary" role="status" style="width: 4rem; height: 4rem;">
                 <span class="visually-hidden">Loading...</span>
@@ -518,7 +519,6 @@
                         <div>
                             <div class="section-title">Events</div>
                             <a>Redirect</a>
-
 
 
                         </div>
@@ -861,7 +861,9 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" id="retryBeforeNextLevel" data-dismiss="modal">Retry
                 </button>
-                <button type="button" class="btn btn-lg btn-primary nextLevelBtn" disabled><i class="fa-solid fa-right-long fa-2xl"></i>Next</button>
+                <button type="button" class="btn btn-lg btn-primary nextLevelBtn" disabled><i
+                        class="fa-solid fa-right-long fa-2xl"></i>Next
+                </button>
             </div>
         </div>
     </div>
@@ -911,17 +913,16 @@
         buttonNextLevelElements.forEach(button => {
             button.disabled = true;
         });
-        if (sessionStorage.getItem("loggedIn") && sessionStorage.getItem("loggedIn")==="true") {
+        if (sessionStorage.getItem("loggedIn") && sessionStorage.getItem("loggedIn") === "true") {
             loadUser();
-        }
-        else{
+        } else {
             initUserDataAndSession();
         }
 
     }
 
 
-    function initUserDataAndSession(){
+    function initUserDataAndSession() {
         console.log("initUserDataAndSession() called"); // Step 1
         try {
             // noinspection JSUnresolvedVariable
@@ -946,7 +947,7 @@
                     sessionStorage.setItem("grade", grade);
                     showPane('codingPane');
                     renderProgressBar(sessionStorage.getItem("currentLessonType"));
-                    init(sessionStorage.getItem("currentLessonType"),sessionStorage.getItem("currentLessonLevel"));
+                    init(sessionStorage.getItem("currentLessonType"), sessionStorage.getItem("currentLessonLevel"));
                     document.getElementById("activeUserEmail").innerText = email;
                     document.querySelectorAll(".activeUserName").forEach(el => {
                         el.innerText = "💛 Hi " + firstname + " " + lastname + " (" + className + ") 💛";
@@ -973,25 +974,24 @@
             enableLinks();
         }
     }
+
     function loadUser() {
         console.log("loadUser() called"); // Step 1
-        document.getElementById("activeUserEmail").innerText =  sessionStorage.getItem("email");
+        document.getElementById("activeUserEmail").innerText = sessionStorage.getItem("email");
         document.querySelectorAll(".activeUserName").forEach(el => {
             el.innerText = "💛 Hi " + sessionStorage.getItem("firstname") + " " + sessionStorage.getItem("lastname") + " (" + sessionStorage.getItem("className") + ") 💛";
         });
         enableLinks();
         Activity.playSound('Lenny%20Kravitz%20-%20Mr.%20Cab%20Driver%20%5BKaraoke%20Version%5D.mp3', true);
         renderProgressBar(sessionStorage.getItem("currentLessonType"));
-        init(sessionStorage.getItem("currentLessonType"),sessionStorage.getItem("currentLessonLevel"));
-        if (sessionStorage.getItem("setNextLevel") === "true"){
+        init(sessionStorage.getItem("currentLessonType"), sessionStorage.getItem("currentLessonLevel"));
+        if (sessionStorage.getItem("setNextLevel") === "true") {
             showPane('codingPane');
-            sessionStorage.setItem("setNextLevel","false");
-        }
-        else if (sessionStorage.getItem("setNextLesson") === "true"){
+            sessionStorage.setItem("setNextLevel", "false");
+        } else if (sessionStorage.getItem("setNextLesson") === "true") {
             showPane('codingPane');
-            sessionStorage.setItem("setNextLesson","false");
-        }
-        else {
+            sessionStorage.setItem("setNextLesson", "false");
+        } else {
             showPane('home');
         }
     }
@@ -1106,6 +1106,7 @@
             instructionsContentElement.innerHTML = this.instructions;
             hintContentElement.innerHTML = this.hints;
         }
+
         async levelCompleted() {
             Activity.playSound("level-up-enhancement-8-bit-retro-sound-effect-153002.mp3");
             await this.addOverlay("Challenge\nCompleted!", 0x000000);
@@ -1232,7 +1233,6 @@
         }
 
 
-
         addOverlay(message, color) {
             if (!this.app || this.overlayContainer) return;
             this.isRunning = false;
@@ -1273,7 +1273,6 @@
         }
 
 
-
         // what my sprites will do according to the blocks
         pick_up() {
             return new Promise(resolve => this.player.getPerson(this, this.people, this.speed, resolve));
@@ -1294,6 +1293,11 @@
         move_east() {
             return new Promise(resolve => this.player.moveBy(1, 0, this.getMapLayout(), this.speed, this.isRunning, resolve));
         }
+
+        turn_to(direction) {
+            return new Promise(resolve => this.player.turn(direction, this.speed, this.isRunning, resolve));
+        }
+
         runCodeBlock() {
             return new Promise(resolve => {
                 this.giveHint("The code has started RUNNING", "3000");
@@ -1343,7 +1347,7 @@
                 google.script.run
                     .withSuccessHandler(function (submission) {
                         console.log("Progress submitted successfully.");
-                        if (currentLevelIsCompleted){
+                        if (currentLevelIsCompleted) {
                             sessionStorage.setItem("studentProgress", JSON.stringify(submission.allStudentProgress));
                             sessionStorage.setItem("currentLessonType", submission.nextType); // undefined
                             sessionStorage.setItem("currentLessonLevel", submission.nextLevel);// undefined
@@ -1352,8 +1356,7 @@
                                 button.disabled = false;
                                 button.innerHTML = `<i class="fa-solid fa-right-long fa-2xl"></i>Next`
                             });
-                        }
-                        else{
+                        } else {
                             buttonNextLevelElements.forEach(button => {
                                 button.disabled = true;
                                 button.innerHTML = `<i class="fa-solid fa-right-long fa-2xl"></i>Next`
@@ -1651,7 +1654,7 @@
                 Blockly.common.defineBlocksWithJsonArray([{...block}]);
                 javascript.javascriptGenerator.forBlock[block.type] = () => block.javascript_function;
             });
-            javascript.javascriptGenerator.forBlock['controls_repeat_ext'] = function (block) {
+            javascript.javascriptGenerator.forBlock['repeat_loop_K_2'] = function (block) {
                 let times = block.getFieldValue('TIMES') || 10; // Get number of repeats
                 let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO'); // Get inner blocks
                 let repeatCode = `
@@ -1659,8 +1662,23 @@
                     ${innerCode}
                 }
             `;
-                return repeatCode; // ✅ Returns JavaScript code instead of calling repeat_10(block);
             };
+
+            javascript.javascriptGenerator.forBlock['repeat_loop_2_5'] = function (block) {
+                let times = block.getFieldValue('TIMES') || 10; // Get number of repeats
+                let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO'); // Get inner blocks
+                let repeatCode = `
+                for (let i = 0; i < ${times}; i++) {
+                    ${innerCode}
+                }
+            `;
+            };
+
+            javascript.javascriptGenerator.forBlock["turn"] = function (block) {
+                const direction = block.getFieldValue("direction");
+                return `await this.turn("${direction}");\n`;
+            };
+            return repeatCode; // ✅ Returns JavaScript code instead of calling repeat_10(block);
         }
 
         createToolbox(blocks) {
@@ -2049,6 +2067,33 @@
             }
         }
 
+        turn(direction, speed, isRunning, callback) {
+            if (!isRunning) return;
+
+            const angleStep = Math.PI / 180; // 1 degree in radians
+            const totalRotation = Math.PI / 2; // 90 degrees in radians
+            const sign = direction === "left" ? -1 : 1;
+            let rotated = 0;
+
+            const animateTurn = () => {
+                if (!isRunning) return;
+
+                const step = angleStep * sign * speed;
+                this.container.rotation += step;
+                rotated += Math.abs(step);
+
+                if (rotated < totalRotation) {
+                    requestAnimationFrame(animateTurn);
+                } else {
+                    // Snap exactly to final rotation
+                    this.container.rotation = Math.round(this.container.rotation / (Math.PI / 2)) * (Math.PI / 2);
+                    if (typeof callback === "function") callback();
+                }
+            };
+
+            requestAnimationFrame(animateTurn);
+        }
+
 
         async getPerson(activity, listOfSprites, speed, callback) {
             if (!Sprite.hasEnvironmentSprites()) {
@@ -2130,17 +2175,15 @@
     async function init(type, level) {
         new Activity(type, level);
         buttonNextLevelElements.forEach(button => {
-            button.addEventListener("click", function() {
+            button.addEventListener("click", function () {
                 setNextLevel();
             });
         });
     }
 
-    function reloadWindow(){
-        window.open("{{link}}",'_top');
+    function reloadWindow() {
+        window.open("{{link}}", '_top');
     }
-
-
 
 
     soundButtonElement.addEventListener("click", () => {
@@ -2149,8 +2192,7 @@
             window.backgroundMusic.play().catch(err => {
                 console.warn("Playback failed:", err);
             });
-        }
-        else{
+        } else {
             window.backgroundMusic.pause();
             soundButtonElement.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
         }
@@ -2191,8 +2233,8 @@
         // If loadingPane is showing, animate loading text
         if (paneId === 'loadingPane') {
             gsap.fromTo("#loadingText",
-                { opacity: 0, y: 10 },
-                { opacity: 1, y: 0, duration: 0.6, ease: "power2.out", repeat: -1, yoyo: true }
+                {opacity: 0, y: 10},
+                {opacity: 1, y: 0, duration: 0.6, ease: "power2.out", repeat: -1, yoyo: true}
             );
         } else {
             // Stop animation and hide success text for other panes
@@ -2222,7 +2264,7 @@
                 successText.style.opacity = 0;
 
                 gsap.fromTo(successText,
-                    { opacity: 0, y: 20 },
+                    {opacity: 0, y: 20},
                     {
                         opacity: 1,
                         y: 0,
@@ -2249,7 +2291,7 @@
                 errorText.style.display = "block"; // Show error message
 
                 gsap.fromTo(errorText,
-                    { opacity: 0, y: 10 },
+                    {opacity: 0, y: 10},
                     {
                         opacity: 1,
                         y: 0,
@@ -2270,8 +2312,8 @@
         }
     }
 
-    document.querySelectorAll('.link-container').forEach(function(container) {
-        container.addEventListener('click', function(event) {
+    document.querySelectorAll('.link-container').forEach(function (container) {
+        container.addEventListener('click', function (event) {
             const link = event.target.closest('.nav-link, .exercise-link');
             if (link) {
                 event.preventDefault();
@@ -2321,6 +2363,7 @@
             }
         }
     }
+
     // Disable all clickable links and buttons
     function disableLinks() {
         // Disable anchor links
