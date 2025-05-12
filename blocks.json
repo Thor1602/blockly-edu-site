@@ -738,7 +738,6 @@
       "hints": "Use the pick up block to get everyone in your taxi.",
       "blocks": [
         "run_event",
-        "repeat_loop_K_2",
         "move_north",
         "move_south",
         "move_west",
@@ -799,7 +798,7 @@
       "maxBlocks": 10,
       "sounds": [],
       "goal": "",
-      "mapLayout": "mapLayout_taxiDriverSequencing_1_3",
+      "mapLayout": "mapLayout_taxiDriverSequencing_1_1",
       "instructions": "Pick up all the passengers.",
       "feedback": "Good job!",
       "hints": "Use the pick up block to get everyone in your taxi.",
@@ -838,7 +837,6 @@
       "hints": "Use the pick up block to get everyone in your taxi.",
       "blocks": [
         "run_event",
-        "repeat_loop_K_2",
         "move_north",
         "move_south",
         "move_west",
