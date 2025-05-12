@@ -247,6 +247,7 @@
         const rowLength = document.getElementById("rowLength");
         const colLength = document.getElementById("colLength");
         const mapLayout = document.getElementById("mapLayoutForm");
+        type.value = type.value + grade.value;
         name.value = type.value + grade.value + "_" + level.value;
         mapLayout.value = "mapLayout_" + type.value + "_" + grade.value + "_" + level.value;
         const rows = {"K": 8, "1": 10, "2": 12, "3": 12, "4": 12, "5": 12};

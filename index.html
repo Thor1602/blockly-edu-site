@@ -495,7 +495,7 @@
                         </div>
                         <div>
                             <div class="section-title">Debugging</div>
-                            <a>Coming soon</a>
+                            <a>Dojo Troubles (Coming soon)</a>
                         </div>
                     </div>
                 </div>
@@ -514,11 +514,11 @@
                         </div>
                         <div>
                             <div class="section-title">Debugging</div>
-                            <a>Coming soon</a>
+                            <a>Dojo Troubles (Coming soon)</a>
                         </div>
                         <div>
                             <div class="section-title">Events</div>
-                            <a>Redirect</a>
+                            <a>Dojo Play (Coming soon)</a>
 
 
                         </div>
@@ -543,7 +543,7 @@
                         </div>
                         <div>
                             <div class="section-title">Events</div>
-                            <a>Coming soon</a>
+                            <a>Kickoff Events (Coming soon)</a>
                         </div>
                     </div>
                 </div>
@@ -566,11 +566,11 @@
                         </div>
                         <div>
                             <div class="section-title">Events</div>
-                            <a>Coming soon</a>
+                            <a>Kickoff Events (Coming soon)</a>
                         </div>
                         <div>
                             <div class="section-title">Conditionals</div>
-                            <a>Coming soon</a>
+                            <a>Ms. Taery's Agony (Coming soon)</a>
                         </div>
                     </div>
                 </div>
@@ -593,11 +593,11 @@
                         </div>
                         <div>
                             <div class="section-title">Events</div>
-                            <a>Coming soon</a>
+                            <a>Kickoff Events (Coming soon)</a>
                         </div>
                         <div>
                             <div class="section-title">Conditionals</div>
-                            <a>Coming soon</a>
+                            <a>Ms. Taery's Agony (Coming soon)</a>
                         </div>
                         <div>
                             <div class="section-title">Nested Loops</div>
@@ -632,11 +632,11 @@
                         </div>
                         <div>
                             <div class="section-title">Events</div>
-                            <a>Coming soon</a>
+                            <a>Kickoff Events (Coming soon)</a>
                         </div>
                         <div>
                             <div class="section-title">Conditionals</div>
-                            <a>Coming soon</a>
+                            <a>Ms. Taery's Agony (Coming soon)</a>
                         </div>
                         <div>
                             <div class="section-title">Nested Loops</div>
@@ -652,7 +652,7 @@
                         </div>
                         <div>
                             <div class="section-title">Functions</div>
-                            <a>Coming soon</a>
+                            <a>Ms. Minjae’s Melody Functions (Coming soon)</a>
                         </div>
                         <div>
                             <div class="section-title">Operators</div>
@@ -1650,35 +1650,36 @@
             if (!blocks || blocks.length === 0) {
                 throw new Error('No blocks found in JSON.');
             }
+
             blocks.forEach(block => {
-                Blockly.common.defineBlocksWithJsonArray([{...block}]);
+                Blockly.common.defineBlocksWithJsonArray([{ ...block }]);
                 javascript.javascriptGenerator.forBlock[block.type] = () => block.javascript_function;
             });
+
             javascript.javascriptGenerator.forBlock['repeat_loop_K_2'] = function (block) {
-                let times = block.getFieldValue('TIMES') || 10; // Get number of repeats
-                let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO'); // Get inner blocks
-                let repeatCode = `
-                for (let i = 0; i < ${times}; i++) {
-                    ${innerCode}
-                }
-            `;
+                let times = block.getFieldValue('TIMES') || 10;
+                let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO');
+                return `
+        for (let i = 0; i < ${times}; i++) {
+            ${innerCode}
+        }
+        `;
             };
 
             javascript.javascriptGenerator.forBlock['repeat_loop_2_5'] = function (block) {
-                let times = block.getFieldValue('TIMES') || 10; // Get number of repeats
-                let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO'); // Get inner blocks
-                let repeatCode = `
-                for (let i = 0; i < ${times}; i++) {
-                    ${innerCode}
-                }
-            `;
+                let times = block.getFieldValue('TIMES') || 10;
+                let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO');
+                return `
+        for (let i = 0; i < ${times}; i++) {
+            ${innerCode}
+        }
+        `;
             };
 
             javascript.javascriptGenerator.forBlock["turn"] = function (block) {
                 const direction = block.getFieldValue("direction");
                 return `await this.turn("${direction}");\n`;
             };
-            return repeatCode; // ✅ Returns JavaScript code instead of calling repeat_10(block);
         }
 
         createToolbox(blocks) {
