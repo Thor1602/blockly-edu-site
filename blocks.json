@@ -792,7 +792,7 @@
     {
       "name": "taxiDriverSequencing1_3",
       "type": "taxiDriverSequencing1",
-      "level": "2",
+      "level": "3",
       "gridSize": 30,
       "rowLength": 10,
       "colLength": 10,
