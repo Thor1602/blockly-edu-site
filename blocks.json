@@ -387,7 +387,7 @@
       "args0": [
         {
           "type": "field_dropdown",
-          "name": "NAME",
+          "name": "DIRECTION",
           "options": [
             [ "left", "left" ],
             [ "right", "right" ]

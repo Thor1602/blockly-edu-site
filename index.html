@@ -1295,7 +1295,7 @@
         }
 
         turn_to(direction) {
-            return new Promise(resolve => this.player.turn(direction, this.speed, this.isRunning, resolve));
+            return new Promise(resolve => this.player.turn_to(direction, this.speed, this.isRunning, resolve));
         }
 
         runCodeBlock() {
@@ -1670,15 +1670,15 @@
                 let times = block.getFieldValue('TIMES') || 10;
                 let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO');
                 return `
-                    for (let i = 0; i < ${times}; i++) {
-                        ${innerCode}
-                    }
-                    `;
+        for (let i = 0; i < ${times}; i++) {
+            ${innerCode}
+        }
+        `;
             };
 
             javascript.javascriptGenerator.forBlock["turn"] = function (block) {
                 const direction = block.getFieldValue("direction");
-                return `await this.turn("${direction}");\n`;
+                return `await this.turn_to("${direction}");\n`;
             };
         }
 
@@ -2068,31 +2068,11 @@
             }
         }
 
-        turn(direction, speed, isRunning, callback) {
+        turn_to(direction, speed, isRunning, callback) {
             if (!isRunning) return;
+            this.sprite.rotation = Math.PI / 2;
 
-            const angleStep = Math.PI / 180; // 1 degree in radians
-            const totalRotation = Math.PI / 2; // 90 degrees in radians
-            const sign = direction === "left" ? -1 : 1;
-            let rotated = 0;
-
-            const animateTurn = () => {
-                if (!isRunning) return;
-
-                const step = angleStep * sign * speed;
-                this.container.rotation += step;
-                rotated += Math.abs(step);
-
-                if (rotated < totalRotation) {
-                    requestAnimationFrame(animateTurn);
-                } else {
-                    // Snap exactly to final rotation
-                    this.container.rotation = Math.round(this.container.rotation / (Math.PI / 2)) * (Math.PI / 2);
-                    if (typeof callback === "function") callback();
-                }
-            };
-
-            requestAnimationFrame(animateTurn);
+            if (callback) callback(); // call it after turning
         }
 
 
