@@ -1670,10 +1670,10 @@
                 let times = block.getFieldValue('TIMES') || 10;
                 let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO');
                 return `
-        for (let i = 0; i < ${times}; i++) {
-            ${innerCode}
-        }
-        `;
+                    for (let i = 0; i < ${times}; i++) {
+                        ${innerCode}
+                    }
+                    `;
             };
 
             javascript.javascriptGenerator.forBlock["turn"] = function (block) {

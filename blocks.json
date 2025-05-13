@@ -877,7 +877,7 @@
       ],
       "playerInfo": {
         "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi2.svg",
-        "row": 1,
+        "row": 3,
         "col": 4,
         "setNotification": false,
         "notification": 0
