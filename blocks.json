@@ -100,7 +100,7 @@
         },
         {
           "type": "input_statement",
-          "name": "NAME"
+          "name": "DO"
         }
       ],
       "previousStatement": null,
@@ -147,7 +147,7 @@
         },
         {
           "type": "input_statement",
-          "name": "NAME"
+          "name": "DO"
         }
       ],
       "previousStatement": null,
