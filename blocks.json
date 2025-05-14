@@ -68,7 +68,7 @@
       "args0": [
         {
           "type": "field_number",
-          "name": "NAME",
+          "name": "TIMES",
           "value": 0,
           "min": 2,
           "max": 100
@@ -79,7 +79,7 @@
         },
         {
           "type": "input_statement",
-          "name": "NAME"
+          "name": "DO"
         }
       ],
       "previousStatement": null,
@@ -884,7 +884,7 @@
       },
       "movable_sprites": null
     ,
-      "positions": [[3,6,1],[5,7,1],[7,8,1],[9,9,1],[11,10,1]]
+      "positions": [[3,6,1],[7,8,1],[11,10,1]]
     },
     {
       "name": "taxiDriverSequencing5_2",
