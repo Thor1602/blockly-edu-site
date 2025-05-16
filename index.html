@@ -369,8 +369,8 @@
 
         <!-- Left side -->
         <div class="d-flex align-items-center">
-            <a href="#" class="navbar-brand me-3 expand" onclick="event.preventDefault(); showPane('home')">
-                <img src="https://i.postimg.cc/qMKT5SS9/logo.png" height="40px" width="40px" alt=""/>
+            <a href="#" id="homeLink" class="navbar-brand me-3 expand">
+                <img src="https://i.postimg.cc/qMKT5SS9/logo.png" height="40" width="40" alt=""/>
                 Seoul Academy Apgujeong
             </a>
             <button class="btn btn-lg btn-primary" onclick="showPane('codingPane')">Continue</button>
@@ -1118,7 +1118,6 @@
                 keyboard: false,
                 show: true
             });
-            console.log("Level Finished");
         }
 
         hasFailed() {
@@ -1144,10 +1143,10 @@
             // Initialize the map first
             this.map = await new MapLayout(this.mapLayout, false, this.app);
             await this.map.initialize(this.mapLayout);
-            this.player = new Player(this.playerInfo.image, this.playerInfo.row, this.playerInfo.col, this.playerInfo.setNotification, this.playerInfo.notification, this._gridSize, this.app, this);
+            this.player = new Player(this.playerInfo.image, this.playerInfo.row, this.playerInfo.col, this.playerInfo.direction,this.playerInfo.setNotification, this.playerInfo.notification, this._gridSize, this.app, this);
 
             for (let pos of this.positions) {
-                this.sprites.push(new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', pos[0], pos[1], true, pos[2], this._gridSize, this.app, this));
+                this.sprites.push(new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', pos[0], pos[1], "west", true, pos[2], this._gridSize, this.app, this));
             }
             this.people = Sprite.listOfSprites.filter(item => !(item instanceof Player));
             this.sprites = Sprite.listOfSprites;
@@ -1274,8 +1273,11 @@
 
 
         // what my sprites will do according to the blocks
-        pick_up() {
-            return new Promise(resolve => this.player.getPerson(this, this.people, this.speed, resolve));
+        pick_up_person() {
+            return new Promise(resolve => this.player.getPerson(this, resolve));
+        }
+        get_book(bookType) {
+            return new Promise(resolve => this.player.getBook(bookType, this,  resolve));
         }
 
         move_north() {
@@ -1294,6 +1296,33 @@
             return new Promise(resolve => this.player.moveBy(1, 0, this.getMapLayout(), this.speed, this.isRunning, resolve));
         }
 
+        move_choice_action(direction) {
+            const dir = this.player.direction; // e.g., "west", "east", etc.
+            let row = 0;
+            let col = 0;
+
+            const forwardMap = {
+                west: [-1, 0],
+                east: [1, 0],
+                north: [0, -1],
+                south: [0, 1]
+            };
+
+            if (direction === "forward") {
+                [col, row] = forwardMap[dir];
+            } else if (direction === "backward") {
+                [col, row] = forwardMap[dir].map(n => -n); // invert direction
+            } else {
+                console.warn("Invalid move direction:", direction);
+                return Promise.resolve(); // nothing happens
+            }
+
+            return new Promise(resolve =>
+                this.player.moveBy(col, row, this.getMapLayout(), this.speed, this.isRunning, resolve)
+            );
+        }
+
+
         turn_to(direction) {
             return new Promise(resolve => this.player.turn_to(direction, this.speed, this.isRunning, resolve));
         }
@@ -1310,7 +1339,6 @@
         async runCode() {
             if (this.isRunning) return; // Prevent multiple executions
             this.isRunning = true;
-            this.player.initialize();
             buttonRunElement.style.display = "none";
             buttonResetElement.style.display = "inline-block";
             let runEventBlock = this.blockManager.workspace.getAllBlocks().find(block => block.type === 'run_event');
@@ -1677,8 +1705,13 @@
             };
 
             javascript.javascriptGenerator.forBlock["turn"] = function (block) {
-                const direction = block.getFieldValue("direction");
+                const direction = block.getFieldValue("DIRECTION");
                 return `await this.turn_to("${direction}");\n`;
+            };
+
+            javascript.javascriptGenerator.forBlock["move_choice_action"] = function (block) {
+                const direction = block.getFieldValue("DIRECTION");
+                return `await this.move_choice_action("${direction}");\n`;
             };
         }
 
@@ -1790,7 +1823,7 @@
 
                 const remaining = this.maxBlocks - usedBlocks;
 
-                numberBlockCapacityElement.textContent = Math.abs(remaining);
+                numberBlockCapacityElement.textContent = Math.abs(remaining).toString();
 
                 if (remaining < 0) {
                     buttonCapacityElement.classList.remove("btn-primary");
@@ -1834,16 +1867,20 @@
     class Sprite {
         static listOfSprites = [];
         static #numberOfEnvironmentSprites = 0;
+        static _directions = ['west', 'north', 'east', 'south'];
 
-        constructor(imageURL, row, col, showNotif = false, notif_number = 0, gridSize, app, activity) {
+        constructor(imageURL, row, col, direction, showNotif = false, notif_number = 0, gridSize, app, activity) {
             this.row = row;
             this.col = col;
             this._gridSize = gridSize;
             this.showNotif = showNotif;
             this.activity = activity;
+            console.log(activity);
             this.notif_number = notif_number;
             this.app = app;
             this.original_notif_number = notif_number;
+            this.direction = direction;
+            this.originalDirection = direction;
             this.sprite = PIXI.Sprite.from(imageURL);
             this.sprite.anchor.set(0.5);
             this.updateSizeAndPosition();
@@ -1877,7 +1914,6 @@
             this.app.stage.addChild(this.container);
             Sprite.listOfSprites.push(this);
             Sprite.#numberOfEnvironmentSprites += notif_number;
-            console.log(this.app);
         }
 
         static restoreNotifactionNumberForAllSprites() {
@@ -1912,6 +1948,7 @@
             if (this.showNotif) {
                 this.updateNotifPosition();
             }
+            this.direction = this.originalDirection;
         }
 
 
@@ -1951,7 +1988,6 @@
             this.sprite.width = this.sprite.height = this._gridSize;
             this.sprite.x = this.col * this._gridSize + this._gridSize / 2;
             this.sprite.y = this.row * this._gridSize + this._gridSize / 2;
-
         }
 
         updateNotifPosition() {
@@ -1973,8 +2009,8 @@
     class Player extends Sprite {
         static listOfPlayers = [];
 
-        constructor(imageURL, row, col, showNotif = false, notifNumber = 0, gridSize, app, activity) {
-            super(imageURL, row, col, showNotif, notifNumber, gridSize, app, activity);
+        constructor(imageURL, row, col, direction, showNotif = false, notifNumber = 0, gridSize, app, activity) {
+            super(imageURL, row, col, direction, showNotif, notifNumber, gridSize, app, activity);
             Player.listOfPlayers.push(this);
         }
 
@@ -2067,13 +2103,88 @@
                 this.activity.addOverlay("Crashed!!", 0xE30000)
             }
         }
+        async turn_animated_to(direction, speed, isRunning, callback) {
+            if (!isRunning) {
+                return; // Don't proceed if isRunning is false
+            }
 
-        turn_to(direction, speed, isRunning, callback) {
-            if (!isRunning) return;
-            this.sprite.rotation = Math.PI / 2;
+            const rawSpeed = parseInt(speed);
+            const adjustedSpeed = Math.min(Math.max(rawSpeed, 1), 10) / 100;
 
-            if (callback) callback(); // call it after turning
+            // Normalize current rotation to [0, 2π)
+            this.sprite.rotation = (this.sprite.rotation + 2 * Math.PI) % (2 * Math.PI);
+
+            // Calculate target rotation
+            let targetRotation;
+            if (direction === "right") {
+                targetRotation = (this.sprite.rotation + Math.PI / 2) % (2 * Math.PI);
+            } else if (direction === "left") {
+                targetRotation = (this.sprite.rotation + 3 * Math.PI / 2) % (2 * Math.PI); // = -90°
+            } else {
+                console.warn("Invalid direction:", direction);
+                return;
+            }
+
+            return new Promise(resolve => {
+                const rotateStep = () => {
+                    if (!isRunning) {
+                        return; // Stop the rotation if isRunning becomes false
+                    }
+
+                    let diff = targetRotation - this.sprite.rotation;
+
+                    if (diff > Math.PI) diff -= 2 * Math.PI;
+                    if (diff < -Math.PI) diff += 2 * Math.PI;
+
+                    if (Math.abs(diff) < 0.01) {
+                        this.sprite.rotation = targetRotation;
+                        if (callback) callback();
+                        resolve();
+                        return;
+                    }
+
+                    this.sprite.rotation += adjustedSpeed * Math.sign(diff);
+                    requestAnimationFrame(rotateStep);
+                };
+
+                rotateStep();
+            });
         }
+        async turn_to(turnDirection, speed, isRunning, callback) {
+            if (!isRunning) return;
+
+            const directions = this.constructor._directions;
+            let currentIndex = directions.indexOf(this.direction);
+
+            const angle = Math.PI / 2;
+
+            if (turnDirection === "left") {
+                this.sprite.rotation += angle;
+                currentIndex = (currentIndex + 3) % 4; // turning left = -1
+            } else if (turnDirection === "right") {
+                this.sprite.rotation -= angle;
+                currentIndex = (currentIndex + 1) % 4; // turning right = +1
+            } else {
+                console.warn("Invalid turnDirection:", turnDirection);
+                return;
+            }
+
+            // Update logical direction
+            this.direction = directions[currentIndex];
+            console.log(this.direction);
+
+            // Normalize rotation to [0, 2π)
+            this.sprite.rotation = (this.sprite.rotation + 2 * Math.PI) % (2 * Math.PI);
+
+            // Optional: add timeout to simulate delay based on speed
+            const clampedSpeed = Math.min(Math.max(parseInt(speed), 1), 10);
+            const delay = 1000 / clampedSpeed;
+
+            setTimeout(() => {
+                if (typeof callback === "function") callback();
+            }, delay);
+        }
+
 
 
         async getPerson(activity, listOfSprites, speed, callback) {
@@ -2081,7 +2192,7 @@
                 await new Promise(resolve => setTimeout(resolve, speed * 100)); // 0.5 sec delay
                 await activity.levelCompleted();
             }
-            let person = listOfSprites.find(p => this.isNextTo(p));
+            let person = listOfSprites.find(p => this.isNextTo(p) && p.notif_number !== 0);
             if (person) {
                 if (person.notif_number > 1) {
                     Activity.playSound("pop-268648.mp3");
@@ -2093,7 +2204,6 @@
                     Activity.playSound("pop-268648.mp3");
                     // console.log("Leftover sprites: " + Sprite.getNumberOfEnvironmentSprites());
                     activity.giveHint("Everyone is inside", "3000");
-                    person.notify(person.notif_number - 1);
                     await new Promise(resolve => setTimeout(resolve, speed * 100)); // 0.5 sec delay
                     Sprite.decreaseNumberOfEnvironmentSprites();
                     person.notify(person.notif_number - 1);
@@ -2115,14 +2225,60 @@
 
         isNextTo(otherSprite) {
             if (!otherSprite) return false; // Prevent errors if null
-
             const dRow = Math.abs(this.row - otherSprite.row);
             const dCol = Math.abs(this.col - otherSprite.col);
-            console.log(`Checking next-to: this (${this.row}, ${this.col}) vs other (${otherSprite.row}, ${otherSprite.col}) → dRow: ${dRow}, dCol: ${dCol}`);
-
             return (dRow === 1 && dCol === 0) || (dRow === 0 && dCol === 1);
         }
+
+
+    async getBook(activity, callback) {
+        if (!Sprite.hasEnvironmentSprites()) {
+            await new Promise(resolve => setTimeout(resolve, activity.speed * 100)); // 0.5 sec delay
+            await activity.levelCompleted();
+        }
+        let book = listOfSprites.find(b => this.isOnto(b) && b.notif_number !== 0);
+        if (book) {
+            if (book.notif_number > 1) {
+                Activity.playSound("pop-268648.mp3");
+                activity.giveHint("Removed 1 person", "3000");
+                await new Promise(resolve => setTimeout(resolve, activity.speed * 100)); // 0.5 sec delay
+                Sprite.decreaseNumberOfEnvironmentSprites();
+                person.notify(book.notif_number - 1);
+            } else if (book.notif_number === 1) {
+                Activity.playSound("pop-268648.mp3");
+                // console.log("Leftover sprites: " + Sprite.getNumberOfEnvironmentSprites());
+                activity.giveHint("Everyone is inside", "3000");
+                book.notify(book.notif_number - 1);
+                await new Promise(resolve => setTimeout(resolve, activity.speed * 100)); // 0.5 sec delay
+                Sprite.decreaseNumberOfEnvironmentSprites();
+                book.notify(book.notif_number - 1);
+                book.hide();
+            } else if (person.notif_number <= 0) {
+                activity.giveHint("No person to be picked up", "3000");
+                activity.hasFailed();
+            }
+            if (typeof callback === "function") await callback(book);
+            return book;
+        } else {
+            activity.hasFailed();
+            activity.giveHint("No person to be picked up", "150000");
+        }
+
+        if (typeof callback === "function") await callback(null);
+        return null;
     }
+
+    isOnto(otherSprite) {
+        if (!otherSprite) return false; // Prevent errors if null
+
+        const dRow = Math.abs(this.row - otherSprite.row);
+        const dCol = Math.abs(this.col - otherSprite.col);
+        console.log(`Checking next-to: this (${this.row}, ${this.col}) vs other (${otherSprite.row}, ${otherSprite.col}) → dRow: ${dRow}, dCol: ${dCol}`);
+
+        return (dRow === 1 && dCol === 0) || (dRow === 0 && dCol === 1);
+    }
+    }
+
 
     document.addEventListener('DOMContentLoaded', () => {
         // Sidebar collapse behavior
@@ -2242,7 +2398,7 @@
         if (isLoggedIn) {
             if (successText) {
                 successText.style.display = "block";
-                successText.style.opacity = 0;
+                successText.style.opacity = '0';
 
                 gsap.fromTo(successText,
                     {opacity: 0, y: 20},
@@ -2364,6 +2520,10 @@
             link.style.opacity = ''; // Remove the disabled opacity
         });
     }
+    document.getElementById("homeLink").addEventListener("click", function(event) {
+        event.preventDefault();
+        showPane("home");
+    });
 
 
 </script>
