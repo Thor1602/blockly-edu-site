@@ -122,6 +122,9 @@
                 <option value="0">Black</option>
                 <option value="1">Grey</option>
                 <option value="2">Green</option>
+                <option value="3">Red</option>
+                <option value="4">Orange</option>
+                <option value="5">Blue</option>
             </select>
         </div>
 
@@ -309,7 +312,7 @@
 
 
     const TILE_SIZE = 50;
-    const COLORS = {0: 0x333333, 1: 0xAAAAAA, 2: 0x00AA00};
+    const COLORS = {0: 0x333333, 1: 0xAAAAAA, 2: 0x00AA00, 3: 0xAA171A, 4: 0xAA710E, 5: 0x2838AA};
 
     const app = new PIXI.Application({
         width: TILE_SIZE * parseInt(document.getElementById('rowLength').value),
