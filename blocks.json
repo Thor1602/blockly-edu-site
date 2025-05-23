@@ -1286,8 +1286,8 @@
       ]
     },
     {
-      "name": "taxiDriverSequencing5_1",
-      "type": "taxiDriverSequencing5",
+      "name": "taxiDriverSequencing3_1",
+      "type": "taxiDriverSequencing3",
       "category": "taxiDriverSequencing",
       "level": "1",
       "gridSize": 30,
@@ -1296,7 +1296,7 @@
       "maxBlocks": 30,
       "sounds": [],
       "goal": "",
-      "mapLayout": "mapLayout_taxiDriverSequencing_5_1",
+      "mapLayout": "mapLayout_taxiDriverSequencing_3_1",
       "instructions": "Pick up all the passengers.",
       "feedback": "Good job!",
       "hints": "Use the pick up block to get everyone in your taxi.",
@@ -1335,8 +1335,8 @@
       ]
     },
     {
-      "name": "taxiDriverSequencing5_2",
-      "type": "taxiDriverSequencing5",
+      "name": "taxiDriverSequencing3_2",
+      "type": "taxiDriverSequencing3",
       "category": "taxiDriverSequencing",
       "level": "2",
       "gridSize": 30,
@@ -1345,7 +1345,7 @@
       "maxBlocks": 30,
       "sounds": [],
       "goal": "",
-      "mapLayout": "mapLayout_taxiDriverSequencing_5_2",
+      "mapLayout": "mapLayout_taxiDriverSequencing_3_2",
       "instructions": "Pick up all the passengers.",
       "feedback": "Good job!",
       "hints": "Use the pick up block to get everyone in your taxi.",
@@ -3704,7 +3704,7 @@
       }
     },
     {
-      "name": "mapLayout_taxiDriverSequencing_5_1",
+      "name": "mapLayout_taxiDriverSequencing_3_1",
       "layout": {
         "A": {
           "1": 2,
@@ -3933,7 +3933,7 @@
       }
     },
     {
-      "name": "mapLayout_taxiDriverSequencing_5_2",
+      "name": "mapLayout_taxiDriverSequencing_3_2",
       "layout": {
         "A": {
           "1": 2,
