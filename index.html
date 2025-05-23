@@ -1313,14 +1313,6 @@
             return new Promise(resolve => this.player.moveBy(1, 0, this.getMapLayout(), this.speed, this.isRunning, resolve));
         }
 
-        highlightBlock(id) {
-            const block = Blockly.getMainWorkspace().getBlockById(id);
-            if (block) {
-                block.setHighlighted(true);
-                setTimeout(() => block.setHighlighted(false), 500);
-            }
-        }
-
         move_choice_action(direction) {
             const dir = this.player.direction; // e.g., "west", "east", etc.
             let row = 0;
@@ -1359,6 +1351,13 @@
             });
         }
 
+        highlightBlock(id) {
+            const block = Blockly.getMainWorkspace().getBlockById(id);
+            if (block) {
+                block.setHighlighted(true);
+                setTimeout(() => block.setHighlighted(false), 500);
+            }
+        }
 
         // Running Blockly Code
         async runCode() {
@@ -1565,29 +1564,45 @@
 
         addKeyInput(runCode, resetCode) {
             document.addEventListener("keydown", function (event) {
-                const displayStyle = window.getComputedStyle(buttonRunElement).display; // Get computed display style
-                const speedSlider = buttonSpeedElement; // Get the slider element
+                const codingPane = document.getElementById("codingPane");
 
-                if (event.code === "KeyR") {
-                    if (displayStyle === "block") {
-                        runCode();
-                    } else if (displayStyle === "none") {
-                        resetCode();
-                    }
-                } else if (event.code === "KeyS") {
-                    alert("S key was pressed!");
-                } else if (event.code === "KeyD") {
-                    // Increase slider value
-                    if (speedSlider) {
-                        speedSlider.value = Math.min(parseInt(speedSlider.value) + 1, speedSlider.max);
-                    }
-                } else if (event.code === "KeyA") {
-                    // Decrease slider value
-                    if (speedSlider) {
-                        speedSlider.value = Math.max(parseInt(speedSlider.value) - 1, speedSlider.min);
-                    }
+                // 1. Check if codingPane is visible
+                if (!codingPane || codingPane.style.display === "none") return;
+
+                // 2. Ignore key events when focus is inside an input, textarea or contenteditable
+                const active = document.activeElement;
+                const isFormInput = (
+                    active.tagName === 'INPUT' ||
+                    active.tagName === 'TEXTAREA' ||
+                    active.isContentEditable
+                );
+                if (isFormInput) return;
+
+                // 3. Continue only if above checks passed
+                const displayStyle = window.getComputedStyle(buttonRunElement).display;
+                const speedSlider = buttonSpeedElement;
+
+                switch (event.code) {
+                    case "KeyR":
+                        if (displayStyle === "block") {
+                            runCode();
+                        } else if (displayStyle === "none") {
+                            resetCode();
+                        }
+                        break;
+
+                    case "KeyF":
+                        if (speedSlider) {
+                            speedSlider.value = Math.min(parseInt(speedSlider.value) + 1, speedSlider.max);
+                        }
+                        break;
+
+                    case "KeyS":
+                        if (speedSlider) {
+                            speedSlider.value = Math.max(parseInt(speedSlider.value) - 1, speedSlider.min);
+                        }
+                        break;
                 }
-
             });
         }
 
@@ -1947,6 +1962,13 @@
             this.originalDirection = direction;
             this.sprite = PIXI.Sprite.from(imageURL);
             this.sprite.anchor.set(0.5);
+            const directionToAngle = {
+                east: 0,
+                south: Math.PI / 2,
+                west: Math.PI,
+                north: -Math.PI / 2,
+            };
+            this.sprite.rotation = directionToAngle[direction] || 0;
             this.updateSizeAndPosition();
             Object.defineProperty(this, "originalRow", {
                 value: row,
