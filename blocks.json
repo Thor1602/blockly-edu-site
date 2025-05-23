@@ -1,4 +1,20 @@
 {
+  "mapLayoutDesign": [
+    {
+      "gameType": "park",
+      "tileTypes": {
+        "0": { "label": "empty", "walkable": false },
+        "1": { "label": "path", "walkable": true },
+        "2": { "label": "park", "walkable": true }
+      },
+      "styleMap": {
+        "base": "#555555",
+        "path": "#CCCCCC",
+        "parkColors": ["#00FF00", "#228B22", "#32CD32"]
+      }
+    }
+  ],
+
   "blocks": [
     {
       "type": "run_event",

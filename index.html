@@ -359,6 +359,24 @@
             height: 100%;
         }
 
+        .blocklyHighlighted > .blocklyPath {
+            stroke: rgba(255, 213, 34, 0.67) !important;
+            stroke-width: 4px !important;
+            fill: rgba(255, 255, 255, 0.18) !important;
+        }
+
+
+        .blockly-overlay {
+            cursor: url('images/lock-solid.svg') 16 16, not-allowed;
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.1);
+            z-index: 20; /* make sure it's above Blockly */
+            pointer-events: all;
+        }
+
+
     </style>
 
 </head>
@@ -748,8 +766,9 @@
 
                 </div>
 
-                <div class="border rounded bg-white p-2 flex-grow-1">
-                    <div id="blocklyDiv" style="height: 90%; width: 100%;"></div>
+                <div class="border rounded bg-white p-2 flex-grow-1 position-relative">
+                    <div id="blocklyDiv" style="height: 100%; width: 100%;"></div>
+                    <div id="blocklyOverlay" class="blockly-overlay"></div>
                 </div>
             </div>
         </div>
@@ -1003,7 +1022,6 @@
             this.name = null;
             this.type = type;
             this.level = level;
-            this.category = null;
             this.maxBlocks = null;
             this.playerInfo = null;
             this.movable_sprites = null;
@@ -1029,10 +1047,14 @@
             this.speedElement = buttonSpeedElement;
             this.isRunning = false;
             this.isComplete = false;
-
+            this.executionIndex = 0;
+            this.executionSequence = null;
             this.overlayContainer = null;
             buttonRunElement.addEventListener("click", () => {
                 this.runCode();
+            });
+            buttonStepElement.addEventListener("click", () => {
+                this.stepCode();
             });
             buttonResetElement.addEventListener("click", () => {
                 this.resetCode();
@@ -1079,7 +1101,6 @@
             }
             const exercise = configData.exercises.find(exercise => exercise.type === this.type && exercise.level === this.level);
             this.name = exercise.name;
-            this.category = exercise.category;
             this.maxBlocks = exercise.maxBlocks;
             this.playerInfo = exercise.playerInfo;
             this.movable_sprites = exercise.movable_sprites;
@@ -1292,6 +1313,14 @@
             return new Promise(resolve => this.player.moveBy(1, 0, this.getMapLayout(), this.speed, this.isRunning, resolve));
         }
 
+        highlightBlock(id) {
+            const block = Blockly.getMainWorkspace().getBlockById(id);
+            if (block) {
+                block.setHighlighted(true);
+                setTimeout(() => block.setHighlighted(false), 500);
+            }
+        }
+
         move_choice_action(direction) {
             const dir = this.player.direction; // e.g., "west", "east", etc.
             let row = 0;
@@ -1344,14 +1373,15 @@
                 this.isRunning = false; // Allow execution again
                 return;
             }
+            this.lockWorkspace();
             javascript.javascriptGenerator.init(this.blockManager.workspace);
             let code = javascript.javascriptGenerator.blockToCode(runEventBlock);
+
             try {
                 await eval(`(async () => {
                     let checkRunning = () => this.isRunning; // Closure to check the flag
                     ${code.split("await").join("if (!checkRunning()) return; await")} // Insert check before each await
                 })();`);
-                console.log("evaluated");
             } catch (error) {
                 console.error("Error executing code:", error);
             } finally {
@@ -1416,12 +1446,48 @@
 
         }
 
+        async stepCode() {
+            if (!this.executionSequence) {
+                const runEventBlock = this.blockManager.workspace.getAllBlocks()
+                    .find(block => block.type === 'run_event');
+                if (!runEventBlock) {
+                    this.giveHint("Error: Run block is missing. Please add the Run block.");
+                    return;
+                }
+                javascript.javascriptGenerator.init(this.blockManager.workspace);
+                this.executionSequence = this.getExecutionSequence(runEventBlock);
+                this.executionIndex = 0;
+            }
+
+            if (this.executionIndex >= this.executionSequence.length) {
+                this.giveHint("Step complete! No more blocks to run.");
+                return;
+            }
+            const block = this.executionSequence[this.executionIndex];
+
+            // Optionally highlight the current block
+            this.blockManager.workspace.highlightBlock(block.id);
+
+            const code = javascript.javascriptGenerator.blockToCode(block);
+
+            try {
+                await eval(`(async () => { ${code} })();`);
+            } catch (error) {
+                console.error("Error in step execution:", error);
+            }
+
+            this.executionIndex++;
+        }
+        resetStepState() {
+            this.executionSequence = null;
+            this.executionIndex = 0;
+        }
 
         resetCode() {
             this.isRunning = false;
             this.removeOverlay();
-            // this.getMap().setGridSize();
-            // this.initializeEnvironment();
+            this.resetStepState();
+            this.unlockWorkspace();
             buttonResetElement.disabled = true;
             buttonStepElement.disabled = true;
             buttonRunElement.disabled = true;
@@ -1452,6 +1518,24 @@
                 buttonRunElement.style.display = "inline-block"; // Show RUN button
                 buttonResetElement.style.display = "none"; // Hide RESET button
             }, 900); //  delay
+        }
+
+        getExecutionSequence(startBlock) {
+            const sequence = [];
+            let current = startBlock;
+            while (current) {
+                sequence.push(current);
+                current = current.getNextBlock();
+            }
+            return sequence;
+        }
+
+        lockWorkspace() {
+            document.getElementById('blocklyOverlay').style.display = 'block';
+        }
+
+        unlockWorkspace() {
+            document.getElementById('blocklyOverlay').style.display = 'none';
         }
 
         getMapLayout() {
@@ -1651,9 +1735,18 @@
 
             blocks.forEach(block => {
                 Blockly.common.defineBlocksWithJsonArray([{ ...block }]);
-                javascript.javascriptGenerator.forBlock[block.type] = () => block.javascript_function;
-            });
 
+                javascript.javascriptGenerator.forBlock[block.type] = (blockInstance) => {
+                    const id = blockInstance.id;
+                    const code = block.javascript_function || "";
+                    if (block.type === 'run_event'){
+                        return `await this.highlightBlock("${id}");\n${code}`;
+                    }
+                    else{
+                        return code;
+                    }
+                };
+            });
             javascript.javascriptGenerator.forBlock['repeat_loop_K_2'] = function (block) {
                 let times = block.getFieldValue('TIMES') || 10;
                 let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO');
@@ -1676,12 +1769,14 @@
 
             javascript.javascriptGenerator.forBlock["turn"] = function (block) {
                 const direction = block.getFieldValue("DIRECTION");
-                return `await this.turnTo("${direction}");\n`;
+                const id = block.id;
+                return `await this.highlightBlock("${id}");\nawait this.turnTo("${direction}");\n`;
             };
 
             javascript.javascriptGenerator.forBlock["move_choice_action"] = function (block) {
                 const direction = block.getFieldValue("DIRECTION");
-                return `await this.move_choice_action("${direction}");\n`;
+                const id = block.id;
+                return `await this.highlightBlock("${id}");\nawait this.move_choice_action("${direction}");\n`;
             };
         }
 
