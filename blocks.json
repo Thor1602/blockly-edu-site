@@ -1,20 +1,59 @@
 {
-  "mapLayoutDesign": [
+  "gameSettings": [
     {
-      "gameType": "park",
-      "tileTypes": {
-        "0": { "label": "empty", "walkable": false },
-        "1": { "label": "path", "walkable": true },
-        "2": { "label": "park", "walkable": true }
+      "category": "taxiDriverSequencing",
+      "characters": {
+        "player": {
+          "name": "taxi",
+          "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi3.png"
+        }
       },
-      "styleMap": {
-        "base": "#555555",
-        "path": "#CCCCCC",
-        "parkColors": ["#00FF00", "#228B22", "#32CD32"]
+      "environment": {
+        "interactiveObjects": {},
+        "nonInteractiveObjects": {
+          "passenger": {
+            "name": "passenger",
+            "sprite": "https://i.postimg.cc/wvRBMQZ5/person.png",
+            "direction": "passenger",
+            "notifications": true
+          }
+        }
+      },
+      "sounds": {
+        "success": "pop-268648.mp3",
+        "failure": "bang-crash-103775.mp3",
+        "levelCompleted": "level-up-enhancement-8-bit-retro-sound-effect-153002.mp3",
+        "levelFailed": "slap-failure.mp3",
+        "backgroundMusic": "Lenny%20Kravitz%20-%20Mr.%20Cab%20Driver%20%5BKaraoke%20Version%5D.mp3"
+      },
+      "mapLayoutDesign": {
+        "category": "park",
+        "tileTypes": {
+          "0": {
+            "label": "empty",
+            "walkable": false
+          },
+          "1": {
+            "label": "path",
+            "walkable": true
+          },
+          "2": {
+            "label": "park",
+            "walkable": false
+          }
+        },
+        "styleMap": {
+          "base": "#555555",
+          "path": "#CCCCCC",
+          "parkColors": [
+            "#00FF00",
+            "#228B22",
+            "#32CD32"
+          ]
+        }
       }
     }
   ],
-
   "blocks": [
     {
       "type": "run_event",
@@ -525,6 +564,7 @@
       "name": "taxiDriverSequencing2_1",
       "type": "taxiDriverSequencing2",
       "category": "taxiDriverSequencing",
+      "grid": false,
       "level": "1",
       "gridSize": 30,
       "rowLength": 12,
@@ -571,6 +611,7 @@
       "name": "taxiDriverSequencing2_2",
       "type": "taxiDriverSequencing2",
       "category": "taxiDriverSequencing",
+      "grid": false,
       "level": "2",
       "gridSize": 30,
       "rowLength": 12,
@@ -627,6 +668,7 @@
       "name": "taxiDriverSequencing2_3",
       "type": "taxiDriverSequencing2",
       "category": "taxiDriverSequencing",
+      "grid": false,
       "level": "3",
       "gridSize": 30,
       "rowLength": 12,
@@ -693,6 +735,7 @@
       "name": "taxiDriverSequencing2_4",
       "type": "taxiDriverSequencing2",
       "category": "taxiDriverSequencing",
+      "grid": false,
       "level": "4",
       "gridSize": 30,
       "rowLength": 12,
@@ -749,6 +792,7 @@
       "name": "taxiDriverSequencing2_5",
       "type": "taxiDriverSequencing2",
       "category": "taxiDriverSequencing",
+      "grid": false,
       "level": "5",
       "gridSize": 30,
       "rowLength": 12,
@@ -834,6 +878,7 @@
       "name": "taxiDriverSequencingK_1",
       "type": "taxiDriverSequencingK",
       "category": "taxiDriverSequencing",
+      "grid": true,
       "level": "1",
       "gridSize": 35,
       "rowLength": 9,
@@ -874,6 +919,7 @@
       "name": "taxiDriverSequencingK_2",
       "type": "taxiDriverSequencingK",
       "category": "taxiDriverSequencing",
+      "grid": true,
       "level": "2",
       "gridSize": 35,
       "rowLength": 9,
@@ -924,6 +970,7 @@
       "name": "taxiDriverSequencingK_3",
       "type": "taxiDriverSequencingK",
       "category": "taxiDriverSequencing",
+      "grid": true,
       "level": "3",
       "gridSize": 35,
       "rowLength": 9,
@@ -969,6 +1016,7 @@
       "name": "taxiDriverSequencingK_4",
       "type": "taxiDriverSequencingK",
       "category": "taxiDriverSequencing",
+      "grid": true,
       "level": "4",
       "gridSize": 35,
       "rowLength": 9,
@@ -1024,6 +1072,7 @@
       "name": "taxiDriverSequencingK_5",
       "type": "taxiDriverSequencingK",
       "category": "taxiDriverSequencing",
+      "grid": true,
       "level": "5",
       "gridSize": 35,
       "rowLength": 9,
@@ -1099,6 +1148,7 @@
       "name": "taxiDriverSequencing1_1",
       "type": "taxiDriverSequencing1",
       "category": "taxiDriverSequencing",
+      "grid": true,
       "level": "1",
       "gridSize": 40,
       "rowLength": 10,
@@ -1139,6 +1189,7 @@
       "name": "taxiDriverSequencing1_2",
       "type": "taxiDriverSequencing1",
       "category": "taxiDriverSequencing",
+      "grid": true,
       "level": "2",
       "gridSize": 40,
       "rowLength": 10,
@@ -1189,6 +1240,7 @@
       "name": "taxiDriverSequencing1_3",
       "type": "taxiDriverSequencing1",
       "category": "taxiDriverSequencing",
+      "grid": false,
       "level": "3",
       "gridSize": 30,
       "rowLength": 10,
@@ -1234,6 +1286,7 @@
       "name": "taxiDriverSequencing1_4",
       "type": "taxiDriverSequencing1",
       "category": "taxiDriverSequencing",
+      "grid": false,
       "level": "4",
       "gridSize": 40,
       "rowLength": 9,
@@ -1289,6 +1342,7 @@
       "name": "taxiDriverSequencing3_1",
       "type": "taxiDriverSequencing3",
       "category": "taxiDriverSequencing",
+      "grid": false,
       "level": "1",
       "gridSize": 30,
       "rowLength": 12,
@@ -1338,6 +1392,7 @@
       "name": "taxiDriverSequencing3_2",
       "type": "taxiDriverSequencing3",
       "category": "taxiDriverSequencing",
+      "grid": false,
       "level": "2",
       "gridSize": 30,
       "rowLength": 12,
@@ -1387,6 +1442,7 @@
       "name": "bookSorting4_1",
       "type": "bookSorting4",
       "category": "bookSorting",
+      "grid": false,
       "level": "1",
       "gridSize": 30,
       "rowLength": 12,
