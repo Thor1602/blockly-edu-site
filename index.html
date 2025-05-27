@@ -1070,8 +1070,6 @@
             const exercise = configData.exercises.find(exercise => exercise.type === this.type && exercise.level === this.level);
             this.category = exercise.category;
             const gameSettings = configData.gameSettings.find(gameSetting => gameSetting.category === this.category);
-            console.log(gameSettings);
-            console.log(gameSettings.sounds);
             this.name = exercise.name;
             this.maxBlocks = exercise.maxBlocks;
             this.playerInfo = exercise.playerInfo;
@@ -1095,8 +1093,6 @@
             feedbackElement.innerHTML = this.instructions;
             instructionsContentElement.innerHTML = this.instructions;
             hintContentElement.innerHTML = this.hints;
-            console.log(this.sounds.backgroundMusic);
-            console.log(this.sounds);
             Activity.playSound(this.sounds.backgroundMusic, true);
         }
 
@@ -1136,7 +1132,7 @@
             // Initialize the map first
             this.map = await new MapLayout(this.mapLayout, this.grid, this.app);
             await this.map.initialize(this.mapLayout);
-            this.player = new Player("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/" + this.playerInfo.image, this.playerInfo.row, this.playerInfo.col, this.playerInfo.direction,this.playerInfo.setNotification, this.playerInfo.notification, this._gridSize, this.app, this);
+            this.player = new Player("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/" + this.playerInfo.image, this.playerInfo.row, this.playerInfo.col, this.playerInfo.direction, this.playerInfo.setNotification, this.playerInfo.notification, this._gridSize, this.app, this);
 
             for (let pos of this.positions) {
                 this.sprites.push(new Sprite('https://i.postimg.cc/wvRBMQZ5/person.png', pos[0], pos[1], "east", true, pos[2], this._gridSize, this.app, this));
@@ -1269,8 +1265,9 @@
         pick_up_person() {
             return new Promise(resolve => this.player.getPerson(this, resolve));
         }
+
         get_book(bookType) {
-            return new Promise(resolve => this.player.getBook(this,  resolve));
+            return new Promise(resolve => this.player.getBook(this, resolve));
         }
 
         move_north() {
@@ -1446,13 +1443,16 @@
             const code = javascript.javascriptGenerator.blockToCode(block);
 
             try {
-                await eval(`(async () => { ${code} })();`);
+                await eval(`(async () => {
+                    ${code}
+                })();`);
             } catch (error) {
                 console.error("Error in step execution:", error);
             }
 
             this.executionIndex++;
         }
+
         resetStepState() {
             this.executionSequence = null;
             this.executionIndex = 0;
@@ -1583,17 +1583,34 @@
         }
 
         static playSound(link, isBackground = false) {
-            const audio = new Audio("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/" + link);
+            try {
+                if (!link) {
+                    console.warn("No audio link provided. Skipping playback.");
+                    return;
+                }
+                if (link === "succeeded") {
+                    const newLink = this.sounds.succeeded || "pop-268648.mp3";
+                    const audio = new Audio("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/" + newLink);
+                } else if (link === "failed") {
+                    const newLink = this.sounds.failed || "bang-crash-103775.mp3";
+                    const audio = new Audio("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/" + newLink);
 
-            if (isBackground) {
-                audio.loop = true;
-                audio.volume = 0.4;
-                window.backgroundMusic = audio;
+                } else {
+                    const audio = new Audio("https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/audio/" + link);
+                }
+                if (isBackground) {
+                    audio.loop = true;
+                    audio.volume = 0.4;
+                    window.backgroundMusic = audio;
+                }
+
+                audio.play().catch(err => {
+                    console.warn("Playback failed:", err);
+                });
+
+            } catch (err) {
+                console.warn("Error in playSound:", err);
             }
-
-            audio.play().catch(err => {
-                console.warn("Playback failed:", err);
-            });
         }
 
 
@@ -1726,15 +1743,14 @@
             }
 
             blocks.forEach(block => {
-                Blockly.common.defineBlocksWithJsonArray([{ ...block }]);
+                Blockly.common.defineBlocksWithJsonArray([{...block}]);
 
                 javascript.javascriptGenerator.forBlock[block.type] = (blockInstance) => {
                     const id = blockInstance.id;
                     const code = block.javascript_function || "";
-                    if (block.type === 'run_event'){
+                    if (block.type === 'run_event') {
                         return `await this.highlightBlock("${id}");\n${code}`;
-                    }
-                    else{
+                    } else {
                         return code;
                     }
                 };
@@ -2163,10 +2179,11 @@
                 this.moveSmoothly(newRow, newCol, speed, isRunning, callback);
             } else {
                 this.moveSmoothlyHalfStep(newRow, newCol, speed, isRunning, callback);
-                Activity.playSound(this.sounds.failed);
+                Activity.playSound("failed");
                 this.activity.addOverlay("Crashed!!", 0xE30000)
             }
         }
+
         async turnAnimatedTo(direction, speed, isRunning, callback) {
             if (!isRunning) {
                 return; // Don't proceed if isRunning is false
@@ -2214,6 +2231,7 @@
                 rotateStep();
             });
         }
+
         async turnTo(turnDirection, speed, isRunning, callback) {
             if (!isRunning) return;
 
@@ -2250,7 +2268,6 @@
         }
 
 
-
         async getPerson(activity, callback) {
             if (!Sprite.hasEnvironmentSprites()) {
                 await new Promise(resolve => setTimeout(resolve, activity.speed * 100)); // 0.5 sec delay
@@ -2259,13 +2276,13 @@
             let person = activity.people.find(p => this.isNextTo(p) && p.notif_number !== 0);
             if (person) {
                 if (person.notif_number > 1) {
-                    Activity.playSound(this.sounds.succeeded);
+                    Activity.playSound("succeeded");
                     activity.giveHint("Removed 1 person", "3000");
                     await new Promise(resolve => setTimeout(resolve, activity.speed * 100)); // 0.5 sec delay
                     Sprite.decreaseNumberOfEnvironmentSprites();
                     person.notify(person.notif_number - 1);
                 } else if (person.notif_number === 1) {
-                    Activity.playSound(this.sounds.succeeded);
+                    Activity.playSound("succeeded");
                     // console.log("Leftover sprites: " + Sprite.getNumberOfEnvironmentSprites());
                     activity.giveHint("Everyone is inside", "3000");
                     await new Promise(resolve => setTimeout(resolve, activity.speed * 100)); // 0.5 sec delay
@@ -2303,13 +2320,13 @@
             let book = activity.books.find(b => this.isOnto(b) && b.notif_number !== 0);
             if (book) {
                 if (book.notif_number > 1) {
-                    Activity.playSound(this.sounds.succeeded);
+                    Activity.playSound("succeeded");
                     activity.giveHint("Removed 1 person", "3000");
                     await new Promise(resolve => setTimeout(resolve, activity.speed * 100)); // 0.5 sec delay
                     Sprite.decreaseNumberOfEnvironmentSprites();
                     person.notify(book.notif_number - 1);
                 } else if (book.notif_number === 1) {
-                    Activity.playSound(this.sounds.succeeded);
+                    Activity.playSound("succeeded");
                     activity.giveHint("Everyone is inside", "3000");
                     book.notify(book.notif_number - 1);
                     await new Promise(resolve => setTimeout(resolve, activity.speed * 100)); // 0.5 sec delay
@@ -2583,7 +2600,8 @@
             link.style.opacity = ''; // Remove the disabled opacity
         });
     }
-    document.getElementById("homeLink").addEventListener("click", function(event) {
+
+    document.getElementById("homeLink").addEventListener("click", function (event) {
         event.preventDefault();
         showPane("home");
     });
