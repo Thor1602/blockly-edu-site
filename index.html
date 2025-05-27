@@ -905,13 +905,13 @@
 
     }
 
+
     function initUserDataAndSession() {
         console.log("initUserDataAndSession() called"); // Step 1
         try {
             // noinspection JSUnresolvedVariable
             google.script.run
                 .withSuccessHandler(function (studentData) {
-                    Activity.playSound(this.sounds.backgroundMusic, true);
                     const email = studentData[0][0];
                     const firstname = studentData[0][1];
                     const lastname = studentData[0][2];
@@ -965,7 +965,6 @@
             el.innerText = "💛 Hi " + sessionStorage.getItem("firstname") + " " + sessionStorage.getItem("lastname") + " (" + sessionStorage.getItem("className") + ") 💛";
         });
         enableLinks();
-        Activity.playSound(this.sounds.backgroundMusic, true);
         renderProgressBar(sessionStorage.getItem("currentLessonType"));
         init(sessionStorage.getItem("currentLessonType"), sessionStorage.getItem("currentLessonLevel"));
         if (sessionStorage.getItem("setNextLevel") === "true") {
@@ -1054,7 +1053,6 @@
             });
 
             this.initActivity();
-
         }
 
         async initActivity() {
@@ -1069,8 +1067,11 @@
             if (!configData) {
                 await fetchData();
             }
-            const gameSettings = configData.gameSettings.find(gameSetting => gameSetting.category === this.category);
             const exercise = configData.exercises.find(exercise => exercise.type === this.type && exercise.level === this.level);
+            this.category = exercise.category;
+            const gameSettings = configData.gameSettings.find(gameSetting => gameSetting.category === this.category);
+            console.log(gameSettings);
+            console.log(gameSettings.sounds);
             this.name = exercise.name;
             this.maxBlocks = exercise.maxBlocks;
             this.playerInfo = exercise.playerInfo;
@@ -1090,11 +1091,13 @@
             this.blocks = exercise.blocks;
             this.goal = exercise.goal;
             this.positions = exercise.positions;
-            this.category = exercise.category;
             this.grid = exercise.grid;
             feedbackElement.innerHTML = this.instructions;
             instructionsContentElement.innerHTML = this.instructions;
             hintContentElement.innerHTML = this.hints;
+            console.log(this.sounds.backgroundMusic);
+            console.log(this.sounds);
+            Activity.playSound(this.sounds.backgroundMusic, true);
         }
 
         async levelCompleted() {
@@ -2256,13 +2259,13 @@
             let person = activity.people.find(p => this.isNextTo(p) && p.notif_number !== 0);
             if (person) {
                 if (person.notif_number > 1) {
-                    Activity.playSound(this.sounds.success);
+                    Activity.playSound(this.sounds.succeeded);
                     activity.giveHint("Removed 1 person", "3000");
                     await new Promise(resolve => setTimeout(resolve, activity.speed * 100)); // 0.5 sec delay
                     Sprite.decreaseNumberOfEnvironmentSprites();
                     person.notify(person.notif_number - 1);
                 } else if (person.notif_number === 1) {
-                    Activity.playSound(this.sounds.success);
+                    Activity.playSound(this.sounds.succeeded);
                     // console.log("Leftover sprites: " + Sprite.getNumberOfEnvironmentSprites());
                     activity.giveHint("Everyone is inside", "3000");
                     await new Promise(resolve => setTimeout(resolve, activity.speed * 100)); // 0.5 sec delay
@@ -2300,14 +2303,13 @@
             let book = activity.books.find(b => this.isOnto(b) && b.notif_number !== 0);
             if (book) {
                 if (book.notif_number > 1) {
-                    Activity.playSound(this.sounds.success);
+                    Activity.playSound(this.sounds.succeeded);
                     activity.giveHint("Removed 1 person", "3000");
                     await new Promise(resolve => setTimeout(resolve, activity.speed * 100)); // 0.5 sec delay
                     Sprite.decreaseNumberOfEnvironmentSprites();
                     person.notify(book.notif_number - 1);
                 } else if (book.notif_number === 1) {
-                    Activity.playSound(this.sounds.success);
-                    // console.log("Leftover sprites: " + Sprite.getNumberOfEnvironmentSprites());
+                    Activity.playSound(this.sounds.succeeded);
                     activity.giveHint("Everyone is inside", "3000");
                     book.notify(book.notif_number - 1);
                     await new Promise(resolve => setTimeout(resolve, activity.speed * 100)); // 0.5 sec delay
