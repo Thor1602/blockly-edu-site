@@ -43,8 +43,8 @@
           }
         },
         "styleMap": {
-          "walkableColor": "0xCCCCCC",
-          "sideColor": "0x555555",
+          "walkableColor": "0x555555",
+          "sideColor": "0xCCCCCC",
           "decorationColors": [
             "0x00FF00",
             "0x228B22",
