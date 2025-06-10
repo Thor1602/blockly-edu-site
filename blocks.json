@@ -27,7 +27,6 @@
         "backgroundMusic": "Lenny%20Kravitz%20-%20Mr.%20Cab%20Driver%20%5BKaraoke%20Version%5D.mp3"
       },
       "mapLayoutDesign": {
-        "category": "park",
         "tileTypes": {
           "0": {
             "label": "empty",
@@ -49,7 +48,20 @@
             "0x00FF00",
             "0x228B22",
             "0x32CD32"
-          ]
+          ],
+          "secondaryColor": "0xCCCCCC",
+          "tertiaryColor": "0xCCCCCC",
+          "quaternaryColor": "0xCCCCCC",
+          "quinaryColor": "0xCCCCCC",
+          "senaryColor": "0xCCCCCC"
+        },
+        "textureMap": {
+          "primaryTile": "tree.jpg",
+          "secondaryTile": "rabbit.jpg",
+          "tertiaryTile": "bush.jpg",
+          "quaternaryTile": "rack.jpg",
+          "quinaryTile": "hoe.jpg",
+          "senaryTile": "flower.jpg"
         }
       },
       "gridSize": 50
