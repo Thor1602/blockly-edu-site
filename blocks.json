@@ -63,8 +63,137 @@
           "quinaryTile": "hoe.jpg",
           "senaryTile": "flower.jpg"
         }
+      }
+    },
+    {
+      "category": "gymMayhem",
+      "characters": {
+        "player": {
+          "name": "taxi",
+          "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi3.png"
+        }
       },
-      "gridSize": 50
+      "environment": {
+        "interactiveObjects": {},
+        "nonInteractiveObjects": {
+          "passenger": {
+            "name": "passenger",
+            "sprite": "https://i.postimg.cc/wvRBMQZ5/person.png",
+            "direction": "passenger",
+            "notifications": true
+          }
+        }
+      },
+      "sounds": {
+        "succeeded": "pop-268648.mp3",
+        "failed": "bang-crash-103775.mp3",
+        "levelCompleted": "level-up-enhancement-8-bit-retro-sound-effect-153002.mp3",
+        "levelFailed": "slap-failure.mp3",
+        "backgroundMusic": "Lenny%20Kravitz%20-%20Mr.%20Cab%20Driver%20%5BKaraoke%20Version%5D.mp3"
+      },
+      "mapLayoutDesign": {
+        "tileTypes": {
+          "0": {
+            "label": "empty",
+            "walkable": false
+          },
+          "1": {
+            "label": "path",
+            "walkable": true
+          },
+          "2": {
+            "label": "park",
+            "walkable": false
+          }
+        },
+        "styleMap": {
+          "walkableColor": "0x555555",
+          "sideColor": "0xCCCCCC",
+          "decorationColors": [
+            "0x00FF00",
+            "0x228B22",
+            "0x32CD32"
+          ],
+          "secondaryColor": "0xCCCCCC",
+          "tertiaryColor": "0xCCCCCC",
+          "quaternaryColor": "0xCCCCCC",
+          "quinaryColor": "0xCCCCCC",
+          "senaryColor": "0xCCCCCC"
+        },
+        "textureMap": {
+          "primaryTile": "tree.jpg",
+          "secondaryTile": "rabbit.jpg",
+          "tertiaryTile": "bush.jpg",
+          "quaternaryTile": "rack.jpg",
+          "quinaryTile": "hoe.jpg",
+          "senaryTile": "flower.jpg"
+        }
+      }
+    },
+    {
+      "category": "bookSorting",
+      "characters": {
+        "player": {
+          "name": "taxi",
+          "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi3.png"
+        }
+      },
+      "environment": {
+        "interactiveObjects": {},
+        "nonInteractiveObjects": {
+          "passenger": {
+            "name": "passenger",
+            "sprite": "https://i.postimg.cc/wvRBMQZ5/person.png",
+            "direction": "passenger",
+            "notifications": true
+          }
+        }
+      },
+      "sounds": {
+        "succeeded": "pop-268648.mp3",
+        "failed": "bang-crash-103775.mp3",
+        "levelCompleted": "level-up-enhancement-8-bit-retro-sound-effect-153002.mp3",
+        "levelFailed": "slap-failure.mp3",
+        "backgroundMusic": "Lenny%20Kravitz%20-%20Mr.%20Cab%20Driver%20%5BKaraoke%20Version%5D.mp3"
+      },
+      "mapLayoutDesign": {
+        "tileTypes": {
+          "0": {
+            "label": "empty",
+            "walkable": false
+          },
+          "1": {
+            "label": "path",
+            "walkable": true
+          },
+          "2": {
+            "label": "park",
+            "walkable": false
+          }
+        },
+        "styleMap": {
+          "walkableColor": "0x555555",
+          "sideColor": "0xCCCCCC",
+          "decorationColors": [
+            "0x00FF00",
+            "0x228B22",
+            "0x32CD32"
+          ],
+          "secondaryColor": "0xCCCCCC",
+          "tertiaryColor": "0xCCCCCC",
+          "quaternaryColor": "0xCCCCCC",
+          "quinaryColor": "0xCCCCCC",
+          "senaryColor": "0xCCCCCC"
+        },
+        "textureMap": {
+          "primaryTile": "tree.jpg",
+          "secondaryTile": "rabbit.jpg",
+          "tertiaryTile": "bush.jpg",
+          "quaternaryTile": "rack.jpg",
+          "quinaryTile": "hoe.jpg",
+          "senaryTile": "flower.jpg"
+        }
+      }
     }
   ],
   "blocks": [
@@ -1464,9 +1593,9 @@
       
       "goal": "",
       "mapLayout": "mapLayout_bookSorting4_1",
-      "instructions": "Sort out all the box by putting non-fiction and fiction books together",
+      "instructions": "Sort out all the books by putting non-fiction and fiction books together",
       "feedback": "Good job!",
-      "hints": "Use the pick up block to get everyone in your taxi.",
+      "hints": "Use the if block to let the computer decide what book is fiction",
       "blocks": [
         "run_event",
         "repeat_loop_2_5",
@@ -1500,7 +1629,58 @@
           1
         ]
       ]
+    },
+    {
+      "name": "gymMayhem3_1",
+      "type": "gymMayhem3",
+      "category": "gymMayhem",
+      "grid": false,
+      "level": "1",
+      "gridSize": 30,
+      "rowLength": 12,
+      "colLength": 16,
+      "maxBlocks": 15,
+
+      "goal": "",
+      "mapLayout": "mapLayout_gymMayhem3_1",
+      "instructions": "Clean up all the rackets by using the if block",
+      "feedback": "Good job!",
+      "hints": "Use the if block to collect all the tennis rackets",
+      "blocks": [
+        "run_event",
+        "repeat_loop_2_5",
+        "get_fiction_book",
+        "if_statement",
+        "move_choice_action",
+        "turn"
+      ],
+      "playerInfo": {
+        "image": "sportsPlayer.png",
+        "row": 0,
+        "col": 0,
+        "setNotification": false,
+        "notification": 0
+      },
+      "movable_sprites": null,
+      "positions": [
+        [
+          1,
+          4,
+          1
+        ],
+        [
+          1,
+          6,
+          1
+        ],
+        [
+          1,
+          8,
+          1
+        ]
+      ]
     }
+
   ],
   "map_layouts": [
     {
