@@ -69,17 +69,17 @@
       "category": "gymMayhem",
       "characters": {
         "player": {
-          "name": "taxi",
-          "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi3.png"
+          "name": "sportsman",
+          "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/PNG/Player/Poses/player_walk1.png"
         }
       },
       "environment": {
         "interactiveObjects": {},
         "nonInteractiveObjects": {
           "passenger": {
-            "name": "passenger",
-            "sprite": "https://i.postimg.cc/wvRBMQZ5/person.png",
-            "direction": "passenger",
+            "name": "racket",
+            "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/racket.png",
+            "direction": "east",
             "notifications": true
           }
         }
@@ -107,18 +107,18 @@
           }
         },
         "styleMap": {
-          "walkableColor": "0x555555",
-          "sideColor": "0xCCCCCC",
+          "walkableColor": "0xFB9023",
+          "sideColor": "0x59FB2A",
           "decorationColors": [
-            "0x00FF00",
-            "0x228B22",
-            "0x32CD32"
+            "0xFBE4D0",
+            "0xFBE4D0",
+            "0xFBE4D0"
           ],
-          "secondaryColor": "0xCCCCCC",
-          "tertiaryColor": "0xCCCCCC",
-          "quaternaryColor": "0xCCCCCC",
-          "quinaryColor": "0xCCCCCC",
-          "senaryColor": "0xCCCCCC"
+          "secondaryColor": "0xFB9023",
+          "tertiaryColor": "0xFB9023",
+          "quaternaryColor": "0xFB9023",
+          "quinaryColor": "0xFB9023",
+          "senaryColor": "0xFB9023"
         },
         "textureMap": {
           "primaryTile": "tree.jpg",
@@ -135,7 +135,7 @@
       "characters": {
         "player": {
           "name": "taxi",
-          "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi3.png"
+          "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/PNG/Player/Poses/player_walk1.png"
         }
       },
       "environment": {
@@ -150,9 +150,9 @@
         }
       },
       "sounds": {
-        "succeeded": "pop-268648.mp3",
-        "failed": "bang-crash-103775.mp3",
-        "levelCompleted": "level-up-enhancement-8-bit-retro-sound-effect-153002.mp3",
+        "succeeded": "level-up-2-199574.mp3",
+        "failed": "box-crash-106687.mp3",
+        "levelCompleted": "cute-level-up-1-189852.mp3",
         "levelFailed": "slap-failure.mp3",
         "backgroundMusic": "Lenny%20Kravitz%20-%20Mr.%20Cab%20Driver%20%5BKaraoke%20Version%5D.mp3"
       },
@@ -172,18 +172,18 @@
           }
         },
         "styleMap": {
-          "walkableColor": "0x555555",
-          "sideColor": "0xCCCCCC",
+          "walkableColor": "0xFB9023",
+          "sideColor": "0xFB4B00",
           "decorationColors": [
-            "0x00FF00",
-            "0x228B22",
-            "0x32CD32"
+            "0xFBE4D0",
+            "0xFBE4D0",
+            "0xFBE4D0"
           ],
-          "secondaryColor": "0xCCCCCC",
-          "tertiaryColor": "0xCCCCCC",
-          "quaternaryColor": "0xCCCCCC",
-          "quinaryColor": "0xCCCCCC",
-          "senaryColor": "0xCCCCCC"
+          "secondaryColor": "0xFB9023",
+          "tertiaryColor": "0xFB9023",
+          "quaternaryColor": "0xFB9023",
+          "quinaryColor": "0xFB9023",
+          "senaryColor": "0xFB9023"
         },
         "textureMap": {
           "primaryTile": "tree.jpg",
