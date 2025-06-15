@@ -388,7 +388,7 @@
         <!-- Left side -->
         <div class="d-flex align-items-center">
             <a href="#" id="homeLink" class="navbar-brand me-3 expand">
-                <img src="https://i.postimg.cc/qMKT5SS9/logo.png" height="40" width="40" alt=""/>
+                <img src="https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/images/logo.png" height="40" width="40" alt=""/>
                 CodeRecess SAIS
             </a>
             <button class="btn btn-lg btn-primary" onclick="showPane('codingPane')">Continue</button>
@@ -1275,6 +1275,53 @@
                 [col, row] = forwardMap[dir];
             } else if (direction === "backward") {
                 [col, row] = forwardMap[dir].map(n => -n); // invert direction
+            } else {
+                console.warn("Invalid move direction:", direction);
+                return Promise.resolve(); // nothing happens
+            }
+
+            return new Promise(resolve =>
+                this.player.moveBy(col, row, this.getMapLayout(), this.speed, this.isRunning, resolve)
+            );
+        }
+
+
+        move_all_directions_choice_action(direction) {
+            const dir = this.player.direction; // e.g., "west", "east", etc.
+            let row = 0;
+            let col = 0;
+
+            // Directional vectors for forward movement
+            const forwardMap = {
+                west: [-1, 0],
+                east: [1, 0],
+                north: [0, -1],
+                south: [0, 1]
+            };
+
+            // Directional vectors for left and right relative turns
+            const leftMap = {
+                north: [-1, 0],
+                south: [1, 0],
+                east: [0, -1],
+                west: [0, 1]
+            };
+
+            const rightMap = {
+                north: [1, 0],
+                south: [-1, 0],
+                east: [0, 1],
+                west: [0, -1]
+            };
+
+            if (direction === "forward") {
+                [col, row] = forwardMap[dir];
+            } else if (direction === "backward") {
+                [col, row] = forwardMap[dir].map(n => -n); // invert forward
+            } else if (direction === "left") {
+                [col, row] = leftMap[dir];
+            } else if (direction === "right") {
+                [col, row] = rightMap[dir];
             } else {
                 console.warn("Invalid move direction:", direction);
                 return Promise.resolve(); // nothing happens

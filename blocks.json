@@ -13,7 +13,7 @@
         "nonInteractiveObjects": {
           "passenger": {
             "name": "passenger",
-            "sprite": "https://i.postimg.cc/wvRBMQZ5/person.png",
+            "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/person.png",
             "direction": "passenger",
             "notifications": true
           }
