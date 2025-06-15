@@ -78,7 +78,7 @@
         "nonInteractiveObjects": {
           "passenger": {
             "name": "racket",
-            "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/racket.png",
+            "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/PNG/Female/Poses/female_cheer1.png",
             "direction": "east",
             "notifications": true
           }
@@ -135,7 +135,7 @@
       "characters": {
         "player": {
           "name": "taxi",
-          "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/PNG/Player/Poses/player_walk1.png"
+          "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/PNG/Player/Poses/player_walk2.png"
         }
       },
       "environment": {
@@ -143,7 +143,7 @@
         "nonInteractiveObjects": {
           "passenger": {
             "name": "passenger",
-            "sprite": "https://i.postimg.cc/wvRBMQZ5/person.png",
+            "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/PNG/Female/Poses/female_cheer1.png",
             "direction": "passenger",
             "notifications": true
           }
