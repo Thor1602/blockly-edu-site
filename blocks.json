@@ -1734,6 +1734,10 @@
       "hints": "Use the if block to collect all the tennis rackets",
       "blocks": [
         "run_event",
+        "keyUp_event",
+        "keyDown_event",
+        "keyLeft_event",
+        "keyRight_event",
         "move_all_directions_choice_action"
       ],
       "playerInfo": {
