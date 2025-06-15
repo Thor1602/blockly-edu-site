@@ -712,7 +712,6 @@
       "rowLength": 12,
       "colLength": 16,
       "maxBlocks": 10,
-      
       "goal": "",
       "mapLayout": "mapLayout_taxiDriverSequencing_one",
       "instructions": "Pick up all the passengers.",
@@ -759,7 +758,6 @@
       "rowLength": 12,
       "colLength": 16,
       "maxBlocks": 19,
-      
       "goal": "",
       "mapLayout": "mapLayout_taxiDriverSequencing_two",
       "instructions": "Pick up all the passengers.",
@@ -816,7 +814,6 @@
       "rowLength": 12,
       "colLength": 16,
       "maxBlocks": 20,
-      
       "goal": "",
       "mapLayout": "mapLayout_taxiDriverSequencing_three",
       "instructions": "Pick up all the passengers.",
@@ -883,7 +880,6 @@
       "rowLength": 12,
       "colLength": 16,
       "maxBlocks": 21,
-      
       "goal": "",
       "mapLayout": "mapLayout_taxiDriverSequencing_four",
       "instructions": "Pick up all the passengers.",
@@ -940,7 +936,6 @@
       "rowLength": 12,
       "colLength": 16,
       "maxBlocks": 30,
-      
       "goal": "",
       "mapLayout": "mapLayout_taxiDriverSequencing_five",
       "instructions": "Pick up all the passengers.",
@@ -1026,7 +1021,6 @@
       "rowLength": 9,
       "colLength": 9,
       "maxBlocks": 8,
-      
       "goal": "Pick up all the passengers.",
       "mapLayout": "mapLayout_taxiDriverSequencing_K_1",
       "instructions": "Pick up all the passengers.",
@@ -1067,7 +1061,6 @@
       "rowLength": 9,
       "colLength": 9,
       "maxBlocks": 12,
-      
       "goal": "Pick up all the passengers.",
       "mapLayout": "mapLayout_taxiDriverSequencing_K_1",
       "instructions": "Pick up all the passengers.",
@@ -1118,7 +1111,6 @@
       "rowLength": 9,
       "colLength": 9,
       "maxBlocks": 15,
-      
       "goal": "Pick up all the passengers.",
       "mapLayout": "mapLayout_taxiDriverSequencing_K_3",
       "instructions": "Pick up all the passengers.",
@@ -1164,7 +1156,6 @@
       "rowLength": 9,
       "colLength": 9,
       "maxBlocks": 25,
-      
       "goal": "Pick up all the passengers.",
       "mapLayout": "mapLayout_taxiDriverSequencing_K_3",
       "instructions": "Pick up all the passengers.",
@@ -1220,7 +1211,6 @@
       "rowLength": 9,
       "colLength": 9,
       "maxBlocks": 30,
-      
       "goal": "Pick up all the passengers.",
       "mapLayout": "mapLayout_taxiDriverSequencing_K_5",
       "instructions": "Pick up all the passengers.",
@@ -1296,7 +1286,6 @@
       "rowLength": 10,
       "colLength": 10,
       "maxBlocks": 7,
-      
       "goal": "",
       "mapLayout": "mapLayout_taxiDriverSequencing_1_1",
       "instructions": "Pick up all the passengers.",
@@ -1337,7 +1326,6 @@
       "rowLength": 10,
       "colLength": 10,
       "maxBlocks": 10,
-      
       "goal": "",
       "mapLayout": "mapLayout_taxiDriverSequencing_1_1",
       "instructions": "Pick up all the passengers.",
@@ -1388,7 +1376,6 @@
       "rowLength": 10,
       "colLength": 10,
       "maxBlocks": 10,
-      
       "goal": "",
       "mapLayout": "mapLayout_taxiDriverSequencing_1_1",
       "instructions": "Pick up all the passengers.",
@@ -1434,7 +1421,6 @@
       "rowLength": 9,
       "colLength": 9,
       "maxBlocks": 14,
-      
       "goal": "Pick up all the passengers.",
       "mapLayout": "mapLayout_taxiDriverSequencing_1_4",
       "instructions": "Pick up all the passengers.",
@@ -1490,7 +1476,6 @@
       "rowLength": 12,
       "colLength": 16,
       "maxBlocks": 30,
-      
       "goal": "",
       "mapLayout": "mapLayout_taxiDriverSequencing_3_1",
       "instructions": "Pick up all the passengers.",
@@ -1540,7 +1525,6 @@
       "rowLength": 12,
       "colLength": 16,
       "maxBlocks": 30,
-      
       "goal": "",
       "mapLayout": "mapLayout_taxiDriverSequencing_3_2",
       "instructions": "Pick up all the passengers.",
@@ -1590,7 +1574,6 @@
       "rowLength": 12,
       "colLength": 16,
       "maxBlocks": 15,
-      
       "goal": "",
       "mapLayout": "mapLayout_bookSorting4_1",
       "instructions": "Sort out all the books by putting non-fiction and fiction books together",
@@ -1640,7 +1623,6 @@
       "rowLength": 12,
       "colLength": 16,
       "maxBlocks": 15,
-
       "goal": "",
       "mapLayout": "mapLayout_gymMayhem3_1",
       "instructions": "Clean up all the rackets by using the if block",
@@ -1680,7 +1662,6 @@
         ]
       ]
     }
-
   ],
   "map_layouts": [
     {
