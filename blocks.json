@@ -78,7 +78,7 @@
         "nonInteractiveObjects": {
           "passenger": {
             "name": "racket",
-            "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/PNG/Female/Poses/female_cheer1.png",
+            "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/SportSprites/PNG/Equipment/racket_wood.png",
             "direction": "east",
             "notifications": true
           }
@@ -135,7 +135,7 @@
       "characters": {
         "player": {
           "name": "taxi",
-          "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/PNG/Player/Poses/player_walk2.png"
+          "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/PNG/Female/Poses/female_cheer1.png"
         }
       },
       "environment": {
@@ -143,7 +143,7 @@
         "nonInteractiveObjects": {
           "passenger": {
             "name": "passenger",
-            "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/PNG/Female/Poses/female_cheer1.png",
+            "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/book.png",
             "direction": "passenger",
             "notifications": true
           }
@@ -841,6 +841,7 @@
       "name": "taxiDriverSequencing2_1",
       "type": "taxiDriverSequencing2",
       "category": "taxiDriverSequencing",
+      "grade": "2",
       "grid": false,
       "level": "1",
       "gridSize": 30,
@@ -862,7 +863,6 @@
         "repeat_loop_K_2"
       ],
       "playerInfo": {
-        "image": "taxi3.png",
         "row": 7,
         "col": 1,
         "setNotification": false,
@@ -887,6 +887,7 @@
       "name": "taxiDriverSequencing2_2",
       "type": "taxiDriverSequencing2",
       "category": "taxiDriverSequencing",
+      "grade": "2",
       "grid": false,
       "level": "2",
       "gridSize": 30,
@@ -908,7 +909,6 @@
         "repeat_loop_K_2"
       ],
       "playerInfo": {
-        "image": "taxi3.png",
         "row": 0,
         "col": 2,
         "setNotification": false,
@@ -943,6 +943,7 @@
       "name": "taxiDriverSequencing2_3",
       "type": "taxiDriverSequencing2",
       "category": "taxiDriverSequencing",
+      "grade": "2",
       "grid": false,
       "level": "3",
       "gridSize": 30,
@@ -964,7 +965,6 @@
         "repeat_loop_K_2"
       ],
       "playerInfo": {
-        "image": "taxi3.png",
         "row": 1,
         "col": 4,
         "setNotification": false,
@@ -1009,6 +1009,7 @@
       "name": "taxiDriverSequencing2_4",
       "type": "taxiDriverSequencing2",
       "category": "taxiDriverSequencing",
+      "grade": "2",
       "grid": false,
       "level": "4",
       "gridSize": 30,
@@ -1030,7 +1031,6 @@
         "repeat_loop_K_2"
       ],
       "playerInfo": {
-        "image": "taxi3.png",
         "row": 8,
         "col": 10,
         "setNotification": false,
@@ -1065,6 +1065,7 @@
       "name": "taxiDriverSequencing2_5",
       "type": "taxiDriverSequencing2",
       "category": "taxiDriverSequencing",
+      "grade": "2",
       "grid": false,
       "level": "5",
       "gridSize": 30,
@@ -1085,7 +1086,6 @@
         "repeat_loop_K_2"
       ],
       "playerInfo": {
-        "image": "taxi3.png",
         "row": 1,
         "col": 1,
         "setNotification": false,
@@ -1150,6 +1150,7 @@
       "name": "taxiDriverSequencingK_1",
       "type": "taxiDriverSequencingK",
       "category": "taxiDriverSequencing",
+      "grade": "K",
       "grid": true,
       "level": "1",
       "gridSize": 35,
@@ -1170,7 +1171,6 @@
         "pick_up_person"
       ],
       "playerInfo": {
-        "image": "taxi3.png",
         "row": 4,
         "col": 2,
         "setNotification": false,
@@ -1190,6 +1190,7 @@
       "name": "taxiDriverSequencingK_2",
       "type": "taxiDriverSequencingK",
       "category": "taxiDriverSequencing",
+      "grade": "K",
       "grid": true,
       "level": "2",
       "gridSize": 35,
@@ -1210,7 +1211,6 @@
         "pick_up_person"
       ],
       "playerInfo": {
-        "image": "taxi3.png",
         "row": 4,
         "col": 2,
         "setNotification": false,
@@ -1240,6 +1240,7 @@
       "name": "taxiDriverSequencingK_3",
       "type": "taxiDriverSequencingK",
       "category": "taxiDriverSequencing",
+      "grade": "K",
       "grid": true,
       "level": "3",
       "gridSize": 35,
@@ -1260,7 +1261,6 @@
         "pick_up_person"
       ],
       "playerInfo": {
-        "image": "taxi3.png",
         "row": 4,
         "col": 2,
         "setNotification": false,
@@ -1285,6 +1285,7 @@
       "name": "taxiDriverSequencingK_4",
       "type": "taxiDriverSequencingK",
       "category": "taxiDriverSequencing",
+      "grade": "K",
       "grid": true,
       "level": "4",
       "gridSize": 35,
@@ -1305,7 +1306,6 @@
         "pick_up_person"
       ],
       "playerInfo": {
-        "image": "taxi3.png",
         "row": 4,
         "col": 2,
         "setNotification": false,
@@ -1340,6 +1340,7 @@
       "name": "taxiDriverSequencingK_5",
       "type": "taxiDriverSequencingK",
       "category": "taxiDriverSequencing",
+      "grade": "1",
       "grid": true,
       "level": "5",
       "gridSize": 35,
@@ -1360,7 +1361,6 @@
         "pick_up_person"
       ],
       "playerInfo": {
-        "image": "taxi3.png",
         "row": 4,
         "col": 1,
         "setNotification": false,
@@ -1415,6 +1415,7 @@
       "name": "taxiDriverSequencing1_1",
       "type": "taxiDriverSequencing1",
       "category": "taxiDriverSequencing",
+      "grade": "1",
       "grid": true,
       "level": "1",
       "gridSize": 40,
@@ -1435,7 +1436,6 @@
         "pick_up_person"
       ],
       "playerInfo": {
-        "image": "taxi3.png",
         "row": 5,
         "col": 2,
         "setNotification": false,
@@ -1455,6 +1455,7 @@
       "name": "taxiDriverSequencing1_2",
       "type": "taxiDriverSequencing1",
       "category": "taxiDriverSequencing",
+      "grade": "1",
       "grid": true,
       "level": "2",
       "gridSize": 40,
@@ -1475,7 +1476,6 @@
         "pick_up_person"
       ],
       "playerInfo": {
-        "image": "taxi3.png",
         "row": 5,
         "col": 2,
         "setNotification": false,
@@ -1505,6 +1505,7 @@
       "name": "taxiDriverSequencing1_3",
       "type": "taxiDriverSequencing1",
       "category": "taxiDriverSequencing",
+      "grade": "1",
       "grid": false,
       "level": "3",
       "gridSize": 30,
@@ -1525,7 +1526,6 @@
         "pick_up_person"
       ],
       "playerInfo": {
-        "image": "taxi3.png",
         "row": 5,
         "col": 2,
         "setNotification": false,
@@ -1550,6 +1550,7 @@
       "name": "taxiDriverSequencing1_4",
       "type": "taxiDriverSequencing1",
       "category": "taxiDriverSequencing",
+      "grade": "1",
       "grid": false,
       "level": "4",
       "gridSize": 40,
@@ -1570,7 +1571,6 @@
         "pick_up_person"
       ],
       "playerInfo": {
-        "image": "taxi3.png",
         "row": 1,
         "col": 2,
         "setNotification": false,
@@ -1605,6 +1605,7 @@
       "name": "taxiDriverSequencing3_1",
       "type": "taxiDriverSequencing3",
       "category": "taxiDriverSequencing",
+      "grade": "3",
       "grid": false,
       "level": "1",
       "gridSize": 30,
@@ -1624,7 +1625,6 @@
         "turn"
       ],
       "playerInfo": {
-        "image": "taxi3.png",
         "row": 3,
         "col": 4,
         "setNotification": false,
@@ -1654,6 +1654,7 @@
       "name": "taxiDriverSequencing3_2",
       "type": "taxiDriverSequencing3",
       "category": "taxiDriverSequencing",
+      "grade": "3",
       "grid": false,
       "level": "2",
       "gridSize": 30,
@@ -1673,7 +1674,6 @@
         "turn"
       ],
       "playerInfo": {
-        "image": "taxi3.png",
         "row": 1,
         "col": 10,
         "setNotification": false,
@@ -1724,7 +1724,6 @@
         "turn"
       ],
       "playerInfo": {
-        "image": "bookPlayer.png",
         "row": 0,
         "col": 0,
         "setNotification": false,
@@ -1773,7 +1772,6 @@
         "move_all_directions_choice_action"
       ],
       "playerInfo": {
-        "image": "sportsPlayer.png",
         "row": 0,
         "col": 0,
         "setNotification": false,
