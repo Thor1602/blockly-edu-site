@@ -215,7 +215,7 @@
     },
     {
       "type": "keyUp_event",
-      "message0": "UP %1",
+      "message0": "when up arrow %1",
       "args0": [
         {
           "type": "input_dummy",
@@ -231,7 +231,7 @@
     },
     {
       "type": "keyDown_event",
-      "message0": "DOWN %1",
+      "message0": "when down arrow %1",
       "args0": [
         {
           "type": "input_dummy",
@@ -247,7 +247,7 @@
     },
     {
       "type": "keyRight_event",
-      "message0": "RIGHT %1",
+      "message0": "when right arrow %1",
       "args0": [
         {
           "type": "input_dummy",
@@ -263,7 +263,7 @@
     },
     {
       "type": "keyLeft_event",
-      "message0": "LEFT %1",
+      "message0": "when left arrow %1",
       "args0": [
         {
           "type": "input_dummy",
@@ -275,6 +275,38 @@
       "setDeletable": false,
       "colour": "#fba60b",
       "javascript_function": "this.keyLeft_event();\n",
+      "size": "medium"
+    },
+    {
+      "type": "keyLeftClick_event",
+      "message0": "when left clicked %1",
+      "args0": [
+        {
+          "type": "input_dummy",
+          "name": "CODE"
+        }
+      ],
+      "nextStatement": null,
+      "setMovable": false,
+      "setDeletable": false,
+      "colour": "#fba60b",
+      "javascript_function": "this.keyLeft_event();\n",
+      "size": "medium"
+    },
+    {
+      "type": "keyRightClick_event",
+      "message0": "when right clicked %1",
+      "args0": [
+        {
+          "type": "input_dummy",
+          "name": "CODE"
+        }
+      ],
+      "nextStatement": null,
+      "setMovable": false,
+      "setDeletable": false,
+      "colour": "#fba60b",
+      "javascript_function": "this.keyRightClick_event();\n",
       "size": "medium"
     },
     {
