@@ -586,11 +586,15 @@
       "type": "get_non_fiction_book",
       "tooltip": "",
       "helpUrl": "",
-      "message0": "Get the non-fiction book 📕 %1",
+      "message0": "collect non-fiction book 📕 %1",
       "args0": [
         {
           "type": "input_dummy",
-          "name": "NAME"
+          "name": "PLACEHOLDER"
+        },
+        {
+          "type": "input_statement",
+          "name": "DO"
         }
       ],
       "previousStatement": null,
@@ -603,11 +607,15 @@
       "type": "get_fiction_book",
       "tooltip": "",
       "helpUrl": "",
-      "message0": "Get the fiction book 📙 %1",
+      "message0": "collect fiction book 📙 %1",
       "args0": [
         {
           "type": "input_dummy",
-          "name": "NAME"
+          "name": "PLACEHOLDER"
+        },
+        {
+          "type": "input_statement",
+          "name": "DO"
         }
       ],
       "previousStatement": null,
@@ -628,29 +636,21 @@
           "options": [
             [
               "option",
-              "Fiction"
+              "fiction"
             ],
             [
               "option",
-              "Non-fiction"
+              "non-fiction"
             ]
           ]
         },
         {
           "type": "input_dummy",
-          "name": "NAME"
+          "name": "PLACEHOLDER"
         },
         {
           "type": "input_statement",
-          "name": "NAME"
-        },
-        {
-          "type": "input_dummy",
-          "name": "NAME"
-        },
-        {
-          "type": "input_statement",
-          "name": "NAME"
+          "name": "DO"
         }
       ],
       "previousStatement": null,
@@ -670,16 +670,12 @@
           "name": "NAME",
           "options": [
             [
-              "Fiction",
-              "Fiction"
+              "fiction",
+              "fiction"
             ],
             [
-              "Non-Fiction",
-              "Non-Fiction"
-            ],
-            [
-              "option",
-              "Mandrake"
+              "non-fiction",
+              "non-fiction"
             ]
           ]
         },
@@ -689,7 +685,7 @@
         },
         {
           "type": "input_statement",
-          "name": "NAME"
+          "name": "DO"
         }
       ],
       "previousStatement": null,
