@@ -586,15 +586,11 @@
       "type": "get_non_fiction_book",
       "tooltip": "",
       "helpUrl": "",
-      "message0": "collect non-fiction book 📕 %1",
+      "message0": "Get the non-fiction book 📕 %1",
       "args0": [
         {
           "type": "input_dummy",
-          "name": "PLACEHOLDER"
-        },
-        {
-          "type": "input_statement",
-          "name": "DO"
+          "name": "NAME"
         }
       ],
       "previousStatement": null,
@@ -607,15 +603,11 @@
       "type": "get_fiction_book",
       "tooltip": "",
       "helpUrl": "",
-      "message0": "collect fiction book 📙 %1",
+      "message0": "Get the fiction book 📙 %1",
       "args0": [
         {
           "type": "input_dummy",
-          "name": "PLACEHOLDER"
-        },
-        {
-          "type": "input_statement",
-          "name": "DO"
+          "name": "NAME"
         }
       ],
       "previousStatement": null,
@@ -636,21 +628,29 @@
           "options": [
             [
               "option",
-              "fiction"
+              "Fiction"
             ],
             [
               "option",
-              "non-fiction"
+              "Non-fiction"
             ]
           ]
         },
         {
           "type": "input_dummy",
-          "name": "PLACEHOLDER"
+          "name": "NAME"
         },
         {
           "type": "input_statement",
-          "name": "DO"
+          "name": "NAME"
+        },
+        {
+          "type": "input_dummy",
+          "name": "NAME"
+        },
+        {
+          "type": "input_statement",
+          "name": "NAME"
         }
       ],
       "previousStatement": null,
@@ -670,12 +670,16 @@
           "name": "NAME",
           "options": [
             [
-              "fiction",
-              "fiction"
+              "Fiction",
+              "Fiction"
             ],
             [
-              "non-fiction",
-              "non-fiction"
+              "Non-Fiction",
+              "Non-Fiction"
+            ],
+            [
+              "option",
+              "Mandrake"
             ]
           ]
         },
