@@ -78,7 +78,7 @@
         "nonInteractiveObjects": {
           "nonInteractiveObjectOne": {
             "name": "racket",
-            "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/gym/racket.png",
+            "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/gym/racket2.png",
             "direction": "east",
             "notifications": true
           }
