@@ -577,7 +577,7 @@
         }
       ],
       "previousStatement": null,
-      "nextStatement": null,
+      "nextStatement": true,
       "colour": "#08b5bd",
       "javascript_function": "await this.pick_up_person();\n",
       "size": "large"
@@ -586,18 +586,15 @@
       "type": "get_non_fiction_book",
       "tooltip": "",
       "helpUrl": "",
-      "message0": "Collect non-fiction book 📕 %1 %2",
+      "message0": "collect non-fiction book 📕 %1",
       "args0": [
         {
           "type": "input_dummy",
           "name": "PLACEHOLDER"
-        },
-        {
-          "type": "input_statement",
-          "name": "DO"
         }
       ],
       "previousStatement": null,
+      "nextStatement": true,
       "colour": "#08b5bd",
       "javascript_function": "await this.get_book(fiction);\n",
       "size": "medium"
@@ -606,18 +603,16 @@
       "type": "get_fiction_book",
       "tooltip": "",
       "helpUrl": "",
-      "message0": "collect fiction book 📙 %1 %2",
+      "message0": "collect fiction book 📙 %1",
       "args0": [
         {
           "type": "input_dummy",
           "name": "PLACEHOLDER"
-        },
-        {
-          "type": "input_statement",
-          "name": "DO"
         }
+
       ],
       "previousStatement": null,
+      "nextStatement": true,
       "colour": "#08b5bd",
       "javascript_function": "await this.get_book(nonFiction);\n",
       "size": "medium"
