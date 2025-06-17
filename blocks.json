@@ -619,6 +619,7 @@
         }
       ],
       "previousStatement": null,
+      "nextStatement": true,
       "colour": "#08b5bd",
       "javascript_function": "await this.get_book(nonFiction);\n",
       "size": "medium"
@@ -684,7 +685,7 @@
         },
         {
           "type": "input_statement",
-          "name": "DO"
+          "name": "NAME"
         }
       ],
       "previousStatement": null,
