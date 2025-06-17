@@ -586,7 +586,7 @@
       "type": "get_non_fiction_book",
       "tooltip": "",
       "helpUrl": "",
-      "message0": "collect non-fiction book 📕 %1 %2",
+      "message0": "Collect non-fiction book 📕 %1 %2",
       "args0": [
         {
           "type": "input_dummy",
@@ -598,7 +598,6 @@
         }
       ],
       "previousStatement": null,
-      "nextStatement": true,
       "colour": "#08b5bd",
       "javascript_function": "await this.get_book(fiction);\n",
       "size": "medium"
@@ -619,7 +618,6 @@
         }
       ],
       "previousStatement": null,
-      "nextStatement": true,
       "colour": "#08b5bd",
       "javascript_function": "await this.get_book(nonFiction);\n",
       "size": "medium"
