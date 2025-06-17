@@ -11,10 +11,10 @@
       "environment": {
         "interactiveObjects": {},
         "nonInteractiveObjects": {
-          "passenger": {
+          "nonInteractiveObjectOne": {
             "name": "passenger",
             "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/person.png",
-            "direction": "passenger",
+            "direction": "east",
             "notifications": true
           }
         }
@@ -76,9 +76,9 @@
       "environment": {
         "interactiveObjects": {},
         "nonInteractiveObjects": {
-          "passenger": {
+          "nonInteractiveObjectOne": {
             "name": "racket",
-            "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/SportSprites/PNG/Equipment/racket_wood.png",
+            "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/gym/racket.png",
             "direction": "east",
             "notifications": true
           }
@@ -141,10 +141,22 @@
       "environment": {
         "interactiveObjects": {},
         "nonInteractiveObjects": {
-          "passenger": {
-            "name": "passenger",
-            "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/book.png",
-            "direction": "passenger",
+          "nonInteractiveObjectOne": {
+            "name": "red-book",
+            "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/library/blue-book.png",
+            "direction": "east",
+            "notifications": true
+          },
+          "nonInteractiveObjectTwo": {
+            "name": "green-book",
+            "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/library/green-book.png",
+            "direction": "east",
+            "notifications": true
+          },
+          "nonInteractiveObjectThree": {
+            "name": "blue-book",
+            "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/library/red-book.png",
+            "direction": "east",
             "notifications": true
           }
         }

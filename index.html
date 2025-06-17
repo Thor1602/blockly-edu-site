@@ -1110,7 +1110,7 @@
             this.player = new Player(Activity.gameSettings.characters.player.sprite, this.gameData.playerInfo.row, this.gameData.playerInfo.col, this.gameData.playerInfo.direction, this.gameData.playerInfo.setNotification, this.gameData.playerInfo.notification, this._gridSize, this.app, this);
 
             for (let pos of this.gameData.positions) {
-                this.sprites.push(new Sprite(Activity.gameSettings.environment.nonInteractiveObjects.passenger.sprite, pos[0], pos[1], "east", true, pos[2], this._gridSize, this.app, this));
+                this.sprites.push(new Sprite(Activity.gameSettings.environment.nonInteractiveObjects.nonInteractiveObjectOne.sprite, pos[0], pos[1], Activity.gameSettings.environment.nonInteractiveObjects.nonInteractiveObjectOne.direction, Activity.gameSettings.environment.nonInteractiveObjects.nonInteractiveObjectOne.notifications, pos[2], this._gridSize, this.app, this));
             }
             this.people = Sprite.listOfSprites.filter(item => !(item instanceof Player));
             this.sprites = Sprite.listOfSprites;
