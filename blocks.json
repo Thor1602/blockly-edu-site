@@ -425,7 +425,7 @@
         }
       ],
       "previousStatement": null,
-      "nextStatement": true,
+      "nextStatement": null,
       "colour": "#f322a6",
       "javascript_function": "repeat_number(block);\n",
       "size": "medium"
@@ -577,7 +577,7 @@
         }
       ],
       "previousStatement": null,
-      "nextStatement": true,
+      "nextStatement": null,
       "colour": "#08b5bd",
       "javascript_function": "await this.pick_up_person();\n",
       "size": "large"
@@ -594,7 +594,7 @@
         }
       ],
       "previousStatement": null,
-      "nextStatement": true,
+      "nextStatement": null,
       "colour": "#08b5bd",
       "javascript_function": "await this.get_book(fiction);\n",
       "size": "medium"
@@ -603,7 +603,7 @@
       "type": "get_fiction_book",
       "tooltip": "",
       "helpUrl": "",
-      "message0": "Get the fiction book 📙 %1",
+      "message0": "collect fiction book 📙 %1",
       "args0": [
         {
           "type": "input_dummy",
@@ -611,7 +611,7 @@
         }
       ],
       "previousStatement": null,
-      "nextStatement": true,
+      "nextStatement": null,
       "colour": "#08b5bd",
       "javascript_function": "await this.get_book(nonFiction);\n",
       "size": "medium"
@@ -670,16 +670,12 @@
           "name": "NAME",
           "options": [
             [
-              "Fiction",
-              "Fiction"
+              "fiction",
+              "fiction"
             ],
             [
-              "Non-Fiction",
-              "Non-Fiction"
-            ],
-            [
-              "option",
-              "Mandrake"
+              "non-fiction",
+              "non-fiction"
             ]
           ]
         },
@@ -693,7 +689,7 @@
         }
       ],
       "previousStatement": null,
-      "nextStatement": true,
+      "nextStatement": null,
       "colour": "#08b5bd",
       "javascript_function": "await this.if_statement();\n",
       "size": "medium"
