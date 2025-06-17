@@ -586,7 +586,7 @@
       "type": "get_non_fiction_book",
       "tooltip": "",
       "helpUrl": "",
-      "message0": "Get the non-fiction book 📕 %1 %2",
+      "message0": "collect non-fiction book 📕 %1",
       "args0": [
         {
           "type": "input_dummy",
@@ -603,7 +603,7 @@
       "type": "get_fiction_book",
       "tooltip": "",
       "helpUrl": "",
-      "message0": "Get the fiction book 📙  %1 %2",
+      "message0": "Get the fiction book 📙 %1",
       "args0": [
         {
           "type": "input_dummy",
