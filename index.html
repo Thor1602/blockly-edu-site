@@ -992,7 +992,8 @@
             this.type = type;
             this.level = level;
             this.gameData = null;
-            this.sprites = [];  // Initialize as empty arrays
+            this.nonInteractiveObjectsOne = [];  // Initialize as empty arrays
+            this.nonInteractiveObjectsTwo = [];  // Initialize as empty arrays
             this.people = [];   // Initialize as empty arrays
             this.player = null;
             this.blockManager = null;
@@ -1109,16 +1110,42 @@
             await this.map.initialize(this.gameData.mapLayout);
             this.player = new Player(Activity.gameSettings.characters.player.sprite, this.gameData.playerInfo.row, this.gameData.playerInfo.col, this.gameData.playerInfo.direction, this.gameData.playerInfo.setNotification, this.gameData.playerInfo.notification, this._gridSize, this.app, this);
 
-            for (let pos of this.gameData.positions) {
-                this.sprites.push(new Sprite(Activity.gameSettings.environment.nonInteractiveObjects.nonInteractiveObjectOne.sprite, pos[0], pos[1], Activity.gameSettings.environment.nonInteractiveObjects.nonInteractiveObjectOne.direction, Activity.gameSettings.environment.nonInteractiveObjects.nonInteractiveObjectOne.notifications, pos[2], this._gridSize, this.app, this));
+            if (Array.isArray(this.gameData.nonInteractiveObjectsOnePositions)) {
+                for (let pos of this.gameData.nonInteractiveObjectsOnePositions) {
+                    this.nonInteractiveObjectsOne.push(new Sprite(
+                        Activity.gameSettings.environment.nonInteractiveObjects.nonInteractiveObjectOne.sprite,
+                        pos[0], pos[1],
+                        Activity.gameSettings.environment.nonInteractiveObjects.nonInteractiveObjectOne.direction,
+                        Activity.gameSettings.environment.nonInteractiveObjects.nonInteractiveObjectOne.notifications,
+                        pos[2],
+                        this._gridSize,
+                        this.app,
+                        this
+                    ));
+                }
+            }
+            if (Array.isArray(this.gameData.nonInteractiveObjectTwoPositions)) {
+                for (let pos of this.gameData.nonInteractiveObjectTwoPositions) {
+                    this.nonInteractiveObjectsTwo.push(new Sprite(
+                        Activity.gameSettings.environment.nonInteractiveObjects.nonInteractiveObjectTwo.sprite,
+                        pos[0], pos[1],
+                        Activity.gameSettings.environment.nonInteractiveObjects.nonInteractiveObjectTwo.direction,
+                        Activity.gameSettings.environment.nonInteractiveObjects.nonInteractiveObjectTwo.notifications,
+                        pos[2],
+                        this._gridSize,
+                        this.app,
+                        this
+                    ));
+                }
             }
             this.people = Sprite.listOfSprites.filter(item => !(item instanceof Player));
-            this.sprites = Sprite.listOfSprites;
+            // this.nonInteractiveObjectsOne = Sprite.listOfSprites; // might be usesless
             // Append PIXI app view (canvas) to DOM
             buttonVisualisationElement.appendChild(this.app.view);
 
             this.initializeEnvironment();
-            this.map.drawSprites(this.sprites);  // Pass the correct 'sprites' array
+            this.map.drawSprites(this.nonInteractiveObjectsOne);  // Pass the correct 'sprites' array
+            this.map.drawSprites(this.nonInteractiveObjectsTwo);  // Pass the correct 'sprites' array
         }
 
         initializeEnvironment() {
@@ -1129,8 +1156,19 @@
             this.map.drawMap(Activity.gameSettings.mapLayoutDesign.styleMap, this._gridSize);
 
             // Now resize any existing sprites, with defensive checks
-            if (this.sprites && Array.isArray(this.sprites)) {
-                this.sprites.forEach((sprite) => {
+            if (this.nonInteractiveObjectsOne && Array.isArray(this.nonInteractiveObjectsOne)) {
+                this.nonInteractiveObjectsOne.forEach((sprite) => {
+                    try {
+                        if (sprite && typeof sprite.resize === 'function') {
+                            sprite.resize(this._gridSize);
+                        }
+                    } catch (error) {
+                        console.error("Error resizing sprite:", sprite, error);
+                    }
+                });
+            }
+            if (this.nonInteractiveObjectsTwo && Array.isArray(this.nonInteractiveObjectsTwo)) {
+                this.nonInteractiveObjectsTwo.forEach((sprite) => {
                     try {
                         if (sprite && typeof sprite.resize === 'function') {
                             sprite.resize(this._gridSize);
@@ -1170,12 +1208,16 @@
             this._gridSize = newGridSize;
 
             // Resize all sprites (including player)
-            if (this.sprites) {
-                this.sprites.forEach(sprite => {
+            if (this.nonInteractiveObjectsOne) {
+                this.nonInteractiveObjectsOne.forEach(sprite => {
                     if (sprite) sprite.resize(newGridSize);
                 });
             }
-
+            if (this.nonInteractiveObjectsTwo) {
+                this.nonInteractiveObjectsTwo.forEach(sprite => {
+                    if (sprite) sprite.resize(newGridSize);
+                });
+            }
             // Resize player separately if needed
             if (this.player) {
                 this.player.resize(newGridSize);
@@ -1184,7 +1226,8 @@
             // Resize map (if you make a resize method in MapLayout)
             if (this.map) {
                 this.map.drawMap(Activity.gameSettings.mapLayoutDesign.styleMap, newGridSize);  // it uses internal gridSize
-                this.map.drawSprites(this.sprites);
+                this.map.drawSprites(this.nonInteractiveObjectsOne);
+                this.map.drawSprites(this.nonInteractiveObjectsTwo);
             }
 
             // Resize PIXI app view/canvas
@@ -1497,7 +1540,8 @@
                 `;
             setTimeout(() => {
                 // Draw the sprites (including the new player)
-                this.map.drawSprites(this.sprites);
+                this.map.drawSprites(this.nonInteractiveObjectsOne);
+                this.map.drawSprites(this.nonInteractiveObjectsTwo);
                 Sprite.restoreNotificationNumberForAllSprites();
                 // Initialize the new player (taxi)
                 this.player.initialize();
@@ -1543,7 +1587,7 @@
                 await fetchData();
             }
             this.blockManager = new BlockManager(blocklyDivElement, this.gameData.maxBlocks);
-            this.blockManager.loadBlocks(this.gameData.blocks);
+            this.blockManager.loadBlocks(this.gameData.blocks, this.gameData.grade);
         }
 
 
@@ -1754,13 +1798,13 @@
             this.customTheme = null;
         }
 
-        loadBlocks(blocks) {
+        loadBlocks(blocks, grade) {
             try {
                 const filteredBlocks = blocks
                     .map(type => configData.blocks.find(block => block.type === type))
                     .filter(Boolean);
                 // noinspection JSUnresolvedVariable
-                this.loadTheme(configData.blocklyThemeSettings);
+                this.loadTheme(configData.blocklyThemeSettings,grade);
                 this.defineBlocks(filteredBlocks);
                 this.createToolbox(filteredBlocks);
                 this.injectWorkspace();
@@ -1772,18 +1816,42 @@
             }
         }
 
-        loadTheme(themeSettings) {
+        loadTheme(themeSettings, grade) {
             if (themeSettings && themeSettings.length > 0) {
+                let fontSize;
+                switch (grade) {
+                    case "K":
+                        fontSize = 20;
+                        break;
+                    case "1":
+                        fontSize = 18;
+                        break;
+                    case "2":
+                        fontSize = 16;
+                        break;
+                    case "3":
+                        fontSize = 14;
+                        break;
+                    case "4":
+                        fontSize = 13;
+                        break;
+                    case "5":
+                        fontSize = 12;
+                        break;
+                    default:
+                        fontSize = 15;
+                }
                 const themeData = themeSettings[0];
                 this.customTheme = Blockly.Theme.defineTheme(themeData.themeName, {
                     base: Blockly.Themes[themeData.base] || Blockly.Themes.Classic,
-                    fontStyle: themeData.fontStyle,
+                    fontStyle: fontSize,
                     componentStyles: themeData.componentStyles,
                     blockStyles: themeData.blockStyles
                 });
             } else {
                 console.error('No theme settings found in JSON.');
             }
+
         }
 
         defineBlocks(blocks) {
@@ -1835,6 +1903,7 @@
                 const id = block.id;
                 return `await this.highlightBlock("${id}");\nawait this.move_choice_action("${direction}");\n`;
             };
+
         }
 
         createToolbox(blocks) {
@@ -1982,6 +2051,8 @@
                 Blockly.svgResize(this.workspace);
             }
         }
+
+
 
     }
 

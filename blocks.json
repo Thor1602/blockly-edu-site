@@ -218,7 +218,7 @@
           "name": "CODE"
         }
       ],
-      "nextStatement": true,
+      "nextStatement": null,
       "setMovable": false,
       "setDeletable": false,
       "colour": "#fba60b",
@@ -234,7 +234,7 @@
           "name": "CODE"
         }
       ],
-      "nextStatement": true,
+      "nextStatement": null,
       "setMovable": false,
       "setDeletable": false,
       "colour": "#fba60b",
@@ -250,7 +250,7 @@
           "name": "CODE"
         }
       ],
-      "nextStatement": true,
+      "nextStatement": null,
       "setMovable": false,
       "setDeletable": false,
       "colour": "#fba60b",
@@ -266,7 +266,7 @@
           "name": "CODE"
         }
       ],
-      "nextStatement": true,
+      "nextStatement": null,
       "setMovable": false,
       "setDeletable": false,
       "colour": "#fba60b",
@@ -282,7 +282,7 @@
           "name": "CODE"
         }
       ],
-      "nextStatement": true,
+      "nextStatement": null,
       "setMovable": false,
       "setDeletable": false,
       "colour": "#fba60b",
@@ -298,7 +298,7 @@
           "name": "CODE"
         }
       ],
-      "nextStatement": true,
+      "nextStatement": null,
       "setMovable": false,
       "setDeletable": false,
       "colour": "#fba60b",
@@ -314,7 +314,7 @@
           "name": "CODE"
         }
       ],
-      "nextStatement": true,
+      "nextStatement": null,
       "setMovable": false,
       "setDeletable": false,
       "colour": "#fba60b",
@@ -396,7 +396,7 @@
         }
       ],
       "previousStatement": null,
-      "nextStatement": true,
+      "nextStatement": null,
       "colour": "#f322a6",
       "tooltip": "Repeat the action a specified number of times.",
       "javascript_function": "repeat_10(block);\n",
@@ -446,7 +446,7 @@
         }
       ],
       "previousStatement": null,
-      "nextStatement": true,
+      "nextStatement": null,
       "colour": "#f322a6",
       "javascript_function": "while_path_ahead(block);\n",
       "size": "medium"
@@ -492,7 +492,7 @@
         }
       ],
       "previousStatement": null,
-      "nextStatement": true,
+      "nextStatement": null,
       "colour": "#f322a6",
       "javascript_function": "while_books(block);\n",
       "size": "medium"
@@ -509,7 +509,7 @@
         }
       ],
       "previousStatement": null,
-      "nextStatement": true,
+      "nextStatement": null,
       "colour": "#08b5bd",
       "javascript_function": "await this.move_north();\n",
       "size": "large"
@@ -526,7 +526,7 @@
         }
       ],
       "previousStatement": null,
-      "nextStatement": true,
+      "nextStatement": null,
       "colour": "#08b5bd",
       "javascript_function": "await this.move_south();\n",
       "size": "large"
@@ -543,7 +543,7 @@
         }
       ],
       "previousStatement": null,
-      "nextStatement": true,
+      "nextStatement": null,
       "colour": "#08b5bd",
       "javascript_function": "await this.move_west();\n",
       "size": "large"
@@ -560,7 +560,7 @@
         }
       ],
       "previousStatement": null,
-      "nextStatement": true,
+      "nextStatement": null,
       "colour": "#08b5bd",
       "javascript_function": "await this.move_east();\n",
       "size": "large"
@@ -577,7 +577,7 @@
         }
       ],
       "previousStatement": null,
-      "nextStatement": true,
+      "nextStatement": null,
       "colour": "#08b5bd",
       "javascript_function": "await this.pick_up_person();\n",
       "size": "large"
@@ -594,7 +594,7 @@
         }
       ],
       "previousStatement": null,
-      "nextStatement": true,
+      "nextStatement": null,
       "colour": "#08b5bd",
       "javascript_function": "await this.get_book(fiction);\n",
       "size": "medium"
@@ -612,7 +612,7 @@
 
       ],
       "previousStatement": null,
-      "nextStatement": true,
+      "nextStatement": null,
       "colour": "#08b5bd",
       "javascript_function": "await this.get_book(nonFiction);\n",
       "size": "medium"
@@ -655,7 +655,7 @@
         }
       ],
       "previousStatement": null,
-      "nextStatement": true,
+      "nextStatement": null,
       "colour": "#08b5bd",
       "javascript_function": "await this.if_else();\n",
       "size": "medium"
@@ -721,7 +721,7 @@
         }
       ],
       "previousStatement": null,
-      "nextStatement": true,
+      "nextStatement": null,
       "colour": "#08b5bd",
       "javascript_function": "await this.move_choice_action(direction);\n",
       "size": "medium"
@@ -760,7 +760,7 @@
         }
       ],
       "previousStatement": null,
-      "nextStatement": true,
+      "nextStatement": null,
       "colour": "#08b5bd",
       "javascript_function": "await this.move_all_directions_choice_action(direction);\n",
       "size": "medium"
@@ -777,7 +777,7 @@
         }
       ],
       "previousStatement": null,
-      "nextStatement": true,
+      "nextStatement": null,
       "colour": "#08b5bd",
       "javascript_function": "await this.move_forward();\n",
       "size": "medium"
@@ -808,7 +808,7 @@
         }
       ],
       "previousStatement": null,
-      "nextStatement": true,
+      "nextStatement": null,
       "colour": "#08b5bd",
       "javascript_function": "await this.turnTo(direction);\n",
       "size": "medium"
@@ -818,10 +818,6 @@
     {
       "themeName": "customTheme",
       "base": "Classic",
-      "fontStyle": {
-        "family": "Arial, sans-serif",
-        "size": 20
-      },
       "componentStyles": {
         "workspaceBackgroundColour": "#1e1e1e",
         "toolboxBackgroundColour": "blackBackground",
@@ -879,7 +875,7 @@
         "direction": "east"
       },
       "movable_sprites": null,
-      "positions": [
+      "nonInteractiveObjectOnePositions": [
         [
           8,
           5,
@@ -925,7 +921,7 @@
         "direction": "east"
       },
       "movable_sprites": null,
-      "positions": [
+      "nonInteractiveObjectOnePositions": [
         [
           3,
           3,
@@ -981,7 +977,7 @@
         "direction": "east"
       },
       "movable_sprites": null,
-      "positions": [
+      "nonInteractiveObjectOnePositions": [
         [
           2,
           3,
@@ -1047,7 +1043,7 @@
         "direction": "east"
       },
       "movable_sprites": null,
-      "positions": [
+      "nonInteractiveObjectOnePositions": [
         [
           6,
           7,
@@ -1102,7 +1098,7 @@
         "direction": "east"
       },
       "movable_sprites": null,
-      "positions": [
+      "nonInteractiveObjectOnePositions": [
         [
           1,
           2,
@@ -1187,7 +1183,7 @@
         "direction": "east"
       },
       "movable_sprites": null,
-      "positions": [
+      "nonInteractiveObjectOnePositions": [
         [
           3,
           6,
@@ -1227,7 +1223,7 @@
         "direction": "east"
       },
       "movable_sprites": null,
-      "positions": [
+      "nonInteractiveObjectOnePositions": [
         [
           3,
           5,
@@ -1277,7 +1273,7 @@
         "direction": "east"
       },
       "movable_sprites": null,
-      "positions": [
+      "nonInteractiveObjectOnePositions": [
         [
           1,
           5,
@@ -1322,7 +1318,7 @@
         "direction": "east"
       },
       "movable_sprites": null,
-      "positions": [
+      "nonInteractiveObjectOnePositions": [
         [
           2,
           7,
@@ -1377,7 +1373,7 @@
         "direction": "east"
       },
       "movable_sprites": null,
-      "positions": [
+      "nonInteractiveObjectOnePositions": [
         [
           1,
           0,
@@ -1452,7 +1448,7 @@
         "direction": "east"
       },
       "movable_sprites": null,
-      "positions": [
+      "nonInteractiveObjectOnePositions": [
         [
           5,
           8,
@@ -1492,7 +1488,7 @@
         "direction": "east"
       },
       "movable_sprites": null,
-      "positions": [
+      "nonInteractiveObjectOnePositions": [
         [
           4,
           5,
@@ -1542,7 +1538,7 @@
         "direction": "east"
       },
       "movable_sprites": null,
-      "positions": [
+      "nonInteractiveObjectOnePositions": [
         [
           4,
           5,
@@ -1587,7 +1583,7 @@
         "direction": "east"
       },
       "movable_sprites": null,
-      "positions": [
+      "nonInteractiveObjectOnePositions": [
         [
           1,
           4,
@@ -1641,7 +1637,7 @@
         "direction": "east"
       },
       "movable_sprites": null,
-      "positions": [
+      "nonInteractiveObjectOnePositions": [
         [
           3,
           6,
@@ -1690,7 +1686,7 @@
         "direction": "west"
       },
       "movable_sprites": null,
-      "positions": [
+      "nonInteractiveObjectOnePositions": [
         [
           13,
           2,
@@ -1739,7 +1735,7 @@
         "notification": 0
       },
       "movable_sprites": null,
-      "positions": [
+      "nonInteractiveObjectOnePositions": [
         [
           1,
           4,
@@ -1755,7 +1751,8 @@
           8,
           1
         ]
-      ]
+      ],
+      "nonInteractiveObjectTwoPositions": []
     },
     {
       "name": "gymMayhem3_1",
@@ -1787,7 +1784,7 @@
         "notification": 0
       },
       "movable_sprites": null,
-      "positions": [
+      "nonInteractiveObjectOnePositions": [
         [
           1,
           4,
