@@ -855,7 +855,7 @@
       "maxBlocks": 10,
       "goal": "",
       "background": {
-        "type": "tiled",
+        "type": "colorTiled",
         "image": "",
         "mapLayout": "mapLayout_taxiDriverSequencing_one"
       },
@@ -905,7 +905,7 @@
       "maxBlocks": 19,
       "goal": "",
       "background": {
-        "type": "tiled",
+        "type": "colorTiled",
         "image": "",
         "mapLayout": "mapLayout_taxiDriverSequencing_two"
       },
@@ -965,7 +965,7 @@
       "maxBlocks": 20,
       "goal": "",
       "background": {
-        "type": "tiled",
+        "type": "colorTiled",
         "image": "",
         "mapLayout": "mapLayout_taxiDriverSequencing_three"
       },
@@ -1035,7 +1035,7 @@
       "maxBlocks": 21,
       "goal": "",
       "background": {
-        "type": "tiled",
+        "type": "colorTiled",
         "image": "",
         "mapLayout": "mapLayout_taxiDriverSequencing_four"
       },
@@ -1095,7 +1095,7 @@
       "maxBlocks": 30,
       "goal": "",
       "background": {
-        "type": "tiled",
+        "type": "colorTiled",
         "image": "",
         "mapLayout": "mapLayout_taxiDriverSequencing_five"
       },
@@ -1184,7 +1184,7 @@
       "maxBlocks": 8,
       "goal": "Pick up all the passengers.",
       "background": {
-        "type": "tiled",
+        "type": "colorTiled",
         "image": "",
         "mapLayout": "mapLayout_taxiDriverSequencing_K_1"
       },
@@ -1228,7 +1228,7 @@
       "maxBlocks": 12,
       "goal": "Pick up all the passengers.",
       "background": {
-        "type": "tiled",
+        "type": "colorTiled",
         "image": "",
         "mapLayout": "mapLayout_taxiDriverSequencing_K_1"
       },
@@ -1282,7 +1282,7 @@
       "maxBlocks": 15,
       "goal": "Pick up all the passengers.",
       "background": {
-        "type": "tiled",
+        "type": "colorTiled",
         "image": "",
         "mapLayout": "mapLayout_taxiDriverSequencing_K_3"
       },
@@ -1331,7 +1331,7 @@
       "maxBlocks": 25,
       "goal": "Pick up all the passengers.",
       "background": {
-        "type": "tiled",
+        "type": "colorTiled",
         "image": "",
         "mapLayout": "mapLayout_taxiDriverSequencing_K_3"
       },
@@ -1390,7 +1390,7 @@
       "maxBlocks": 30,
       "goal": "Pick up all the passengers.",
       "background": {
-        "type": "tiled",
+        "type": "colorTiled",
         "image": "",
         "mapLayout": "mapLayout_taxiDriverSequencing_K_5"
       },
@@ -1469,7 +1469,7 @@
       "maxBlocks": 7,
       "goal": "",
       "background": {
-        "type": "tiled",
+        "type": "colorTiled",
         "image": "",
         "mapLayout": "mapLayout_taxiDriverSequencing_1_1"
       },
@@ -1513,7 +1513,7 @@
       "maxBlocks": 10,
       "goal": "",
       "background": {
-        "type": "tiled",
+        "type": "colorTiled",
         "image": "",
         "mapLayout": "mapLayout_taxiDriverSequencing_1_1"
       },
@@ -1567,7 +1567,7 @@
       "maxBlocks": 10,
       "goal": "",
       "background": {
-        "type": "tiled",
+        "type": "colorTiled",
         "image": "",
         "mapLayout": "mapLayout_taxiDriverSequencing_1_1"
       },
@@ -1616,7 +1616,7 @@
       "maxBlocks": 14,
       "goal": "Pick up all the passengers.",
       "background": {
-        "type": "tiled",
+        "type": "colorTiled",
         "image": "",
         "mapLayout": "mapLayout_taxiDriverSequencing_1_4"
       },
@@ -1675,7 +1675,7 @@
       "maxBlocks": 30,
       "goal": "",
       "background": {
-        "type": "tiled",
+        "type": "colorTiled",
         "image": "",
         "mapLayout": "mapLayout_taxiDriverSequencing_3_1"
       },
@@ -1728,7 +1728,7 @@
       "maxBlocks": 30,
       "goal": "",
       "background": {
-        "type": "tiled",
+        "type": "colorTiled",
         "image": "",
         "mapLayout": "mapLayout_taxiDriverSequencing_3_2"
       },
@@ -1780,7 +1780,7 @@
       "maxBlocks": 15,
       "goal": "",
       "background": {
-        "type": "tiled",
+        "type": "colorTiled",
         "image": "",
         "mapLayout": "mapLayout_bookSorting4_1"
       },
