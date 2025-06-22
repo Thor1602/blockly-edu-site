@@ -1835,7 +1835,7 @@
       "goal": "",
       "background": {
         "type": "image",
-        "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/schoolBackgroundBackyardWithoutChildren.png",
+        "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/schoolBackgroundWithoutChildren.png",
         "mapLayout": null
       },
       "instructions": "Clean up all the rackets by using the if block",

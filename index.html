@@ -1159,7 +1159,7 @@
                 this.map.drawMap(Activity.gameSettings.mapLayoutDesign.styleMap, this._gridSize);
             }
             else if (this.gameData.background.type === "image"){
-                this.map.drawImageBackground(this.gameData.background.image, this._gridSize);
+                this.map.drawImageBackground(this.gameData.background.image);
             }
             // Now resize any existing sprites, with defensive checks
             if (this.nonInteractiveObjectsOne && Array.isArray(this.nonInteractiveObjectsOne)) {
@@ -1231,7 +1231,12 @@
 
             // Resize map (if you make a resize method in MapLayout)
             if (this.map) {
-                this.map.drawMap(Activity.gameSettings.mapLayoutDesign.styleMap, newGridSize);  // it uses internal gridSize
+                if (this.gameData.background.type === "colorTiled"){
+                    this.map.drawMap(Activity.gameSettings.mapLayoutDesign.styleMap, this._gridSize);
+                }
+                else if (this.gameData.background.type === "image"){
+                    this.map.drawImageBackground(this.gameData.background.image);
+                }
                 this.map.drawSprites(this.nonInteractiveObjectsOne);
                 this.map.drawSprites(this.nonInteractiveObjectsTwo);
             }
@@ -1706,17 +1711,13 @@
             }
         }
 
-        drawImageBackground(imagePath, gridSize) {
+        drawImageBackground(imagePath) {
             this.reset();
             const texture = PIXI.Texture.from(imagePath);
             const bgSprite = new PIXI.Sprite(texture);
-
-            bgSprite.width = this.mapWidth * gridSize;
-            bgSprite.height = this.mapHeight * gridSize;
             bgSprite.x = 0;
             bgSprite.y = 0;
-
-            this.backgroundContainer.addChild(bgSprite);
+            this.mapContainer.addChild(bgSprite);
         }
 
 
