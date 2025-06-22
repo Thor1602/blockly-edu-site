@@ -1106,12 +1106,11 @@
             });
 
             // Initialize the map first
-            this.map = await new MapLayout(this.gameData.mapLayout, this.gameData.grid, this.app);
-            await this.map.initialize(this.gameData.mapLayout);
+            this.map = await new MapLayout(this.gameData.background.mapLayout, this.gameData.grid, this.app);
+            await this.map.initialize(this.gameData.background.mapLayout);
             this.player = new Player(Activity.gameSettings.characters.player.sprite, this.gameData.playerInfo.row, this.gameData.playerInfo.col, this.gameData.playerInfo.direction, this.gameData.playerInfo.setNotification, this.gameData.playerInfo.notification, this._gridSize, this.app, this);
-
-            if (Array.isArray(this.gameData.nonInteractiveObjectsOnePositions)) {
-                for (let pos of this.gameData.nonInteractiveObjectsOnePositions) {
+            if (Array.isArray(this.gameData.nonInteractiveObjectOnePositions)) {
+                for (let pos of this.gameData.nonInteractiveObjectOnePositions) {
                     this.nonInteractiveObjectsOne.push(new Sprite(
                         Activity.gameSettings.environment.nonInteractiveObjects.nonInteractiveObjectOne.sprite,
                         pos[0], pos[1],
@@ -1818,33 +1817,33 @@
 
         loadTheme(themeSettings, grade) {
             if (themeSettings && themeSettings.length > 0) {
-                let fontSize;
+                let fontStyle;
                 switch (grade) {
                     case "K":
-                        fontSize = 20;
+                        fontStyle = {family: 'Verdana, sans-serif', size: 22, weight: 'normal'};
                         break;
                     case "1":
-                        fontSize = 18;
+                        fontStyle = {family: 'Verdana, sans-serif', size: 20, weight: 'normal'};
                         break;
                     case "2":
-                        fontSize = 16;
+                        fontStyle = {family: 'Verdana, sans-serif', size: 18, weight: 'normal'};
                         break;
                     case "3":
-                        fontSize = 14;
+                        fontStyle = {family: 'Verdana, sans-serif', size: 16, weight: 'normal'};
                         break;
                     case "4":
-                        fontSize = 13;
+                        fontStyle = {family: 'Verdana, sans-serif', size: 15, weight: 'normal'};
                         break;
                     case "5":
-                        fontSize = 12;
+                        fontStyle = {family: 'Verdana, sans-serif', size: 14, weight: 'normal'};
                         break;
                     default:
-                        fontSize = 15;
+                        fontStyle = {family: 'Verdana, sans-serif', size: 16, weight: 'normal'};
                 }
                 const themeData = themeSettings[0];
                 this.customTheme = Blockly.Theme.defineTheme(themeData.themeName, {
                     base: Blockly.Themes[themeData.base] || Blockly.Themes.Classic,
-                    fontStyle: fontSize,
+                    fontStyle: fontStyle,
                     componentStyles: themeData.componentStyles,
                     blockStyles: themeData.blockStyles
                 });
@@ -2133,7 +2132,6 @@
         }
 
         static hasEnvironmentSprites() {
-            console.log(Sprite.#numberOfEnvironmentSprites);
             return Sprite.#numberOfEnvironmentSprites !== 0;
         }
 
@@ -2375,7 +2373,6 @@
 
             // Update logical direction
             this.direction = directions[currentIndex];
-            console.log(this.direction);
 
             // Normalize rotation to [0, 2π)
             this.sprite.rotation = (this.sprite.rotation + 2 * Math.PI) % (2 * Math.PI);
@@ -2394,7 +2391,6 @@
             let person = activity.people.find(p => this.isNextTo(p) && p.notif_number !== 0);
 
             if (person) {
-                console.log("there is a person");
 
                 Activity.playSound(Activity.gameSettings.sounds.succeeded);
 
@@ -2402,13 +2398,11 @@
                     activity.giveHint("Removed 1 person", "3000");
                     await new Promise(resolve => setTimeout(resolve, activity.speed * 100));
                     Sprite.decreaseNumberOfEnvironmentSprites();
-                    console.log("decreased middle");
                     person.notify(person.notif_number - 1);
                 } else if (person.notif_number === 1) {
                     activity.giveHint("Everyone is inside", "3000");
                     await new Promise(resolve => setTimeout(resolve, activity.speed * 100));
                     Sprite.decreaseNumberOfEnvironmentSprites();
-                    console.log("decreased last");
                     person.notify(0);
                     person.hide();
                 }
@@ -2466,7 +2460,6 @@
                     book.notify(book.notif_number - 1);
                     await new Promise(resolve => setTimeout(resolve, activity.speed * 100)); // 0.5 sec delay
                     Sprite.decreaseNumberOfEnvironmentSprites();
-                    console.log("decreased last");
                     book.notify(book.notif_number - 1);
                     book.hide();
                 } else if (person.notif_number <= 0) {
