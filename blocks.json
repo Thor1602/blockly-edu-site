@@ -856,7 +856,7 @@
       "goal": "",
       "background": {
         "type": "colorTiled",
-        "image": "",
+        "image": null,
         "mapLayout": "mapLayout_taxiDriverSequencing_one"
       },
       "instructions": "Pick up all the passengers.",
@@ -906,7 +906,7 @@
       "goal": "",
       "background": {
         "type": "colorTiled",
-        "image": "",
+        "image": null,
         "mapLayout": "mapLayout_taxiDriverSequencing_two"
       },
       "instructions": "Pick up all the passengers.",
@@ -966,7 +966,7 @@
       "goal": "",
       "background": {
         "type": "colorTiled",
-        "image": "",
+        "image": null,
         "mapLayout": "mapLayout_taxiDriverSequencing_three"
       },
       "instructions": "Pick up all the passengers.",
@@ -1036,7 +1036,7 @@
       "goal": "",
       "background": {
         "type": "colorTiled",
-        "image": "",
+        "image": null,
         "mapLayout": "mapLayout_taxiDriverSequencing_four"
       },
       "instructions": "Pick up all the passengers.",
@@ -1096,7 +1096,7 @@
       "goal": "",
       "background": {
         "type": "colorTiled",
-        "image": "",
+        "image": null,
         "mapLayout": "mapLayout_taxiDriverSequencing_five"
       },
       "instructions": "Pick up all the passengers.",
@@ -1185,7 +1185,7 @@
       "goal": "Pick up all the passengers.",
       "background": {
         "type": "colorTiled",
-        "image": "",
+        "image": null,
         "mapLayout": "mapLayout_taxiDriverSequencing_K_1"
       },
       "instructions": "Pick up all the passengers.",
@@ -1229,7 +1229,7 @@
       "goal": "Pick up all the passengers.",
       "background": {
         "type": "colorTiled",
-        "image": "",
+        "image": null,
         "mapLayout": "mapLayout_taxiDriverSequencing_K_1"
       },
       "instructions": "Pick up all the passengers.",
@@ -1283,7 +1283,7 @@
       "goal": "Pick up all the passengers.",
       "background": {
         "type": "colorTiled",
-        "image": "",
+        "image": null,
         "mapLayout": "mapLayout_taxiDriverSequencing_K_3"
       },
       "instructions": "Pick up all the passengers.",
@@ -1332,7 +1332,7 @@
       "goal": "Pick up all the passengers.",
       "background": {
         "type": "colorTiled",
-        "image": "",
+        "image": null,
         "mapLayout": "mapLayout_taxiDriverSequencing_K_3"
       },
       "instructions": "Pick up all the passengers.",
@@ -1391,7 +1391,7 @@
       "goal": "Pick up all the passengers.",
       "background": {
         "type": "colorTiled",
-        "image": "",
+        "image": null,
         "mapLayout": "mapLayout_taxiDriverSequencing_K_5"
       },
       "instructions": "Pick up all the passengers.",
@@ -1470,7 +1470,7 @@
       "goal": "",
       "background": {
         "type": "colorTiled",
-        "image": "",
+        "image": null,
         "mapLayout": "mapLayout_taxiDriverSequencing_1_1"
       },
       "instructions": "Pick up all the passengers.",
@@ -1514,7 +1514,7 @@
       "goal": "",
       "background": {
         "type": "colorTiled",
-        "image": "",
+        "image": null,
         "mapLayout": "mapLayout_taxiDriverSequencing_1_1"
       },
       "instructions": "Pick up all the passengers.",
@@ -1568,7 +1568,7 @@
       "goal": "",
       "background": {
         "type": "colorTiled",
-        "image": "",
+        "image": null,
         "mapLayout": "mapLayout_taxiDriverSequencing_1_1"
       },
       "instructions": "Pick up all the passengers.",
@@ -1617,7 +1617,7 @@
       "goal": "Pick up all the passengers.",
       "background": {
         "type": "colorTiled",
-        "image": "",
+        "image": null,
         "mapLayout": "mapLayout_taxiDriverSequencing_1_4"
       },
       "instructions": "Pick up all the passengers.",
@@ -1676,7 +1676,7 @@
       "goal": "",
       "background": {
         "type": "colorTiled",
-        "image": "",
+        "image": null,
         "mapLayout": "mapLayout_taxiDriverSequencing_3_1"
       },
       "instructions": "Pick up all the passengers.",
@@ -1729,7 +1729,7 @@
       "goal": "",
       "background": {
         "type": "colorTiled",
-        "image": "",
+        "image": null,
         "mapLayout": "mapLayout_taxiDriverSequencing_3_2"
       },
       "instructions": "Pick up all the passengers.",
@@ -1781,7 +1781,7 @@
       "goal": "",
       "background": {
         "type": "colorTiled",
-        "image": "",
+        "image": null,
         "mapLayout": "mapLayout_bookSorting4_1"
       },
       "instructions": "Sort out all the books by putting non-fiction and fiction books together",
@@ -1836,7 +1836,7 @@
       "background": {
         "type": "image",
         "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/schoolBackgroundBackyardWithoutChildren.png",
-        "mapLayout": ""
+        "mapLayout": null
       },
       "instructions": "Clean up all the rackets by using the if block",
       "feedback": "Good job!",

@@ -388,7 +388,8 @@
         <!-- Left side -->
         <div class="d-flex align-items-center">
             <a href="#" id="homeLink" class="navbar-brand me-3 expand">
-                <img src="https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/images/logo.png" height="40" width="40" alt=""/>
+                <img src="https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/images/logo.png" height="40"
+                     width="40" alt=""/>
                 CodeRecess SAIS
             </a>
             <button class="btn btn-lg btn-primary" onclick="showPane('codingPane')">Continue</button>
@@ -988,6 +989,7 @@
 
     class Activity {
         static gameSettings = null;
+
         constructor(type, level) {
             this.type = type;
             this.level = level;
@@ -1104,10 +1106,11 @@
                 height: this.gameData.colLength * this._gridSize, // Default placeholder values
                 backgroundColor: 0xAAAAAA
             });
+            this.map = await new MapLayout(this.gameData.grid, this.app, this.gameData.background.image);
+            if (this.gameData.background.type === "colorTiled"){
+                await this.map.initialize(this.gameData.background.mapLayout);
+            }
 
-            // Initialize the map first
-            this.map = await new MapLayout(this.gameData.background.mapLayout, this.gameData.grid, this.app);
-            await this.map.initialize(this.gameData.background.mapLayout);
             this.player = new Player(Activity.gameSettings.characters.player.sprite, this.gameData.playerInfo.row, this.gameData.playerInfo.col, this.gameData.playerInfo.direction, this.gameData.playerInfo.setNotification, this.gameData.playerInfo.notification, this._gridSize, this.app, this);
             if (Array.isArray(this.gameData.nonInteractiveObjectOnePositions)) {
                 for (let pos of this.gameData.nonInteractiveObjectOnePositions) {
@@ -1152,8 +1155,12 @@
                 console.error("Map is not initialized yet.");
                 return;
             }
-            this.map.drawMap(Activity.gameSettings.mapLayoutDesign.styleMap, this._gridSize);
-
+            if (this.gameData.background.type === "colorTiled"){
+                this.map.drawMap(Activity.gameSettings.mapLayoutDesign.styleMap, this._gridSize);
+            }
+            else if (this.gameData.background.type === "image"){
+                this.map.drawImageBackground(this.gameData.background.image, this._gridSize);
+            }
             // Now resize any existing sprites, with defensive checks
             if (this.nonInteractiveObjectsOne && Array.isArray(this.nonInteractiveObjectsOne)) {
                 this.nonInteractiveObjectsOne.forEach((sprite) => {
@@ -1673,9 +1680,10 @@
 
 
     class MapLayout {
-        constructor(mapLayoutName, grid, app) {
+        constructor(grid, app, backgroundImage) {
             this.grid = grid; // grid is to add borders so students can easily count the jumps: true/false
             this.app = app;
+            this.backgroundImage = backgroundImage;
             this.mapLayout = null;
             this.mapContainer = new PIXI.Container();
             this.app.stage.addChild(this.mapContainer);
@@ -1697,6 +1705,20 @@
                 return null;
             }
         }
+
+        drawImageBackground(imagePath, gridSize) {
+            this.reset();
+            const texture = PIXI.Texture.from(imagePath);
+            const bgSprite = new PIXI.Sprite(texture);
+
+            bgSprite.width = this.mapWidth * gridSize;
+            bgSprite.height = this.mapHeight * gridSize;
+            bgSprite.x = 0;
+            bgSprite.y = 0;
+
+            this.backgroundContainer.addChild(bgSprite);
+        }
+
 
         drawMap(styleMap, gridSize) {
             this.reset();
@@ -1803,7 +1825,7 @@
                     .map(type => configData.blocks.find(block => block.type === type))
                     .filter(Boolean);
                 // noinspection JSUnresolvedVariable
-                this.loadTheme(configData.blocklyThemeSettings,grade);
+                this.loadTheme(configData.blocklyThemeSettings, grade);
                 this.defineBlocks(filteredBlocks);
                 this.createToolbox(filteredBlocks);
                 this.injectWorkspace();
@@ -2050,7 +2072,6 @@
                 Blockly.svgResize(this.workspace);
             }
         }
-
 
 
     }
