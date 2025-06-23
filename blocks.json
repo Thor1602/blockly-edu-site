@@ -1780,9 +1780,9 @@
       "maxBlocks": 15,
       "goal": "",
       "background": {
-        "type": "colorTiled",
-        "image": null,
-        "mapLayout": "mapLayout_bookSorting4_1"
+        "type": "image",
+        "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/libraryBackground.png",
+        "mapLayout": null
       },
       "instructions": "Sort out all the books by putting non-fiction and fiction books together",
       "feedback": "Good job!",
