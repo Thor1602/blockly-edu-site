@@ -1,5 +1,93 @@
 {
-  "gameSettings": [
+  "settingsPerGrade": [
+    {
+      "K": {
+        "font": {
+          "font-family": "Verdana",
+          "font-size": 16
+        },
+        "blockSize": {
+          "width": 50,
+          "height": 40
+        },
+        "visualisationSize": {
+          "row": 8,
+          "col": 8
+        }
+      },
+      "1": {
+        "font": {
+          "font-family": "Verdana",
+          "font-size": 16
+        },
+        "blockSize": {
+          "width": 50,
+          "height": 40
+        },
+        "visualisationSize": {
+          "row": 10,
+          "col": 10
+        }
+      },
+      "2": {
+        "font": {
+          "font-family": "Verdana",
+          "font-size": 16
+        },
+        "blockSize": {
+          "width": 50,
+          "height": 40
+        },
+        "visualisationSize": {
+          "row": 11,
+          "col": 11
+        }
+      },
+      "3": {
+        "font": {
+          "font-family": "Verdana",
+          "font-size": 16
+        },
+        "blockSize": {
+          "width": 50,
+          "height": 40
+        },
+        "visualisationSize": {
+          "row": 12,
+          "col": 12
+        }
+      },
+      "4": {
+        "font": {
+          "font-family": "Verdana",
+          "font-size": 16
+        },
+        "blockSize": {
+          "width": 50,
+          "height": 40
+        },
+        "visualisationSize": {
+          "row": 16,
+          "col": 12
+        }
+      },
+      "5": {
+        "font": {
+          "font-family": "Verdana",
+          "font-size": 16
+        },
+        "blockSize": {
+          "width": 50,
+          "height": 40
+        },
+        "visualisationSize": {
+          "row": 16,
+          "col": 12
+        }
+      }
+    }
+  ],
+    "gameSettings": [
     {
       "category": "taxiDriverSequencing",
       "characters": {
@@ -1805,17 +1893,17 @@
       "movable_sprites": null,
       "nonInteractiveObjectOnePositions": [
         [
-          1,
+          5,
           4,
           1
         ],
         [
-          1,
+          5,
           6,
           1
         ],
         [
-          1,
+          5,
           8,
           1
         ]
