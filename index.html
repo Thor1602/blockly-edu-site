@@ -1845,6 +1845,7 @@
                     .map(type => configData.blocks.find(block => block.type === type))
                     .filter(Boolean);
                 // noinspection JSUnresolvedVariable
+                console.log(configData.blocklyThemeSettings["customTheme"]);
                 this.loadTheme(configData.blocklyThemeSettings["customTheme"], fontStyle);
                 this.defineBlocks(filteredBlocks);
                 this.createToolbox(filteredBlocks);
@@ -1858,13 +1859,12 @@
         }
 
         loadTheme(themeSettings, fontStyle) {
-            if (themeSettings && themeSettings.length > 0) {
-                const themeData = themeSettings[0];
-                this.customTheme = Blockly.Theme.defineTheme(themeData.themeName, {
-                    base: Blockly.Themes[themeData.base] || Blockly.Themes.Classic,
+            if (themeSettings) {
+                this.customTheme = Blockly.Theme.defineTheme(themeSettings.themeName, {
+                    base: Blockly.Themes[themeSettings.base] || Blockly.Themes.Classic,
                     fontStyle: fontStyle,
-                    componentStyles: themeData.componentStyles,
-                    blockStyles: themeData.blockStyles
+                    componentStyles: themeSettings.componentStyles,
+                    blockStyles: themeSettings.blockStyles
                 });
             } else {
                 console.error('No theme settings found in JSON.');
