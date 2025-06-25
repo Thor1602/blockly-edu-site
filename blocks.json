@@ -1,92 +1,97 @@
 {
-  "settingsPerGrade": [
-    {
-      "K": {
-        "font": {
-          "font-family": "Verdana",
-          "font-size": 16
-        },
-        "blockSize": {
-          "width": 50,
-          "height": 40
-        },
-        "visualisationSize": {
-          "row": 8,
-          "col": 8
-        }
+  "settingsPerGrade": {
+    "K": {
+      "font": {
+        "family": "Verdana, sans-serif",
+        "size": 22,
+        "weight": "normal"
       },
-      "1": {
-        "font": {
-          "font-family": "Verdana",
-          "font-size": 16
-        },
-        "blockSize": {
-          "width": 50,
-          "height": 40
-        },
-        "visualisationSize": {
-          "row": 10,
-          "col": 10
-        }
+      "blockSize": {
+        "width": 50,
+        "height": 40
       },
-      "2": {
-        "font": {
-          "font-family": "Verdana",
-          "font-size": 16
-        },
-        "blockSize": {
-          "width": 50,
-          "height": 40
-        },
-        "visualisationSize": {
-          "row": 11,
-          "col": 11
-        }
+      "visualisationSize": {
+        "row": 9,
+        "col": 9
+      }
+    },
+    "1": {
+      "font": {
+        "family": "Verdana, sans-serif",
+        "size": 20,
+        "weight": "normal"
       },
-      "3": {
-        "font": {
-          "font-family": "Verdana",
-          "font-size": 16
-        },
-        "blockSize": {
-          "width": 50,
-          "height": 40
-        },
-        "visualisationSize": {
-          "row": 12,
-          "col": 12
-        }
+      "blockSize": {
+        "width": 50,
+        "height": 40
       },
-      "4": {
-        "font": {
-          "font-family": "Verdana",
-          "font-size": 16
-        },
-        "blockSize": {
-          "width": 50,
-          "height": 40
-        },
-        "visualisationSize": {
-          "row": 16,
-          "col": 12
-        }
+      "visualisationSize": {
+        "row": 10,
+        "col": 10
+      }
+    },
+    "2": {
+      "font": {
+        "family": "Verdana, sans-serif",
+        "size": 18,
+        "weight": "normal"
       },
-      "5": {
-        "font": {
-          "font-family": "Verdana",
-          "font-size": 16
-        },
-        "blockSize": {
-          "width": 50,
-          "height": 40
-        },
-        "visualisationSize": {
-          "row": 16,
-          "col": 12
-        }
+      "blockSize": {
+        "width": 50,
+        "height": 40
+      },
+      "visualisationSize": {
+        "row": 11,
+        "col": 11
+      }
+    },
+    "3": {
+      "font": {
+        "family": "Verdana, sans-serif",
+        "size": 16,
+        "weight": "normal"
+      },
+      "blockSize": {
+        "width": 50,
+        "height": 40
+      },
+      "visualisationSize": {
+        "row": 16,
+        "col": 12
+      }
+    },
+    "4": {
+      "font": {
+        "family": "Verdana, sans-serif",
+        "size": 15,
+        "weight": "normal"
+      },
+      "blockSize": {
+        "width": 50,
+        "height": 40
+      },
+      "visualisationSize": {
+        "row": 16,
+        "col": 12
+      }
+    },
+    "5": {
+      "font": {
+        "family": "Verdana, sans-serif",
+        "size": 14,
+        "weight": "normal"
+      },
+      "blockSize": {
+        "width": 50,
+        "height": 40
+      },
+      "visualisationSize": {
+        "row": 16,
+        "col": 12
       }
     }
-  ],
+  }
+  ,
     "gameSettings": [
     {
       "category": "taxiDriverSequencing",
