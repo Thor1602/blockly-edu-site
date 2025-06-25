@@ -907,8 +907,8 @@
       "size": "medium"
     }
   ],
-  "blocklyThemeSettings": [
-    {
+  "blocklyThemeSettings": {
+    "customTheme": {
       "themeName": "customTheme",
       "base": "Classic",
       "componentStyles": {
@@ -933,7 +933,7 @@
         }
       }
     }
-  ],
+  },
   "exercises": [
     {
       "name": "taxiDriverSequencing2_1",

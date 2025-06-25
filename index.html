@@ -1845,7 +1845,7 @@
                     .map(type => configData.blocks.find(block => block.type === type))
                     .filter(Boolean);
                 // noinspection JSUnresolvedVariable
-                this.loadTheme(configData.blocklyThemeSettings, fontStyle);
+                this.loadTheme(configData.blocklyThemeSettings["customTheme"], fontStyle);
                 this.defineBlocks(filteredBlocks);
                 this.createToolbox(filteredBlocks);
                 this.injectWorkspace();
