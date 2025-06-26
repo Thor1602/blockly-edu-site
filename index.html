@@ -1699,7 +1699,7 @@
             try {
                 await fetchData();
                 // noinspection JSUnresolvedVariable
-                const layoutObj = configData.map_layouts.find(layout => layout.name === mapLayoutNameParam);
+                const layoutObj = configData.map_layouts[mapLayoutNameParam];
                 return layoutObj ? layoutObj.layout : null;
             } catch (error) {
                 console.error("Error fetching JSON:", error);
