@@ -429,14 +429,14 @@
             <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#kinderMenu"
                data-parent="#sidebarMenu">Kinder</a>
             <div id="kinderMenu" class="collapse">
-                <a href="#" class="nav-link pl-4" data-param="taxiDriverSequencingK">Sequencing</a>
+                <a href="#" class="nav-link pl-4" data-param="taxiDriverSequencingK" data-level="1">Sequencing</a>
             </div>
         </li>
         <li class="nav-item">
             <a href="#" class="nav-link dropdown-toggle" data-toggle="collapse" data-target="#grade1Menu"
                data-parent="#sidebarMenu">Grade 1</a>
             <div id="grade1Menu" class="collapse">
-                <a href="#" class="nav-link pl-4" data-param="taxiDriverSequencing1">Sequencing</a>
+                <a href="#" class="nav-link pl-4" data-param="taxiDriverSequencing1" data-level="1">Sequencing</a>
             </div>
         </li>
         <li class="nav-item">
@@ -445,7 +445,7 @@
             <div id="grade2Menu" class="collapse">
                 <a href="#" class="nav-link pl-4">Sequencing</a>
                 <div class="pl-5">
-                    <a href="#" class="nav-link" data-param="taxiDriverSequencing2">Mr. Cab Driver</a>
+                    <a href="#" class="nav-link" data-param="taxiDriverSequencing2" data-level="1">Mr. Cab Driver</a>
                 </div>
             </div>
         </li>
@@ -455,7 +455,7 @@
             <div id="grade3Menu" class="collapse">
                 <a href="#" class="nav-link pl-4">Sequencing</a>
                 <div class="pl-5">
-                    <a href="#" class="nav-link" data-param="taxiDriverSequencing3">Mr. Cab Driver</a>
+                    <a href="#" class="nav-link" data-param="taxiDriverSequencing3" data-level="1">Mr. Cab Driver</a>
                 </div>
             </div>
         </li>
@@ -496,7 +496,7 @@
                         <div class="grade-title">Grade K</div>
                         <div>
                             <div class="section-title">Sequencing</div>
-                            <a href="#" class="exercise-link" data-param="taxiDriverSequencingK">Mr. Cab
+                            <a href="#" class="exercise-link" data-param="taxiDriverSequencingK" data-level="1">Mr. Cab
                                 Driver</a>
                         </div>
                         <div>
@@ -515,7 +515,7 @@
                         <div class="grade-title">Grade 1</div>
                         <div>
                             <div class="section-title">Sequencing</div>
-                            <a href="#" class="exercise-link" data-param='taxiDriverSequencing1'>Mr. Cab
+                            <a href="#" class="exercise-link" data-param='taxiDriverSequencing1' data-level="1">Mr. Cab
                                 Driver</a>
                         </div>
                         <div>
@@ -540,7 +540,7 @@
                         <div class="grade-title">Grade 2</div>
                         <div>
                             <div class="section-title">Sequencing</div>
-                            <a href="#" class="exercise-link" data-param='taxiDriverSequencing2'>Mr. Cab
+                            <a href="#" class="exercise-link" data-param='taxiDriverSequencing2' data-level="1">Mr. Cab
                                 Driver</a>
                         </div>
                         <div>
@@ -563,7 +563,7 @@
                         <div class="grade-title">Grade 3</div>
                         <div>
                             <div class="section-title">Sequencing</div>
-                            <a href="#" class="exercise-link" data-param='taxiDriverSequencing3'>Mr. Cab
+                            <a href="#" class="exercise-link" data-param='taxiDriverSequencing3' data-level="1">Mr. Cab
                                 Driver</a>
                         </div>
                         <div>
@@ -576,11 +576,11 @@
                         </div>
                         <div>
                             <div class="section-title">Events</div>
-                            <a href="#" class="exercise-link" data-param='gymMayhem3'>Ms. Jeniffer's Mayhem</a>
+                            <a href="#" class="exercise-link" data-param='gymMayhem3' data-level="1">Ms. Jeniffer's Mayhem</a>
                         </div>
                         <div>
                             <div class="section-title">Conditionals</div>
-                            <a href="#" class="exercise-link" data-param='bookSorting4'>Ms. Taery's Agony</a>
+                            <a>Ms. Taery's Agony (Coming Soon)</a>
                         </div>
                     </div>
                 </div>
@@ -602,7 +602,7 @@
                         </div>
                         <div>
                             <div class="section-title">Conditionals</div>
-                            <a>Ms. Taery's Agony (Coming soon)</a>
+                            <a href="#" class="exercise-link" data-param='bookSorting4' data-level="1">Ms. Taery's Agony</a>
                         </div>
                         <div>
                             <div class="section-title">Nested Loops</div>
@@ -906,7 +906,6 @@
 
     }
 
-
     function initUserDataAndSession() {
         console.log("initUserDataAndSession() called"); // Step 1
         try {
@@ -919,7 +918,6 @@
                     const studentId = studentData[0][3];
                     const className = studentData[0][4];
                     const grade = studentData[0][5];
-                    console.log(studentData[1]);
                     sessionStorage.setItem("studentProgress", JSON.stringify(studentData[1]));
                     sessionStorage.setItem("loggedIn", "true");
                     sessionStorage.setItem("currentLessonType", studentData[2]);
@@ -994,9 +992,9 @@
             this.type = type;
             this.level = level;
             this.gameData = null;
-            this.nonInteractiveObjectsOne = []; 
-            this.nonInteractiveObjectsTwo = []; 
-            this.people = [];  
+            this.nonInteractiveObjectsOne = [];
+            this.nonInteractiveObjectsTwo = [];
+            this.people = [];
             this.player = null;
             this.blockManager = null;
             this.startedOn = new Date().toISOString();
@@ -1059,17 +1057,17 @@
             if (!configData) {
                 await fetchData();
             }
-            this.gameData = configData.exercises.find(
-                exercise => exercise.type === this.type && exercise.level === String(this.level)
-            );
+            console.log(configData.exercises);
+            console.log(configData.exercises[this.type]);
+            console.log(configData.exercises[this.type][this.level]);
+            this.gameData = configData.exercises[this.type][this.level];
             if (localStorage.getItem('visualisationSize') !== null) {
                 this._gridSize = localStorage.getItem('visualisationSize');
             } else {
                 this._gridSize = this.gameData.gridSize;
             }
-            Activity.activityTypeGameSettings = configData.gameSettings.find(gameSetting => gameSetting.category === this.gameData.category);
+            Activity.activityTypeGameSettings = configData.gameSettings[this.gameData.category];
             Activity.gradeSettings = configData.settingsPerGrade[this.gameData.grade] || {};
-            console.log(Activity.gradeSettings);
             feedbackElement.innerHTML = this.gameData.instructions;
             instructionsContentElement.innerHTML = this.gameData.instructions;
             hintContentElement.innerHTML = this.gameData.hints;
@@ -1109,7 +1107,7 @@
                 backgroundColor: 0xAAAAAA
             });
             this.map = await new MapLayout(this.gameData.grid, this.app);
-            if (this.gameData.background.type === "colorTiled"){
+            if (this.gameData.background.type === "colorTiled") {
                 await this.map.initialize(this.gameData.background.mapLayout);
             }
 
@@ -1143,7 +1141,7 @@
                 }
             }
             this.people = Sprite.listOfSprites.filter(item => !(item instanceof Player));
-            // this.nonInteractiveObjectsOne = Sprite.listOfSprites; // might be usesless
+            // this.nonInteractiveObjectsOne = Sprite.listOfSprites; // might be useless
             // Append PIXI app view (canvas) to DOM
             buttonVisualisationElement.appendChild(this.app.view);
 
@@ -1157,11 +1155,10 @@
                 console.error("Map is not initialized yet.");
                 return;
             }
-            if (this.gameData.background.type === "colorTiled"){
+            if (this.gameData.background.type === "colorTiled") {
                 this.map.drawMap(Activity.activityTypeGameSettings.mapLayoutDesign.styleMap, this._gridSize);
-            }
-            else if (this.gameData.background.type === "image"){
-                this.map.drawImageBackground(this.gameData.background.image, 16* this._gridSize);
+            } else if (this.gameData.background.type === "image") {
+                this.map.drawImageBackground(this.gameData.background.image, 16 * this._gridSize);
             }
             // Now resize any existing sprites, with defensive checks
             if (this.nonInteractiveObjectsOne && Array.isArray(this.nonInteractiveObjectsOne)) {
@@ -1233,11 +1230,10 @@
 
             // Resize map (if you make a resize method in MapLayout)
             if (this.map) {
-                if (this.gameData.background.type === "colorTiled"){
+                if (this.gameData.background.type === "colorTiled") {
                     this.map.drawMap(Activity.activityTypeGameSettings.mapLayoutDesign.styleMap, this._gridSize);
-                }
-                else if (this.gameData.background.type === "image"){
-                    this.map.drawImageBackground(this.gameData.background.image, 16* this._gridSize);
+                } else if (this.gameData.background.type === "image") {
+                    this.map.drawImageBackground(this.gameData.background.image, 16 * this._gridSize);
                 }
                 this.map.drawSprites(this.nonInteractiveObjectsOne);
                 this.map.drawSprites(this.nonInteractiveObjectsTwo);
@@ -1415,6 +1411,7 @@
             buttonRunElement.style.display = "none";
             buttonResetElement.style.display = "inline-block";
             let runEventBlock = this.blockManager.workspace.getAllBlocks().find(block => block.type === 'run_event');
+            console.log(this.blockManager.workspace.getAllBlocks());
             if (!runEventBlock) {
                 this.giveHint("Error: Run block is missing. Please add the Run block.", "15000");
                 this.hasFailed();
@@ -1452,8 +1449,6 @@
                         console.log("Progress submitted successfully.");
                         if (currentLevelIsCompleted) {
                             sessionStorage.setItem("studentProgress", JSON.stringify(submission.allStudentProgress));
-                            // sessionStorage.setItem("currentLessonType", submission.nextType); // undefined
-                            // sessionStorage.setItem("currentLessonLevel", submission.nextLevel);// undefined
                             renderProgressBar(sessionStorage.getItem("currentLessonType"));
                             buttonNextLevelElements.forEach(button => {
                                 button.disabled = false;
@@ -1842,10 +1837,15 @@
         loadBlocks(blocks, fontStyle) {
             try {
                 const filteredBlocks = blocks
-                    .map(type => configData.blocks.find(block => block.type === type))
-                    .filter(Boolean);
+                    .reduce((acc, type) => {
+                        const def = configData.blocks[type];
+                        if (def) {
+                            acc[type] = def;
+                        }
+                        return acc;
+                    }, {});
+                // filter will remove undefined blocks
                 // noinspection JSUnresolvedVariable
-                console.log(configData.blocklyThemeSettings["customTheme"]);
                 this.loadTheme(configData.blocklyThemeSettings["customTheme"], fontStyle);
                 this.defineBlocks(filteredBlocks);
                 this.createToolbox(filteredBlocks);
@@ -1872,42 +1872,46 @@
 
         }
 
-        defineBlocks(blocks) {
-            if (!blocks || blocks.length === 0) {
+        defineBlocks(blocksByType) {
+            if (!blocksByType || Object.keys(blocksByType).length === 0) {
                 throw new Error('No blocks found in JSON.');
             }
 
-            blocks.forEach(block => {
-                Blockly.common.defineBlocksWithJsonArray([{...block}]);
+            Object.entries(blocksByType).forEach(([type, blockDef]) => {
+                // Inject the type into the block definition
+                Blockly.common.defineBlocksWithJsonArray([{type, ...blockDef}]);
 
-                javascript.javascriptGenerator.forBlock[block.type] = (blockInstance) => {
+                // Assign generator function for this block
+                javascript.javascriptGenerator.forBlock[type] = (blockInstance) => {
                     const id = blockInstance.id;
-                    const code = block.javascript_function || "";
-                    if (block.type === 'run_event') {
+                    const code = blockDef.javascript_function || "";
+                    if (type === 'run_event') {
                         return `await this.highlightBlock("${id}");\n${code}`;
                     } else {
                         return code;
                     }
                 };
             });
+
+            // Manually defined generators (unchanged)
             javascript.javascriptGenerator.forBlock['repeat_loop_K_2'] = function (block) {
                 let times = block.getFieldValue('TIMES') || 10;
                 let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO');
                 return `
-        for (let i = 0; i < ${times}; i++) {
-            ${innerCode}
-        }
-        `;
+                    for (let i = 0; i < ${times}; i++) {
+                        ${innerCode}
+                    }
+                    `;
             };
 
             javascript.javascriptGenerator.forBlock['repeat_loop_2_5'] = function (block) {
                 let times = block.getFieldValue('TIMES') || 10;
                 let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO');
                 return `
-        for (let i = 0; i < ${times}; i++) {
-            ${innerCode}
-        }
-        `;
+                    for (let i = 0; i < ${times}; i++) {
+                        ${innerCode}
+                    }
+                    `;
             };
 
             javascript.javascriptGenerator.forBlock["turn"] = function (block) {
@@ -1921,13 +1925,22 @@
                 const id = block.id;
                 return `await this.highlightBlock("${id}");\nawait this.move_choice_action("${direction}");\n`;
             };
-
         }
 
-        createToolbox(blocks) {
+
+        // createToolbox(blocks) {
+        //     this.toolbox = {
+        //         'kind': 'flyoutToolbox',
+        //         'contents': blocks.map(block => ({'kind': 'block', 'type': block.type}))
+        //     };
+        // }
+        createToolbox(blocksByType) {
             this.toolbox = {
-                'kind': 'flyoutToolbox',
-                'contents': blocks.map(block => ({'kind': 'block', 'type': block.type}))
+                kind: 'flyoutToolbox',
+                contents: Object.keys(blocksByType).map(type => ({
+                    kind: 'block',
+                    type: type
+                }))
             };
         }
 
@@ -2023,8 +2036,7 @@
 
         setupChangeListener() {
             const updateCapacity = () => {
-                const allBlocks = this.workspace.getAllBlocks();
-                const runEventBlock = allBlocks.find(block => block.type === 'run_event');
+                const runEventBlock = this.workspace.getAllBlocks().find(block => block.type === 'run_event');
                 let usedBlocks = 0;
                 if (runEventBlock) {
                     usedBlocks = this.countAttachedBlocks(runEventBlock);
@@ -2681,8 +2693,7 @@
             const link = event.target.closest('.nav-link, .exercise-link');
             if (link) {
                 event.preventDefault();
-                const param = link.getAttribute('data-param');
-                setNextLesson(param, "1");
+                setNextLesson(link.getAttribute('data-param'),link.getAttribute('data-level'));
             }
         });
     });

@@ -91,9 +91,8 @@
       }
     }
   },
-  "gameSettings": [
-    {
-      "category": "taxiDriverSequencing",
+  "gameSettings": {
+    "taxiDriverSequencing": {
       "characters": {
         "player": {
           "name": "taxi",
@@ -157,8 +156,7 @@
         }
       }
     },
-    {
-      "category": "gymMayhem",
+    "gymMayhem": {
       "characters": {
         "player": {
           "name": "sportsman",
@@ -166,7 +164,8 @@
         }
       },
       "environment": {
-        "interactiveObjects": {},
+        "interactiveObjects": {
+        },
         "nonInteractiveObjects": {
           "nonInteractiveObjectOne": {
             "name": "racket",
@@ -222,8 +221,7 @@
         }
       }
     },
-    {
-      "category": "bookSorting",
+    "bookSorting": {
       "characters": {
         "player": {
           "name": "taxi",
@@ -299,7 +297,7 @@
         }
       }
     }
-  ],
+  },
   "blocks": {
     "run_event": {
       "message0": "▶ RUN %1",
@@ -910,1040 +908,1052 @@
       }
     }
   },
-  "exercises": [
-    {
-      "name": "taxiDriverSequencing2_1",
-      "type": "taxiDriverSequencing2",
-      "category": "taxiDriverSequencing",
-      "grade": "2",
-      "grid": false,
-      "level": "1",
-      "gridSize": 30,
-      "rowLength": 12,
-      "colLength": 16,
-      "maxBlocks": 10,
-      "goal": "",
-      "background": {
-        "type": "colorTiled",
-        "image": null,
-        "mapLayout": "mapLayout_taxiDriverSequencing_one"
-      },
-      "instructions": "Pick up all the passengers.",
-      "feedback": "Good job!",
-      "hints": "Use the pick up block to get everyone in your taxi.",
-      "blocks": [
-        "run_event",
-        "move_north",
-        "move_south",
-        "move_west",
-        "move_east",
-        "pick_up_person",
-        "repeat_loop_K_2"
-      ],
-      "playerInfo": {
-        "row": 7,
-        "col": 1,
-        "setNotification": false,
-        "notification": 0,
-        "direction": "east"
-      },
-      "movable_sprites": null,
-      "nonInteractiveObjectOnePositions": [
-        [
-          8,
-          5,
-          3
+  "exercises": {
+    "taxiDriverSequencingK": {
+      "1": {
+        "name": "taxiDriverSequencingK_1",
+        "type": "taxiDriverSequencingK",
+        "category": "taxiDriverSequencing",
+        "grade": "K",
+        "grid": true,
+        "level": "1",
+        "gridSize": 35,
+        "rowLength": 9,
+        "colLength": 9,
+        "maxBlocks": 8,
+        "goal": "Pick up all the passengers.",
+        "background": {
+          "type": "colorTiled",
+          "image": null,
+          "mapLayout": "mapLayout_taxiDriverSequencing_K_1"
+        },
+        "instructions": "Pick up all the passengers.",
+        "feedback": "Good job!",
+        "hints": "Use the pick up block to get everyone in your taxi.",
+        "blocks": [
+          "run_event",
+          "move_north",
+          "move_south",
+          "move_west",
+          "move_east",
+          "pick_up_person"
         ],
-        [
-          8,
-          9,
-          1
+        "playerInfo": {
+          "row": 4,
+          "col": 2,
+          "setNotification": false,
+          "notification": 0,
+          "direction": "east"
+        },
+        "movable_sprites": null,
+        "nonInteractiveObjectOnePositions": [
+          [
+            3,
+            6,
+            1
+          ]
         ]
-      ]
+      },
+      "2": {
+        "name": "taxiDriverSequencingK_2",
+        "type": "taxiDriverSequencingK",
+        "category": "taxiDriverSequencing",
+        "grade": "K",
+        "grid": true,
+        "level": "2",
+        "gridSize": 35,
+        "rowLength": 9,
+        "colLength": 9,
+        "maxBlocks": 12,
+        "goal": "Pick up all the passengers.",
+        "background": {
+          "type": "colorTiled",
+          "image": null,
+          "mapLayout": "mapLayout_taxiDriverSequencing_K_1"
+        },
+        "instructions": "Pick up all the passengers.",
+        "feedback": "Good job!",
+        "hints": "Use the pick up block to get everyone in your taxi.",
+        "blocks": [
+          "run_event",
+          "move_north",
+          "move_south",
+          "move_west",
+          "move_east",
+          "pick_up_person"
+        ],
+        "playerInfo": {
+          "row": 4,
+          "col": 2,
+          "setNotification": false,
+          "notification": 0,
+          "direction": "east"
+        },
+        "movable_sprites": null,
+        "nonInteractiveObjectOnePositions": [
+          [
+            3,
+            5,
+            1
+          ],
+          [
+            3,
+            5,
+            1
+          ],
+          [
+            3,
+            6,
+            1
+          ]
+        ]
+      },
+      "3": {
+        "name": "taxiDriverSequencingK_3",
+        "type": "taxiDriverSequencingK",
+        "category": "taxiDriverSequencing",
+        "grade": "K",
+        "grid": true,
+        "level": "3",
+        "gridSize": 35,
+        "rowLength": 9,
+        "colLength": 9,
+        "maxBlocks": 15,
+        "goal": "Pick up all the passengers.",
+        "background": {
+          "type": "colorTiled",
+          "image": null,
+          "mapLayout": "mapLayout_taxiDriverSequencing_K_3"
+        },
+        "instructions": "Pick up all the passengers.",
+        "feedback": "Good job!",
+        "hints": "Use the pick up block to get everyone in your taxi.",
+        "blocks": [
+          "run_event",
+          "move_north",
+          "move_south",
+          "move_west",
+          "move_east",
+          "pick_up_person"
+        ],
+        "playerInfo": {
+          "row": 4,
+          "col": 2,
+          "setNotification": false,
+          "notification": 0,
+          "direction": "east"
+        },
+        "movable_sprites": null,
+        "nonInteractiveObjectOnePositions": [
+          [
+            1,
+            5,
+            2
+          ],
+          [
+            3,
+            5,
+            2
+          ]
+        ]
+      },
+      "4": {
+        "name": "taxiDriverSequencingK_4",
+        "type": "taxiDriverSequencingK",
+        "category": "taxiDriverSequencing",
+        "grade": "K",
+        "grid": true,
+        "level": "4",
+        "gridSize": 35,
+        "rowLength": 9,
+        "colLength": 9,
+        "maxBlocks": 25,
+        "goal": "Pick up all the passengers.",
+        "background": {
+          "type": "colorTiled",
+          "image": null,
+          "mapLayout": "mapLayout_taxiDriverSequencing_K_3"
+        },
+        "instructions": "Pick up all the passengers.",
+        "feedback": "Good job!",
+        "hints": "Use the pick up block to get everyone in your taxi.",
+        "blocks": [
+          "run_event",
+          "move_north",
+          "move_south",
+          "move_west",
+          "move_east",
+          "pick_up_person"
+        ],
+        "playerInfo": {
+          "row": 4,
+          "col": 2,
+          "setNotification": false,
+          "notification": 0,
+          "direction": "east"
+        },
+        "movable_sprites": null,
+        "nonInteractiveObjectOnePositions": [
+          [
+            2,
+            7,
+            1
+          ],
+          [
+            3,
+            7,
+            1
+          ],
+          [
+            5,
+            4,
+            1
+          ],
+          [
+            5,
+            5,
+            1
+          ]
+        ]
+      },
+      "5": {
+        "name": "taxiDriverSequencingK_5",
+        "type": "taxiDriverSequencingK",
+        "category": "taxiDriverSequencing",
+        "grade": "1",
+        "grid": true,
+        "level": "5",
+        "gridSize": 35,
+        "rowLength": 9,
+        "colLength": 9,
+        "maxBlocks": 30,
+        "goal": "Pick up all the passengers.",
+        "background": {
+          "type": "colorTiled",
+          "image": null,
+          "mapLayout": "mapLayout_taxiDriverSequencing_K_5"
+        },
+        "instructions": "Pick up all the passengers.",
+        "feedback": "Good job!",
+        "hints": "Use the pick up block to get everyone in your taxi.",
+        "blocks": [
+          "run_event",
+          "move_north",
+          "move_south",
+          "move_west",
+          "move_east",
+          "pick_up_person"
+        ],
+        "playerInfo": {
+          "row": 4,
+          "col": 1,
+          "setNotification": false,
+          "notification": 0,
+          "direction": "east"
+        },
+        "movable_sprites": null,
+        "nonInteractiveObjectOnePositions": [
+          [
+            1,
+            0,
+            1
+          ],
+          [
+            1,
+            8,
+            1
+          ],
+          [
+            2,
+            2,
+            1
+          ],
+          [
+            2,
+            6,
+            1
+          ],
+          [
+            6,
+            2,
+            1
+          ],
+          [
+            6,
+            6,
+            1
+          ],
+          [
+            7,
+            0,
+            1
+          ],
+          [
+            7,
+            8,
+            1
+          ]
+        ]
+      }
     },
-    {
-      "name": "taxiDriverSequencing2_2",
-      "type": "taxiDriverSequencing2",
-      "category": "taxiDriverSequencing",
-      "grade": "2",
-      "grid": false,
-      "level": "2",
-      "gridSize": 30,
-      "rowLength": 12,
-      "colLength": 16,
-      "maxBlocks": 19,
-      "goal": "",
-      "background": {
-        "type": "colorTiled",
-        "image": null,
-        "mapLayout": "mapLayout_taxiDriverSequencing_two"
-      },
-      "instructions": "Pick up all the passengers.",
-      "feedback": "Good job!",
-      "hints": "Use the pick up block to get everyone in your taxi.",
-      "blocks": [
-        "run_event",
-        "move_north",
-        "move_south",
-        "move_west",
-        "move_east",
-        "pick_up_person",
-        "repeat_loop_K_2"
-      ],
-      "playerInfo": {
-        "row": 0,
-        "col": 2,
-        "setNotification": false,
-        "notification": 0,
-        "direction": "east"
-      },
-      "movable_sprites": null,
-      "nonInteractiveObjectOnePositions": [
-        [
-          3,
-          3,
-          1
+    "taxiDriverSequencing1": {
+      "1": {
+        "name": "taxiDriverSequencing1_1",
+        "type": "taxiDriverSequencing1",
+        "category": "taxiDriverSequencing",
+        "grade": "1",
+        "grid": true,
+        "level": "1",
+        "gridSize": 40,
+        "rowLength": 10,
+        "colLength": 10,
+        "maxBlocks": 7,
+        "goal": "",
+        "background": {
+          "type": "colorTiled",
+          "image": null,
+          "mapLayout": "mapLayout_taxiDriverSequencing_1_1"
+        },
+        "instructions": "Pick up all the passengers.",
+        "feedback": "Good job!",
+        "hints": "Use the pick up block to get everyone in your taxi.",
+        "blocks": [
+          "run_event",
+          "move_north",
+          "move_south",
+          "move_west",
+          "move_east",
+          "pick_up_person"
         ],
-        [
-          6,
-          3,
-          1
-        ],
-        [
-          9,
-          3,
-          1
-        ],
-        [
-          9,
-          6,
-          1
+        "playerInfo": {
+          "row": 5,
+          "col": 2,
+          "setNotification": false,
+          "notification": 0,
+          "direction": "east"
+        },
+        "movable_sprites": null,
+        "nonInteractiveObjectOnePositions": [
+          [
+            5,
+            8,
+            1
+          ]
         ]
-      ]
+      },
+      "2": {
+        "name": "taxiDriverSequencing1_2",
+        "type": "taxiDriverSequencing1",
+        "category": "taxiDriverSequencing",
+        "grade": "1",
+        "grid": true,
+        "level": "2",
+        "gridSize": 40,
+        "rowLength": 10,
+        "colLength": 10,
+        "maxBlocks": 10,
+        "goal": "",
+        "background": {
+          "type": "colorTiled",
+          "image": null,
+          "mapLayout": "mapLayout_taxiDriverSequencing_1_1"
+        },
+        "instructions": "Pick up all the passengers.",
+        "feedback": "Good job!",
+        "hints": "Use the pick up block to get everyone in your taxi.",
+        "blocks": [
+          "run_event",
+          "move_north",
+          "move_south",
+          "move_west",
+          "move_east",
+          "pick_up_person"
+        ],
+        "playerInfo": {
+          "row": 5,
+          "col": 2,
+          "setNotification": false,
+          "notification": 0,
+          "direction": "east"
+        },
+        "movable_sprites": null,
+        "nonInteractiveObjectOnePositions": [
+          [
+            4,
+            5,
+            1
+          ],
+          [
+            4,
+            6,
+            1
+          ],
+          [
+            4,
+            7,
+            1
+          ]
+        ]
+      },
+      "3": {
+        "name": "taxiDriverSequencing1_3",
+        "type": "taxiDriverSequencing1",
+        "category": "taxiDriverSequencing",
+        "grade": "1",
+        "grid": false,
+        "level": "3",
+        "gridSize": 30,
+        "rowLength": 10,
+        "colLength": 10,
+        "maxBlocks": 10,
+        "goal": "",
+        "background": {
+          "type": "colorTiled",
+          "image": null,
+          "mapLayout": "mapLayout_taxiDriverSequencing_1_1"
+        },
+        "instructions": "Pick up all the passengers.",
+        "feedback": "Good job!",
+        "hints": "Use the pick up block to get everyone in your taxi.",
+        "blocks": [
+          "run_event",
+          "move_north",
+          "move_south",
+          "move_west",
+          "move_east",
+          "pick_up_person"
+        ],
+        "playerInfo": {
+          "row": 5,
+          "col": 2,
+          "setNotification": false,
+          "notification": 0,
+          "direction": "east"
+        },
+        "movable_sprites": null,
+        "nonInteractiveObjectOnePositions": [
+          [
+            4,
+            5,
+            1
+          ],
+          [
+            4,
+            7,
+            1
+          ]
+        ]
+      },
+      "4": {
+        "name": "taxiDriverSequencing1_4",
+        "type": "taxiDriverSequencing1",
+        "category": "taxiDriverSequencing",
+        "grade": "1",
+        "grid": false,
+        "level": "4",
+        "gridSize": 40,
+        "rowLength": 9,
+        "colLength": 9,
+        "maxBlocks": 14,
+        "goal": "Pick up all the passengers.",
+        "background": {
+          "type": "colorTiled",
+          "image": null,
+          "mapLayout": "mapLayout_taxiDriverSequencing_1_4"
+        },
+        "instructions": "Pick up all the passengers.",
+        "feedback": "Good job!",
+        "hints": "Use the pick up block to get everyone in your taxi.",
+        "blocks": [
+          "run_event",
+          "move_north",
+          "move_south",
+          "move_west",
+          "move_east",
+          "pick_up_person"
+        ],
+        "playerInfo": {
+          "row": 1,
+          "col": 2,
+          "setNotification": false,
+          "notification": 0,
+          "direction": "east"
+        },
+        "movable_sprites": null,
+        "nonInteractiveObjectOnePositions": [
+          [
+            1,
+            4,
+            1
+          ],
+          [
+            2,
+            5,
+            1
+          ],
+          [
+            3,
+            6,
+            1
+          ],
+          [
+            4,
+            7,
+            1
+          ]
+        ]
+      }
     },
-    {
-      "name": "taxiDriverSequencing2_3",
-      "type": "taxiDriverSequencing2",
-      "category": "taxiDriverSequencing",
-      "grade": "2",
-      "grid": false,
-      "level": "3",
-      "gridSize": 30,
-      "rowLength": 12,
-      "colLength": 16,
-      "maxBlocks": 20,
-      "goal": "",
-      "background": {
-        "type": "colorTiled",
-        "image": null,
-        "mapLayout": "mapLayout_taxiDriverSequencing_three"
-      },
-      "instructions": "Pick up all the passengers.",
-      "feedback": "Good job!",
-      "hints": "Use the pick up block TWICE to get everyone in your taxi.",
-      "blocks": [
-        "run_event",
-        "move_north",
-        "move_south",
-        "move_west",
-        "move_east",
-        "pick_up_person",
-        "repeat_loop_K_2"
-      ],
-      "playerInfo": {
-        "row": 1,
-        "col": 4,
-        "setNotification": false,
-        "notification": 0,
-        "direction": "east"
-      },
-      "movable_sprites": null,
-      "nonInteractiveObjectOnePositions": [
-        [
-          2,
-          3,
-          2
+    "taxiDriverSequencing2": {
+      "1": {
+        "name": "taxiDriverSequencing2_1",
+        "type": "taxiDriverSequencing2",
+        "category": "taxiDriverSequencing",
+        "grade": "2",
+        "grid": false,
+        "level": "1",
+        "gridSize": 30,
+        "rowLength": 12,
+        "colLength": 16,
+        "maxBlocks": 10,
+        "goal": "",
+        "background": {
+          "type": "colorTiled",
+          "image": null,
+          "mapLayout": "mapLayout_taxiDriverSequencing_one"
+        },
+        "instructions": "Pick up all the passengers.",
+        "feedback": "Good job!",
+        "hints": "Use the pick up block to get everyone in your taxi.",
+        "blocks": [
+          "run_event",
+          "move_north",
+          "move_south",
+          "move_west",
+          "move_east",
+          "pick_up_person",
+          "repeat_loop_K_2"
         ],
-        [
-          3,
-          3,
-          2
-        ],
-        [
-          4,
-          3,
-          2
-        ],
-        [
-          2,
-          6,
-          2
-        ],
-        [
-          3,
-          6,
-          2
-        ],
-        [
-          4,
-          6,
-          2
+        "playerInfo": {
+          "row": 7,
+          "col": 1,
+          "setNotification": false,
+          "notification": 0,
+          "direction": "east"
+        },
+        "movable_sprites": null,
+        "nonInteractiveObjectOnePositions": [
+          [
+            8,
+            5,
+            3
+          ],
+          [
+            8,
+            9,
+            1
+          ]
         ]
-      ]
+      },
+      "2": {
+        "name": "taxiDriverSequencing2_2",
+        "type": "taxiDriverSequencing2",
+        "category": "taxiDriverSequencing",
+        "grade": "2",
+        "grid": false,
+        "level": "2",
+        "gridSize": 30,
+        "rowLength": 12,
+        "colLength": 16,
+        "maxBlocks": 19,
+        "goal": "",
+        "background": {
+          "type": "colorTiled",
+          "image": null,
+          "mapLayout": "mapLayout_taxiDriverSequencing_two"
+        },
+        "instructions": "Pick up all the passengers.",
+        "feedback": "Good job!",
+        "hints": "Use the pick up block to get everyone in your taxi.",
+        "blocks": [
+          "run_event",
+          "move_north",
+          "move_south",
+          "move_west",
+          "move_east",
+          "pick_up_person",
+          "repeat_loop_K_2"
+        ],
+        "playerInfo": {
+          "row": 0,
+          "col": 2,
+          "setNotification": false,
+          "notification": 0,
+          "direction": "east"
+        },
+        "movable_sprites": null,
+        "nonInteractiveObjectOnePositions": [
+          [
+            3,
+            3,
+            1
+          ],
+          [
+            6,
+            3,
+            1
+          ],
+          [
+            9,
+            3,
+            1
+          ],
+          [
+            9,
+            6,
+            1
+          ]
+        ]
+      },
+      "3": {
+        "name": "taxiDriverSequencing2_3",
+        "type": "taxiDriverSequencing2",
+        "category": "taxiDriverSequencing",
+        "grade": "2",
+        "grid": false,
+        "level": "3",
+        "gridSize": 30,
+        "rowLength": 12,
+        "colLength": 16,
+        "maxBlocks": 20,
+        "goal": "",
+        "background": {
+          "type": "colorTiled",
+          "image": null,
+          "mapLayout": "mapLayout_taxiDriverSequencing_three"
+        },
+        "instructions": "Pick up all the passengers.",
+        "feedback": "Good job!",
+        "hints": "Use the pick up block TWICE to get everyone in your taxi.",
+        "blocks": [
+          "run_event",
+          "move_north",
+          "move_south",
+          "move_west",
+          "move_east",
+          "pick_up_person",
+          "repeat_loop_K_2"
+        ],
+        "playerInfo": {
+          "row": 1,
+          "col": 4,
+          "setNotification": false,
+          "notification": 0,
+          "direction": "east"
+        },
+        "movable_sprites": null,
+        "nonInteractiveObjectOnePositions": [
+          [
+            2,
+            3,
+            2
+          ],
+          [
+            3,
+            3,
+            2
+          ],
+          [
+            4,
+            3,
+            2
+          ],
+          [
+            2,
+            6,
+            2
+          ],
+          [
+            3,
+            6,
+            2
+          ],
+          [
+            4,
+            6,
+            2
+          ]
+        ]
+      },
+      "4": {
+        "name": "taxiDriverSequencing2_4",
+        "type": "taxiDriverSequencing2",
+        "category": "taxiDriverSequencing",
+        "grade": "2",
+        "grid": false,
+        "level": "4",
+        "gridSize": 30,
+        "rowLength": 12,
+        "colLength": 16,
+        "maxBlocks": 21,
+        "goal": "",
+        "background": {
+          "type": "colorTiled",
+          "image": null,
+          "mapLayout": "mapLayout_taxiDriverSequencing_four"
+        },
+        "instructions": "Pick up all the passengers.",
+        "feedback": "Good job!",
+        "hints": "Use the pick up block to get everyone in your taxi.",
+        "blocks": [
+          "run_event",
+          "move_north",
+          "move_south",
+          "move_west",
+          "move_east",
+          "pick_up_person",
+          "repeat_loop_K_2"
+        ],
+        "playerInfo": {
+          "row": 8,
+          "col": 10,
+          "setNotification": false,
+          "notification": 0,
+          "direction": "east"
+        },
+        "movable_sprites": null,
+        "nonInteractiveObjectOnePositions": [
+          [
+            6,
+            7,
+            1
+          ],
+          [
+            11,
+            6,
+            1
+          ],
+          [
+            10,
+            3,
+            1
+          ],
+          [
+            9,
+            8,
+            1
+          ]
+        ]
+      },
+      "5": {
+        "name": "taxiDriverSequencing2_5",
+        "type": "taxiDriverSequencing2",
+        "category": "taxiDriverSequencing",
+        "grade": "2",
+        "grid": false,
+        "level": "5",
+        "gridSize": 30,
+        "rowLength": 12,
+        "colLength": 16,
+        "maxBlocks": 30,
+        "goal": "",
+        "background": {
+          "type": "colorTiled",
+          "image": null,
+          "mapLayout": "mapLayout_taxiDriverSequencing_five"
+        },
+        "instructions": "Pick up all the passengers.",
+        "feedback": "Good job!",
+        "hints": "Use the pick up block to get everyone in your taxi.",
+        "blocks": [
+          "run_event",
+          "move_south",
+          "move_west",
+          "move_east",
+          "pick_up_person",
+          "repeat_loop_K_2"
+        ],
+        "playerInfo": {
+          "row": 1,
+          "col": 1,
+          "setNotification": false,
+          "notification": 0,
+          "direction": "east"
+        },
+        "movable_sprites": null,
+        "nonInteractiveObjectOnePositions": [
+          [
+            1,
+            2,
+            1
+          ],
+          [
+            2,
+            3,
+            1
+          ],
+          [
+            3,
+            4,
+            1
+          ],
+          [
+            4,
+            5,
+            1
+          ],
+          [
+            5,
+            6,
+            1
+          ],
+          [
+            6,
+            7,
+            1
+          ],
+          [
+            7,
+            8,
+            1
+          ],
+          [
+            8,
+            9,
+            1
+          ],
+          [
+            9,
+            10,
+            1
+          ],
+          [
+            10,
+            11,
+            1
+          ]
+        ]
+      }
     },
-    {
-      "name": "taxiDriverSequencing2_4",
-      "type": "taxiDriverSequencing2",
-      "category": "taxiDriverSequencing",
-      "grade": "2",
-      "grid": false,
-      "level": "4",
-      "gridSize": 30,
-      "rowLength": 12,
-      "colLength": 16,
-      "maxBlocks": 21,
-      "goal": "",
-      "background": {
-        "type": "colorTiled",
-        "image": null,
-        "mapLayout": "mapLayout_taxiDriverSequencing_four"
-      },
-      "instructions": "Pick up all the passengers.",
-      "feedback": "Good job!",
-      "hints": "Use the pick up block to get everyone in your taxi.",
-      "blocks": [
-        "run_event",
-        "move_north",
-        "move_south",
-        "move_west",
-        "move_east",
-        "pick_up_person",
-        "repeat_loop_K_2"
-      ],
-      "playerInfo": {
-        "row": 8,
-        "col": 10,
-        "setNotification": false,
-        "notification": 0,
-        "direction": "east"
-      },
-      "movable_sprites": null,
-      "nonInteractiveObjectOnePositions": [
-        [
-          6,
-          7,
-          1
+    "taxiDriverSequencing3": {
+      "1": {
+        "name": "taxiDriverSequencing3_1",
+        "type": "taxiDriverSequencing3",
+        "category": "taxiDriverSequencing",
+        "grade": "3",
+        "grid": false,
+        "level": "1",
+        "gridSize": 30,
+        "rowLength": 12,
+        "colLength": 16,
+        "maxBlocks": 30,
+        "goal": "",
+        "background": {
+          "type": "colorTiled",
+          "image": null,
+          "mapLayout": "mapLayout_taxiDriverSequencing_3_1"
+        },
+        "instructions": "Pick up all the passengers.",
+        "feedback": "Good job!",
+        "hints": "Use the pick up block to get everyone in your taxi.",
+        "blocks": [
+          "run_event",
+          "repeat_loop_2_5",
+          "pick_up_person",
+          "move_choice_action",
+          "turn"
         ],
-        [
-          11,
-          6,
-          1
-        ],
-        [
-          10,
-          3,
-          1
-        ],
-        [
-          9,
-          8,
-          1
+        "playerInfo": {
+          "row": 3,
+          "col": 4,
+          "setNotification": false,
+          "notification": 0,
+          "direction": "east"
+        },
+        "movable_sprites": null,
+        "nonInteractiveObjectOnePositions": [
+          [
+            3,
+            6,
+            1
+          ],
+          [
+            7,
+            8,
+            1
+          ],
+          [
+            11,
+            10,
+            1
+          ]
         ]
-      ]
+      },
+      "2": {
+        "name": "taxiDriverSequencing3_2",
+        "type": "taxiDriverSequencing3",
+        "category": "taxiDriverSequencing",
+        "grade": "3",
+        "grid": false,
+        "level": "2",
+        "gridSize": 30,
+        "rowLength": 12,
+        "colLength": 16,
+        "maxBlocks": 30,
+        "goal": "",
+        "background": {
+          "type": "colorTiled",
+          "image": null,
+          "mapLayout": "mapLayout_taxiDriverSequencing_3_2"
+        },
+        "instructions": "Pick up all the passengers.",
+        "feedback": "Good job!",
+        "hints": "Use the pick up block to get everyone in your taxi.",
+        "blocks": [
+          "run_event",
+          "repeat_loop_2_5",
+          "pick_up_person",
+          "move_choice_action",
+          "turn"
+        ],
+        "playerInfo": {
+          "row": 1,
+          "col": 10,
+          "setNotification": false,
+          "notification": 0,
+          "direction": "west"
+        },
+        "movable_sprites": null,
+        "nonInteractiveObjectOnePositions": [
+          [
+            13,
+            2,
+            1
+          ],
+          [
+            13,
+            3,
+            2
+          ],
+          [
+            13,
+            4,
+            3
+          ]
+        ]
+      }
     },
-    {
-      "name": "taxiDriverSequencing2_5",
-      "type": "taxiDriverSequencing2",
-      "category": "taxiDriverSequencing",
-      "grade": "2",
-      "grid": false,
-      "level": "5",
-      "gridSize": 30,
-      "rowLength": 12,
-      "colLength": 16,
-      "maxBlocks": 30,
-      "goal": "",
-      "background": {
-        "type": "colorTiled",
-        "image": null,
-        "mapLayout": "mapLayout_taxiDriverSequencing_five"
-      },
-      "instructions": "Pick up all the passengers.",
-      "feedback": "Good job!",
-      "hints": "Use the pick up block to get everyone in your taxi.",
-      "blocks": [
-        "run_event",
-        "move_south",
-        "move_west",
-        "move_east",
-        "pick_up_person",
-        "repeat_loop_K_2"
-      ],
-      "playerInfo": {
-        "row": 1,
-        "col": 1,
-        "setNotification": false,
-        "notification": 0,
-        "direction": "east"
-      },
-      "movable_sprites": null,
-      "nonInteractiveObjectOnePositions": [
-        [
-          1,
-          2,
-          1
+    "bookSorting4": {
+      "1": {
+        "name": "bookSorting4_1",
+        "type": "bookSorting4",
+        "category": "bookSorting",
+        "grid": false,
+        "level": "1",
+        "gridSize": 30,
+        "rowLength": 12,
+        "colLength": 16,
+        "maxBlocks": 15,
+        "goal": "",
+        "background": {
+          "type": "image",
+          "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/libraryBackground.png",
+          "mapLayout": null
+        },
+        "instructions": "Sort out all the books by putting non-fiction and fiction books together",
+        "feedback": "Good job!",
+        "hints": "Use the if block to let the computer decide what book is fiction",
+        "blocks": [
+          "run_event",
+          "repeat_loop_2_5",
+          "get_non_fiction_book",
+          "get_fiction_book",
+          "if_statement_book",
+          "move_choice_action",
+          "turn"
         ],
-        [
-          2,
-          3,
-          1
+        "playerInfo": {
+          "row": 0,
+          "col": 0,
+          "setNotification": false,
+          "notification": 0
+        },
+        "movable_sprites": null,
+        "nonInteractiveObjectOnePositions": [
+          [
+            5,
+            4,
+            1
+          ],
+          [
+            5,
+            6,
+            1
+          ],
+          [
+            5,
+            8,
+            1
+          ]
         ],
-        [
-          3,
-          4,
-          1
-        ],
-        [
-          4,
-          5,
-          1
-        ],
-        [
-          5,
-          6,
-          1
-        ],
-        [
-          6,
-          7,
-          1
-        ],
-        [
-          7,
-          8,
-          1
-        ],
-        [
-          8,
-          9,
-          1
-        ],
-        [
-          9,
-          10,
-          1
-        ],
-        [
-          10,
-          11,
-          1
-        ]
-      ]
+        "nonInteractiveObjectTwoPositions": []
+      }
     },
-    {
-      "name": "taxiDriverSequencingK_1",
-      "type": "taxiDriverSequencingK",
-      "category": "taxiDriverSequencing",
-      "grade": "K",
-      "grid": true,
-      "level": "1",
-      "gridSize": 35,
-      "rowLength": 9,
-      "colLength": 9,
-      "maxBlocks": 8,
-      "goal": "Pick up all the passengers.",
-      "background": {
-        "type": "colorTiled",
-        "image": null,
-        "mapLayout": "mapLayout_taxiDriverSequencing_K_1"
-      },
-      "instructions": "Pick up all the passengers.",
-      "feedback": "Good job!",
-      "hints": "Use the pick up block to get everyone in your taxi.",
-      "blocks": [
-        "run_event",
-        "move_north",
-        "move_south",
-        "move_west",
-        "move_east",
-        "pick_up_person"
-      ],
-      "playerInfo": {
-        "row": 4,
-        "col": 2,
-        "setNotification": false,
-        "notification": 0,
-        "direction": "east"
-      },
-      "movable_sprites": null,
-      "nonInteractiveObjectOnePositions": [
-        [
-          3,
-          6,
-          1
+    "gymMayhem3": {
+      "1": {
+        "name": "gymMayhem3_1",
+        "type": "gymMayhem3",
+        "category": "gymMayhem",
+        "grid": false,
+        "level": "1",
+        "gridSize": 30,
+        "rowLength": 12,
+        "colLength": 16,
+        "maxBlocks": 15,
+        "goal": "",
+        "background": {
+          "type": "image",
+          "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/schoolBackgroundWithoutChildren.png",
+          "mapLayout": null
+        },
+        "instructions": "Clean up all the rackets by using the if block",
+        "feedback": "Good job!",
+        "hints": "Use the if block to collect all the tennis rackets",
+        "blocks": [
+          "run_event",
+          "keyUp_event",
+          "keyDown_event",
+          "keyLeft_event",
+          "keyRight_event",
+          "move_all_directions_choice_action"
+        ],
+        "playerInfo": {
+          "row": 0,
+          "col": 0,
+          "setNotification": false,
+          "notification": 0
+        },
+        "movable_sprites": null,
+        "nonInteractiveObjectOnePositions": [
+          [
+            1,
+            4,
+            1
+          ],
+          [
+            1,
+            6,
+            1
+          ],
+          [
+            1,
+            8,
+            1
+          ]
         ]
-      ]
-    },
-    {
-      "name": "taxiDriverSequencingK_2",
-      "type": "taxiDriverSequencingK",
-      "category": "taxiDriverSequencing",
-      "grade": "K",
-      "grid": true,
-      "level": "2",
-      "gridSize": 35,
-      "rowLength": 9,
-      "colLength": 9,
-      "maxBlocks": 12,
-      "goal": "Pick up all the passengers.",
-      "background": {
-        "type": "colorTiled",
-        "image": null,
-        "mapLayout": "mapLayout_taxiDriverSequencing_K_1"
-      },
-      "instructions": "Pick up all the passengers.",
-      "feedback": "Good job!",
-      "hints": "Use the pick up block to get everyone in your taxi.",
-      "blocks": [
-        "run_event",
-        "move_north",
-        "move_south",
-        "move_west",
-        "move_east",
-        "pick_up_person"
-      ],
-      "playerInfo": {
-        "row": 4,
-        "col": 2,
-        "setNotification": false,
-        "notification": 0,
-        "direction": "east"
-      },
-      "movable_sprites": null,
-      "nonInteractiveObjectOnePositions": [
-        [
-          3,
-          5,
-          1
-        ],
-        [
-          3,
-          5,
-          1
-        ],
-        [
-          3,
-          6,
-          1
-        ]
-      ]
-    },
-    {
-      "name": "taxiDriverSequencingK_3",
-      "type": "taxiDriverSequencingK",
-      "category": "taxiDriverSequencing",
-      "grade": "K",
-      "grid": true,
-      "level": "3",
-      "gridSize": 35,
-      "rowLength": 9,
-      "colLength": 9,
-      "maxBlocks": 15,
-      "goal": "Pick up all the passengers.",
-      "background": {
-        "type": "colorTiled",
-        "image": null,
-        "mapLayout": "mapLayout_taxiDriverSequencing_K_3"
-      },
-      "instructions": "Pick up all the passengers.",
-      "feedback": "Good job!",
-      "hints": "Use the pick up block to get everyone in your taxi.",
-      "blocks": [
-        "run_event",
-        "move_north",
-        "move_south",
-        "move_west",
-        "move_east",
-        "pick_up_person"
-      ],
-      "playerInfo": {
-        "row": 4,
-        "col": 2,
-        "setNotification": false,
-        "notification": 0,
-        "direction": "east"
-      },
-      "movable_sprites": null,
-      "nonInteractiveObjectOnePositions": [
-        [
-          1,
-          5,
-          2
-        ],
-        [
-          3,
-          5,
-          2
-        ]
-      ]
-    },
-    {
-      "name": "taxiDriverSequencingK_4",
-      "type": "taxiDriverSequencingK",
-      "category": "taxiDriverSequencing",
-      "grade": "K",
-      "grid": true,
-      "level": "4",
-      "gridSize": 35,
-      "rowLength": 9,
-      "colLength": 9,
-      "maxBlocks": 25,
-      "goal": "Pick up all the passengers.",
-      "background": {
-        "type": "colorTiled",
-        "image": null,
-        "mapLayout": "mapLayout_taxiDriverSequencing_K_3"
-      },
-      "instructions": "Pick up all the passengers.",
-      "feedback": "Good job!",
-      "hints": "Use the pick up block to get everyone in your taxi.",
-      "blocks": [
-        "run_event",
-        "move_north",
-        "move_south",
-        "move_west",
-        "move_east",
-        "pick_up_person"
-      ],
-      "playerInfo": {
-        "row": 4,
-        "col": 2,
-        "setNotification": false,
-        "notification": 0,
-        "direction": "east"
-      },
-      "movable_sprites": null,
-      "nonInteractiveObjectOnePositions": [
-        [
-          2,
-          7,
-          1
-        ],
-        [
-          3,
-          7,
-          1
-        ],
-        [
-          5,
-          4,
-          1
-        ],
-        [
-          5,
-          5,
-          1
-        ]
-      ]
-    },
-    {
-      "name": "taxiDriverSequencingK_5",
-      "type": "taxiDriverSequencingK",
-      "category": "taxiDriverSequencing",
-      "grade": "1",
-      "grid": true,
-      "level": "5",
-      "gridSize": 35,
-      "rowLength": 9,
-      "colLength": 9,
-      "maxBlocks": 30,
-      "goal": "Pick up all the passengers.",
-      "background": {
-        "type": "colorTiled",
-        "image": null,
-        "mapLayout": "mapLayout_taxiDriverSequencing_K_5"
-      },
-      "instructions": "Pick up all the passengers.",
-      "feedback": "Good job!",
-      "hints": "Use the pick up block to get everyone in your taxi.",
-      "blocks": [
-        "run_event",
-        "move_north",
-        "move_south",
-        "move_west",
-        "move_east",
-        "pick_up_person"
-      ],
-      "playerInfo": {
-        "row": 4,
-        "col": 1,
-        "setNotification": false,
-        "notification": 0,
-        "direction": "east"
-      },
-      "movable_sprites": null,
-      "nonInteractiveObjectOnePositions": [
-        [
-          1,
-          0,
-          1
-        ],
-        [
-          1,
-          8,
-          1
-        ],
-        [
-          2,
-          2,
-          1
-        ],
-        [
-          2,
-          6,
-          1
-        ],
-        [
-          6,
-          2,
-          1
-        ],
-        [
-          6,
-          6,
-          1
-        ],
-        [
-          7,
-          0,
-          1
-        ],
-        [
-          7,
-          8,
-          1
-        ]
-      ]
-    },
-    {
-      "name": "taxiDriverSequencing1_1",
-      "type": "taxiDriverSequencing1",
-      "category": "taxiDriverSequencing",
-      "grade": "1",
-      "grid": true,
-      "level": "1",
-      "gridSize": 40,
-      "rowLength": 10,
-      "colLength": 10,
-      "maxBlocks": 7,
-      "goal": "",
-      "background": {
-        "type": "colorTiled",
-        "image": null,
-        "mapLayout": "mapLayout_taxiDriverSequencing_1_1"
-      },
-      "instructions": "Pick up all the passengers.",
-      "feedback": "Good job!",
-      "hints": "Use the pick up block to get everyone in your taxi.",
-      "blocks": [
-        "run_event",
-        "move_north",
-        "move_south",
-        "move_west",
-        "move_east",
-        "pick_up_person"
-      ],
-      "playerInfo": {
-        "row": 5,
-        "col": 2,
-        "setNotification": false,
-        "notification": 0,
-        "direction": "east"
-      },
-      "movable_sprites": null,
-      "nonInteractiveObjectOnePositions": [
-        [
-          5,
-          8,
-          1
-        ]
-      ]
-    },
-    {
-      "name": "taxiDriverSequencing1_2",
-      "type": "taxiDriverSequencing1",
-      "category": "taxiDriverSequencing",
-      "grade": "1",
-      "grid": true,
-      "level": "2",
-      "gridSize": 40,
-      "rowLength": 10,
-      "colLength": 10,
-      "maxBlocks": 10,
-      "goal": "",
-      "background": {
-        "type": "colorTiled",
-        "image": null,
-        "mapLayout": "mapLayout_taxiDriverSequencing_1_1"
-      },
-      "instructions": "Pick up all the passengers.",
-      "feedback": "Good job!",
-      "hints": "Use the pick up block to get everyone in your taxi.",
-      "blocks": [
-        "run_event",
-        "move_north",
-        "move_south",
-        "move_west",
-        "move_east",
-        "pick_up_person"
-      ],
-      "playerInfo": {
-        "row": 5,
-        "col": 2,
-        "setNotification": false,
-        "notification": 0,
-        "direction": "east"
-      },
-      "movable_sprites": null,
-      "nonInteractiveObjectOnePositions": [
-        [
-          4,
-          5,
-          1
-        ],
-        [
-          4,
-          6,
-          1
-        ],
-        [
-          4,
-          7,
-          1
-        ]
-      ]
-    },
-    {
-      "name": "taxiDriverSequencing1_3",
-      "type": "taxiDriverSequencing1",
-      "category": "taxiDriverSequencing",
-      "grade": "1",
-      "grid": false,
-      "level": "3",
-      "gridSize": 30,
-      "rowLength": 10,
-      "colLength": 10,
-      "maxBlocks": 10,
-      "goal": "",
-      "background": {
-        "type": "colorTiled",
-        "image": null,
-        "mapLayout": "mapLayout_taxiDriverSequencing_1_1"
-      },
-      "instructions": "Pick up all the passengers.",
-      "feedback": "Good job!",
-      "hints": "Use the pick up block to get everyone in your taxi.",
-      "blocks": [
-        "run_event",
-        "move_north",
-        "move_south",
-        "move_west",
-        "move_east",
-        "pick_up_person"
-      ],
-      "playerInfo": {
-        "row": 5,
-        "col": 2,
-        "setNotification": false,
-        "notification": 0,
-        "direction": "east"
-      },
-      "movable_sprites": null,
-      "nonInteractiveObjectOnePositions": [
-        [
-          4,
-          5,
-          1
-        ],
-        [
-          4,
-          7,
-          1
-        ]
-      ]
-    },
-    {
-      "name": "taxiDriverSequencing1_4",
-      "type": "taxiDriverSequencing1",
-      "category": "taxiDriverSequencing",
-      "grade": "1",
-      "grid": false,
-      "level": "4",
-      "gridSize": 40,
-      "rowLength": 9,
-      "colLength": 9,
-      "maxBlocks": 14,
-      "goal": "Pick up all the passengers.",
-      "background": {
-        "type": "colorTiled",
-        "image": null,
-        "mapLayout": "mapLayout_taxiDriverSequencing_1_4"
-      },
-      "instructions": "Pick up all the passengers.",
-      "feedback": "Good job!",
-      "hints": "Use the pick up block to get everyone in your taxi.",
-      "blocks": [
-        "run_event",
-        "move_north",
-        "move_south",
-        "move_west",
-        "move_east",
-        "pick_up_person"
-      ],
-      "playerInfo": {
-        "row": 1,
-        "col": 2,
-        "setNotification": false,
-        "notification": 0,
-        "direction": "east"
-      },
-      "movable_sprites": null,
-      "nonInteractiveObjectOnePositions": [
-        [
-          1,
-          4,
-          1
-        ],
-        [
-          2,
-          5,
-          1
-        ],
-        [
-          3,
-          6,
-          1
-        ],
-        [
-          4,
-          7,
-          1
-        ]
-      ]
-    },
-    {
-      "name": "taxiDriverSequencing3_1",
-      "type": "taxiDriverSequencing3",
-      "category": "taxiDriverSequencing",
-      "grade": "3",
-      "grid": false,
-      "level": "1",
-      "gridSize": 30,
-      "rowLength": 12,
-      "colLength": 16,
-      "maxBlocks": 30,
-      "goal": "",
-      "background": {
-        "type": "colorTiled",
-        "image": null,
-        "mapLayout": "mapLayout_taxiDriverSequencing_3_1"
-      },
-      "instructions": "Pick up all the passengers.",
-      "feedback": "Good job!",
-      "hints": "Use the pick up block to get everyone in your taxi.",
-      "blocks": [
-        "run_event",
-        "repeat_loop_2_5",
-        "pick_up_person",
-        "move_choice_action",
-        "turn"
-      ],
-      "playerInfo": {
-        "row": 3,
-        "col": 4,
-        "setNotification": false,
-        "notification": 0,
-        "direction": "east"
-      },
-      "movable_sprites": null,
-      "nonInteractiveObjectOnePositions": [
-        [
-          3,
-          6,
-          1
-        ],
-        [
-          7,
-          8,
-          1
-        ],
-        [
-          11,
-          10,
-          1
-        ]
-      ]
-    },
-    {
-      "name": "taxiDriverSequencing3_2",
-      "type": "taxiDriverSequencing3",
-      "category": "taxiDriverSequencing",
-      "grade": "3",
-      "grid": false,
-      "level": "2",
-      "gridSize": 30,
-      "rowLength": 12,
-      "colLength": 16,
-      "maxBlocks": 30,
-      "goal": "",
-      "background": {
-        "type": "colorTiled",
-        "image": null,
-        "mapLayout": "mapLayout_taxiDriverSequencing_3_2"
-      },
-      "instructions": "Pick up all the passengers.",
-      "feedback": "Good job!",
-      "hints": "Use the pick up block to get everyone in your taxi.",
-      "blocks": [
-        "run_event",
-        "repeat_loop_2_5",
-        "pick_up_person",
-        "move_choice_action",
-        "turn"
-      ],
-      "playerInfo": {
-        "row": 1,
-        "col": 10,
-        "setNotification": false,
-        "notification": 0,
-        "direction": "west"
-      },
-      "movable_sprites": null,
-      "nonInteractiveObjectOnePositions": [
-        [
-          13,
-          2,
-          1
-        ],
-        [
-          13,
-          3,
-          2
-        ],
-        [
-          13,
-          4,
-          3
-        ]
-      ]
-    },
-    {
-      "name": "bookSorting4_1",
-      "type": "bookSorting4",
-      "category": "bookSorting",
-      "grid": false,
-      "level": "1",
-      "gridSize": 30,
-      "rowLength": 12,
-      "colLength": 16,
-      "maxBlocks": 15,
-      "goal": "",
-      "background": {
-        "type": "image",
-        "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/libraryBackground.png",
-        "mapLayout": null
-      },
-      "instructions": "Sort out all the books by putting non-fiction and fiction books together",
-      "feedback": "Good job!",
-      "hints": "Use the if block to let the computer decide what book is fiction",
-      "blocks": [
-        "run_event",
-        "repeat_loop_2_5",
-        "get_non_fiction_book",
-        "get_fiction_book",
-        "if_statement_book",
-        "move_choice_action",
-        "turn"
-      ],
-      "playerInfo": {
-        "row": 0,
-        "col": 0,
-        "setNotification": false,
-        "notification": 0
-      },
-      "movable_sprites": null,
-      "nonInteractiveObjectOnePositions": [
-        [
-          5,
-          4,
-          1
-        ],
-        [
-          5,
-          6,
-          1
-        ],
-        [
-          5,
-          8,
-          1
-        ]
-      ],
-      "nonInteractiveObjectTwoPositions": []
-    },
-    {
-      "name": "gymMayhem3_1",
-      "type": "gymMayhem3",
-      "category": "gymMayhem",
-      "grid": false,
-      "level": "1",
-      "gridSize": 30,
-      "rowLength": 12,
-      "colLength": 16,
-      "maxBlocks": 15,
-      "goal": "",
-      "background": {
-        "type": "image",
-        "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/schoolBackgroundWithoutChildren.png",
-        "mapLayout": null
-      },
-      "instructions": "Clean up all the rackets by using the if block",
-      "feedback": "Good job!",
-      "hints": "Use the if block to collect all the tennis rackets",
-      "blocks": [
-        "run_event",
-        "keyUp_event",
-        "keyDown_event",
-        "keyLeft_event",
-        "keyRight_event",
-        "move_all_directions_choice_action"
-      ],
-      "playerInfo": {
-        "row": 0,
-        "col": 0,
-        "setNotification": false,
-        "notification": 0
-      },
-      "movable_sprites": null,
-      "nonInteractiveObjectOnePositions": [
-        [
-          1,
-          4,
-          1
-        ],
-        [
-          1,
-          6,
-          1
-        ],
-        [
-          1,
-          8,
-          1
-        ]
-      ]
+      }
     }
-  ],
+  },
   "map_layouts": [
     {
       "name": "mapLayout_taxiDriverSequencing_one",
