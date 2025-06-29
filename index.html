@@ -1008,6 +1008,15 @@
             this.executionIndex = 0;
             this.executionSequence = null;
             this.overlayContainer = null;
+            this.movementFlags = {
+                moveUp: false,
+                moveDown: false,
+                moveLeft: false,
+                moveRight: false,
+            };
+            this.keyToMovement = {};
+            this.keyListeners = [];
+            this.playableSpeed = 5;
 
             buttonRunElement.addEventListener("click", () => {
                 this.runCode();
@@ -1039,6 +1048,15 @@
                         .sendSupportEmail("Debug Report from a Student", sessionStorage.getItem("email"), document.getElementById("bugContent").value);
                 } catch (e) {
                     console.error("Unexpected error in script.run:", e);
+                }
+            });
+            window.addEventListener('keyup', (e) => {
+                const movements = this.keyToMovement[e.code];
+                if (movements) {
+                    for (const flag of movements) {
+                        this.movementFlags[flag] = false;
+                    }
+                    this.keyToMovement[e.code] = new Set();
                 }
             });
 
@@ -1112,6 +1130,15 @@
             }
 
             this.player = new Player(Activity.activityTypeGameSettings.characters.player.sprite, this.gameData.playerInfo.row, this.gameData.playerInfo.col, this.gameData.playerInfo.direction, this.gameData.playerInfo.setNotification, this.gameData.playerInfo.notification, this._gridSize, this.app, this);
+            if (Activity.activityTypeGameSettings.characters.player.eventDriven){
+                app.ticker.add(() => {
+                    if (!character) return;
+                    if (movementFlags.moveUp) this.player.y -= this.playableSpeed;
+                    if (movementFlags.moveDown) this.player.y += this.playableSpeed;
+                    if (movementFlags.moveLeft) this.player.x -= this.playableSpeed;
+                    if (movementFlags.moveRight) this.player.x += this.playableSpeed;
+                });
+            }
             if (Array.isArray(this.gameData.nonInteractiveObjectOnePositions)) {
                 for (let pos of this.gameData.nonInteractiveObjectOnePositions) {
                     this.nonInteractiveObjectsOne.push(new Sprite(
@@ -1410,84 +1437,109 @@
             this.isRunning = true;
             buttonRunElement.style.display = "none";
             buttonResetElement.style.display = "inline-block";
-            let runEventBlock = this.blockManager.workspace.getAllBlocks().find(block => block.type === 'run_event');
-            console.log(this.blockManager.workspace.getAllBlocks());
-            if (!runEventBlock) {
-                this.giveHint("Error: Run block is missing. Please add the Run block.", "15000");
-                this.hasFailed();
-                this.isRunning = false; // Allow execution again
-                return;
-            }
-            this.lockWorkspace();
-            javascript.javascriptGenerator.init(this.blockManager.workspace);
-            let code = javascript.javascriptGenerator.blockToCode(runEventBlock);
 
-            try {
-                await eval(`(async () => {
-                    let checkRunning = () => this.isRunning; // Closure to check the flag
-                    ${code.split("await").join("if (!checkRunning()) return; await")} // Insert check before each await
-                })();`);
-            } catch (error) {
-                console.error("Error executing code:", error);
-            } finally {
-                this.isRunning = false;
+            if(Activity.activityTypeGameSettings.characters.player.eventDriven){
+                const topBlocks = workspace.getTopBlocks(true); // get all top blocks
+                for (const block of topBlocks) {
+                    const code = javascript.javascriptGenerator.blockToCode(block);
+                    console.log(code);
+
+                    // blockToCode may return an array or a string
+                    const cleanCode = Array.isArray(code) ? code[0] : code;
+
+                    if (!cleanCode || typeof cleanCode !== 'string') continue;
+
+                    try {
+                        const wrapped = new Function('addListener', cleanCode);
+                        wrapped(function(fn) {
+                            window.addEventListener('keydown', fn);
+                            this.keyListeners.push(fn);
+                        });
+                    } catch (e) {
+                        console.error("Generated Code Error for block:", block.type, e);
+                    }
+                }
             }
-            buttonNextLevelElements.forEach(button => {
-                button.innerHTML = `
+            else {
+                let runEventBlock = this.blockManager.workspace.getAllBlocks().find(block => block.type === 'run_event');
+                console.log(this.blockManager.workspace.getAllBlocks());
+                if (!runEventBlock) {
+                    this.giveHint("Error: Run block is missing. Please add the Run block.", "15000");
+                    this.hasFailed();
+                    this.isRunning = false; // Allow execution again
+                    return;
+                }
+                this.lockWorkspace();
+                javascript.javascriptGenerator.init(this.blockManager.workspace);
+                let code = javascript.javascriptGenerator.blockToCode(runEventBlock);
+
+
+                try {
+                    await eval(`(async () => {
+                        let checkRunning = () => this.isRunning; // Closure to check the flag
+                        ${code.split("await").join("if (!checkRunning()) return; await")} // Insert check before each await
+                    })();`);
+                } catch (error) {
+                    console.error("Error executing code:", error);
+                } finally {
+                    this.isRunning = false;
+                }
+                buttonNextLevelElements.forEach(button => {
+                    button.innerHTML = `
               <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> SAVING`;
-            });
-            const currentLevelIsCompleted = this.isComplete; // this.isComplete doesnt work in withSuccessHandler
-            try {
-                const xmlDom = Blockly.Xml.workspaceToDom(this.blockManager.workspace);
-                const xmlText = Blockly.Xml.domToText(xmlDom);
-                const blockExcess = numberBlockCapacityElement.innerText === "over";
-                const blocksOver = blockExcess ? parseInt(numberBlockCapacityElement.innerText) : 0;
-                // check the insertProgress function. It often comes with a 404 error. Resolve by
-                // noinspection JSUnresolvedVariable
-                google.script.run
-                    .withSuccessHandler(function (submission) {
-                        console.log("Progress submitted successfully.");
-                        if (currentLevelIsCompleted) {
-                            sessionStorage.setItem("studentProgress", JSON.stringify(submission.allStudentProgress));
-                            renderProgressBar(sessionStorage.getItem("currentLessonType"));
-                            buttonNextLevelElements.forEach(button => {
-                                button.disabled = false;
-                                button.innerHTML = `<i class="fa-solid fa-right-long fa-2xl"></i>Next`
-                            });
-                        } else {
+                });
+                const currentLevelIsCompleted = this.isComplete; // this.isComplete doesnt work in withSuccessHandler
+                try {
+                    const xmlDom = Blockly.Xml.workspaceToDom(this.blockManager.workspace);
+                    const xmlText = Blockly.Xml.domToText(xmlDom);
+                    const blockExcess = numberBlockCapacityElement.innerText === "over";
+                    const blocksOver = blockExcess ? parseInt(numberBlockCapacityElement.innerText) : 0;
+                    // check the insertProgress function. It often comes with a 404 error. Resolve by
+                    // noinspection JSUnresolvedVariable
+                    google.script.run
+                        .withSuccessHandler(function (submission) {
+                            console.log("Progress submitted successfully.");
+                            if (currentLevelIsCompleted) {
+                                sessionStorage.setItem("studentProgress", JSON.stringify(submission.allStudentProgress));
+                                renderProgressBar(sessionStorage.getItem("currentLessonType"));
+                                buttonNextLevelElements.forEach(button => {
+                                    button.disabled = false;
+                                    button.innerHTML = `<i class="fa-solid fa-right-long fa-2xl"></i>Next`
+                                });
+                            } else {
+                                buttonNextLevelElements.forEach(button => {
+                                    button.disabled = true;
+                                    button.innerHTML = `<i class="fa-solid fa-right-long fa-2xl"></i>Next`
+                                });
+                            }
+                        })
+                        .withFailureHandler(function (error) {
+                            console.error("Error submitting progress:", error);
                             buttonNextLevelElements.forEach(button => {
                                 button.disabled = true;
                                 button.innerHTML = `<i class="fa-solid fa-right-long fa-2xl"></i>Next`
                             });
-                        }
-                    })
-                    .withFailureHandler(function (error) {
-                        console.error("Error submitting progress:", error);
-                        buttonNextLevelElements.forEach(button => {
-                            button.disabled = true;
-                            button.innerHTML = `<i class="fa-solid fa-right-long fa-2xl"></i>Next`
+
+                        })
+                        .insertProgress({
+                            email: sessionStorage.getItem("email"),
+                            className: sessionStorage.getItem("className"),
+                            grade: sessionStorage.getItem("grade"),
+                            studentId: sessionStorage.getItem("studentId"),
+                            type: this.type,
+                            level: this.level,
+                            workspaceXml: xmlText,
+                            feedback: "Solid work!",
+                            startedOn: this.startedOn,
+                            blockExcess: blockExcess,
+                            blocksOver: blocksOver,
+                            isCompleted: this.isComplete
                         });
 
-                    })
-                    .insertProgress({
-                        email: sessionStorage.getItem("email"),
-                        className: sessionStorage.getItem("className"),
-                        grade: sessionStorage.getItem("grade"),
-                        studentId: sessionStorage.getItem("studentId"),
-                        type: this.type,
-                        level: this.level,
-                        workspaceXml: xmlText,
-                        feedback: "Solid work!",
-                        startedOn: this.startedOn,
-                        blockExcess: blockExcess,
-                        blocksOver: blocksOver,
-                        isCompleted: this.isComplete
-                    });
-
-            } catch (e) {
-                console.error("Unexpected error in script.run:", e);
+                } catch (e) {
+                    console.error("Unexpected error in script.run:", e);
+                }
             }
-
         }
 
         async stepCode() {
@@ -1532,6 +1584,10 @@
 
         resetCode() {
             this.isRunning = false;
+            if(Activity.activityTypeGameSettings.characters.player.eventDriven) {
+                this.keyListeners.forEach(fn => window.removeEventListener('keydown', fn));
+                this.keyListeners = [];
+            }
             this.removeOverlay();
             this.resetStepState();
             this.unlockWorkspace();
@@ -1653,6 +1709,14 @@
                         break;
                 }
             });
+        }
+
+        generateMovementCode(direction, key) {
+            return `
+                this.movementFlags["${direction}"] = true;
+                this.keyToMovement["${key}"] = this.keyToMovement["${key}"] || new Set();
+                this.keyToMovement["${key}"].add("${direction}");
+                `;
         }
 
         static playSound(link, isBackground = false) {
@@ -1913,6 +1977,50 @@
                     }
                     `;
             };
+
+            javascript.javascriptGenerator.forBlock['on_key_press'] = function (block, generator) {
+                const key = block.getFieldValue('KEY');
+                const nextBlock = block.getNextBlock();
+                const nextCode = nextBlock ? generator.blockToCode(nextBlock) : '';
+
+                const handlerName = `onKey_${block.id.replace(/[^a-zA-Z0-9_]/g, "_")}`;
+
+                return `
+                        window["${handlerName}"] = function(e) {
+                            if (e.code === "${key}") {
+                                this.keyToMovement["${key}"] = this.keyToMovement["${key}"] || new Set();
+                                const recordMovement = (flag) => {
+                                    this.movementFlags[flag] = true;
+                                    this.keyToMovement["${key}"].add(flag);
+                                };
+                                const activateMovement = recordMovement;
+                                ${nextCode}
+                            }
+                        };
+                        addListener(window["${handlerName}"]);
+                    `;
+            };
+
+            javascript.javascriptGenerator.forBlock['move_up'] = function (block, generator) {
+                const key = generator.keyContext || 'UNKNOWN';
+                return generateMovementCode("moveUp", key);
+            };
+
+            javascript.javascriptGenerator.forBlock['move_down'] = function (block, generator) {
+                const key = generator.keyContext || 'UNKNOWN';
+                return generateMovementCode("moveDown", key);
+            };
+            javascript.javascriptGenerator.forBlock['move_left'] = function (block, generator) {
+                const key = generator.keyContext || 'UNKNOWN';
+                return generateMovementCode("moveLeft", key);
+            };
+
+            javascript.javascriptGenerator.forBlock['move_right'] = function (block, generator) {
+                const key = generator.keyContext || 'UNKNOWN';
+                return generateMovementCode("moveRight", key);
+            };
+
+
 
             javascript.javascriptGenerator.forBlock["turn"] = function (block) {
                 const direction = block.getFieldValue("DIRECTION");
