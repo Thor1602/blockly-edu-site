@@ -311,8 +311,39 @@
       "setMovable": false,
       "setDeletable": false,
       "colour": "#fba60b",
-      "javascript_function": "this.runCodeBlock();\n",
-      "size": "large"
+      "javascript_function": "this.runCodeBlock();\n"
+    },
+    "on_key_press": {
+      "message0": "when %1 key pressed",
+      "args0": [
+        {
+          "type": "field_dropdown",
+          "name": "KEY",
+          "options": [
+            [
+              "up",
+              "ArrowUp"
+            ],
+            [
+              "down",
+              "ArrowDown"
+            ],
+            [
+              "left",
+              "ArrowLeft"
+            ],
+            [
+              "right",
+              "ArrowRight"
+            ]
+          ]
+        }
+      ],
+      "nextStatement": null,
+      "colour": 230,
+      "setMovable": false,
+      "setDeletable": false,
+      "javascript_function": "this.runCodeBlock();\n"
     },
     "keyUp_event": {
       "message0": "when up arrow %1",
@@ -483,8 +514,7 @@
       "nextStatement": null,
       "colour": "#f322a6",
       "tooltip": "Repeat the action a specified number of times.",
-      "javascript_function": "repeat_10(block);\n",
-      "size": "large"
+      "javascript_function": "repeat_10(block);\n"
     },
     "repeat_loop_2_5": {
       "tooltip": "",
@@ -591,8 +621,7 @@
       "previousStatement": null,
       "nextStatement": null,
       "colour": "#08b5bd",
-      "javascript_function": "await this.move_north();\n",
-      "size": "large"
+      "javascript_function": "await this.move_north();\n"
     },
     "move_south": {
       "tooltip": "",
@@ -607,8 +636,7 @@
       "previousStatement": null,
       "nextStatement": null,
       "colour": "#08b5bd",
-      "javascript_function": "await this.move_south();\n",
-      "size": "large"
+      "javascript_function": "await this.move_south();\n"
     },
     "move_west": {
       "tooltip": "",
@@ -623,8 +651,7 @@
       "previousStatement": null,
       "nextStatement": null,
       "colour": "#08b5bd",
-      "javascript_function": "await this.move_west();\n",
-      "size": "large"
+      "javascript_function": "await this.move_west();\n"
     },
     "move_east": {
       "tooltip": "",
@@ -639,9 +666,41 @@
       "previousStatement": null,
       "nextStatement": null,
       "colour": "#08b5bd",
-      "javascript_function": "await this.move_east();\n",
-      "size": "large"
+      "javascript_function": "await this.move_east();\n"
     },
+    "move_up": {
+      "tooltip": "",
+      "helpUrl": "",
+      "message0": "move up",
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": "#08b5bd",
+      "javascript_function": "activateMovement('moveUp');\n"
+    },
+    "move_down": {
+      "tooltip": "",
+      "helpUrl": "",
+      "message0": "move down",
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": "#08b5bd",
+      "javascript_function": "activateMovement('moveDown');\n"    },
+    "move_left": {
+      "tooltip": "",
+      "helpUrl": "",
+      "message0": "move left",
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": "#08b5bd",
+      "javascript_function": "activateMovement('moveLeft');\n"    },
+    "move_right": {
+      "tooltip": "",
+      "helpUrl": "",
+      "message0": "move right",
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": "#08b5bd",
+      "javascript_function": "activateMovement('moveRight');\n"    },
     "pick_up_person": {
       "tooltip": "",
       "helpUrl": "",
@@ -655,8 +714,7 @@
       "previousStatement": null,
       "nextStatement": null,
       "colour": "#08b5bd",
-      "javascript_function": "await this.pick_up_person();\n",
-      "size": "large"
+      "javascript_function": "await this.pick_up_person();\n"
     },
     "get_non_fiction_book": {
       "tooltip": "",
@@ -1925,7 +1983,12 @@
           "keyDown_event",
           "keyLeft_event",
           "keyRight_event",
-          "move_all_directions_choice_action"
+          "move_all_directions_choice_action",
+          "on_key_press",
+          "move_up",
+          "move_down",
+          "move_left",
+          "move_right"
         ],
         "playerInfo": {
           "row": 0,
