@@ -1437,7 +1437,7 @@
             this.isRunning = true;
             buttonRunElement.style.display = "none";
             buttonResetElement.style.display = "inline-block";
-
+            console.log(Activity.activityTypeGameSettings.characters.player.eventDriven);
             if(Activity.activityTypeGameSettings.characters.player.eventDriven){
                 const topBlocks = workspace.getTopBlocks(true); // get all top blocks
                 for (const block of topBlocks) {
@@ -2003,21 +2003,21 @@
 
             javascript.javascriptGenerator.forBlock['move_up'] = function (block, generator) {
                 const key = generator.keyContext || 'UNKNOWN';
-                return generateMovementCode("moveUp", key);
+                return this.generateMovementCode("moveUp", key);
             };
 
             javascript.javascriptGenerator.forBlock['move_down'] = function (block, generator) {
                 const key = generator.keyContext || 'UNKNOWN';
-                return generateMovementCode("moveDown", key);
+                return this.generateMovementCode("moveDown", key);
             };
             javascript.javascriptGenerator.forBlock['move_left'] = function (block, generator) {
                 const key = generator.keyContext || 'UNKNOWN';
-                return generateMovementCode("moveLeft", key);
+                return this.generateMovementCode("moveLeft", key);
             };
 
             javascript.javascriptGenerator.forBlock['move_right'] = function (block, generator) {
                 const key = generator.keyContext || 'UNKNOWN';
-                return generateMovementCode("moveRight", key);
+                return this.generateMovementCode("moveRight", key);
             };
 
 

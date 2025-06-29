@@ -97,7 +97,7 @@
         "player": {
           "name": "taxi",
           "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi3.png",
-          "eventDriven": true
+          "eventDriven": false
         }
       },
       "environment": {
@@ -162,7 +162,7 @@
         "player": {
           "name": "sportsman",
           "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/PNG/Player/Poses/player_walk1.png",
-          "eventDriven": false
+          "eventDriven": true
         }
       },
       "environment": {
