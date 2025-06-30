@@ -576,7 +576,8 @@
                         </div>
                         <div>
                             <div class="section-title">Events</div>
-                            <a href="#" class="exercise-link" data-param='gymMayhem3' data-level="1">Ms. Jeniffer's Mayhem</a>
+                            <a href="#" class="exercise-link" data-param='gymMayhem3' data-level="1">Ms. Jeniffer's
+                                Mayhem</a>
                         </div>
                         <div>
                             <div class="section-title">Conditionals</div>
@@ -602,7 +603,8 @@
                         </div>
                         <div>
                             <div class="section-title">Conditionals</div>
-                            <a href="#" class="exercise-link" data-param='bookSorting4' data-level="1">Ms. Taery's Agony</a>
+                            <a href="#" class="exercise-link" data-param='bookSorting4' data-level="1">Ms. Taery's
+                                Agony</a>
                         </div>
                         <div>
                             <div class="section-title">Nested Loops</div>
@@ -1019,7 +1021,12 @@
             this.playableSpeed = 5;
 
             buttonRunElement.addEventListener("click", () => {
-                this.runCode();
+                if (Activity.activityTypeGameSettings.characters.player.eventDriven){
+                    this.runCodeWithEvents();
+                }
+                else{
+                    this.runCode();
+                }
             });
             buttonStepElement.addEventListener("click", () => {
                 this.stepCode();
@@ -1059,15 +1066,28 @@
                     this.keyToMovement[e.code] = new Set();
                 }
             });
+            // window.addEventListener('keydown', (e) => {
+            //     const keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+            //     if (keys.includes(e.code)) {
+            //         e.preventDefault();
+            //     }
+            // }, { passive: false });
 
             this.initActivity();
+            window.activity = this;
         }
 
         async initActivity() {
             await this.getExercise();
             await this.initializeActivity();
             await this.initializeBlocklyWorkspace();
-            this.addKeyInput(this.runCode, this.resetCode);
+            if (Activity.activityTypeGameSettings.characters.player.eventDriven){
+                this.addKeyInput(this.runCodeWithEvents(), this.resetCode);
+            }
+            else{
+                this.addKeyInput(this.runCode, this.resetCode);
+            }
+
             this.visualisationDivSizeListener();
         }
 
@@ -1130,13 +1150,15 @@
             }
 
             this.player = new Player(Activity.activityTypeGameSettings.characters.player.sprite, this.gameData.playerInfo.row, this.gameData.playerInfo.col, this.gameData.playerInfo.direction, this.gameData.playerInfo.setNotification, this.gameData.playerInfo.notification, this._gridSize, this.app, this);
-            if (Activity.activityTypeGameSettings.characters.player.eventDriven){
-                app.ticker.add(() => {
-                    if (!character) return;
-                    if (movementFlags.moveUp) this.player.y -= this.playableSpeed;
-                    if (movementFlags.moveDown) this.player.y += this.playableSpeed;
-                    if (movementFlags.moveLeft) this.player.x -= this.playableSpeed;
-                    if (movementFlags.moveRight) this.player.x += this.playableSpeed;
+            if (Activity.activityTypeGameSettings.characters.player.eventDriven) {
+                this.app.ticker.add(() => {
+                    if (!this.player) return;
+                    const flags = window.activity?.movementFlags;
+                    if (!flags) return;
+                    if (this.movementFlags.moveUp) this.player.y -= this.playableSpeed;
+                    if (this.movementFlags.moveDown) this.player.y += this.playableSpeed;
+                    if (this.movementFlags.moveLeft) this.player.x -= this.playableSpeed;
+                    if (this.movementFlags.moveRight) this.player.x += this.playableSpeed;
                 });
             }
             if (Array.isArray(this.gameData.nonInteractiveObjectOnePositions)) {
@@ -1431,6 +1453,37 @@
             }
         }
 
+        async runCodeWithEvents() {
+            if (this.isRunning) return; // Prevent multiple executions
+            this.isRunning = true;
+            buttonRunElement.style.display = "none";
+            buttonResetElement.style.display = "inline-block";
+            javascript.javascriptGenerator.init(this.blockManager.workspace);
+            const topBlocks = this.blockManager.workspace.getTopBlocks(true); // get all top blocks
+            for (const block of topBlocks) {
+                const code = javascript.javascriptGenerator.blockToCode(block);
+                console.log(code);
+                // blockToCode may return an array or a string
+                const cleanCode = Array.isArray(code) ? code[0] : code;
+
+                if (!cleanCode || typeof cleanCode !== 'string') continue;
+
+                try {
+                    const wrapped = new Function('addListener', 'activity', code);
+                    wrapped(
+                        (fn) => {
+                            window.addEventListener('keydown', fn);
+                            this.keyListeners.push(fn);
+                        },
+                        this // <- pass the current Activity instance
+                    );
+                } catch (e) {
+                    console.error("Generated Code Error for block:", block.type, e);
+                }
+            }
+
+        }
+
         // Running Blockly Code
         async runCode() {
             if (this.isRunning) return; // Prevent multiple executions
@@ -1438,108 +1491,85 @@
             buttonRunElement.style.display = "none";
             buttonResetElement.style.display = "inline-block";
             console.log(Activity.activityTypeGameSettings.characters.player.eventDriven);
-            if(Activity.activityTypeGameSettings.characters.player.eventDriven){
-                const topBlocks = workspace.getTopBlocks(true); // get all top blocks
-                for (const block of topBlocks) {
-                    const code = javascript.javascriptGenerator.blockToCode(block);
-                    console.log(code);
-
-                    // blockToCode may return an array or a string
-                    const cleanCode = Array.isArray(code) ? code[0] : code;
-
-                    if (!cleanCode || typeof cleanCode !== 'string') continue;
-
-                    try {
-                        const wrapped = new Function('addListener', cleanCode);
-                        wrapped(function(fn) {
-                            window.addEventListener('keydown', fn);
-                            this.keyListeners.push(fn);
-                        });
-                    } catch (e) {
-                        console.error("Generated Code Error for block:", block.type, e);
-                    }
-                }
+            let runEventBlock = this.blockManager.workspace.getAllBlocks().find(block => block.type === 'run_event');
+            console.log(this.blockManager.workspace.getAllBlocks());
+            if (!runEventBlock) {
+                this.giveHint("Error: Run block is missing. Please add the Run block.", "15000");
+                this.hasFailed();
+                this.isRunning = false; // Allow execution again
+                return;
             }
-            else {
-                let runEventBlock = this.blockManager.workspace.getAllBlocks().find(block => block.type === 'run_event');
-                console.log(this.blockManager.workspace.getAllBlocks());
-                if (!runEventBlock) {
-                    this.giveHint("Error: Run block is missing. Please add the Run block.", "15000");
-                    this.hasFailed();
-                    this.isRunning = false; // Allow execution again
-                    return;
-                }
-                this.lockWorkspace();
-                javascript.javascriptGenerator.init(this.blockManager.workspace);
-                let code = javascript.javascriptGenerator.blockToCode(runEventBlock);
+            this.lockWorkspace();
+            javascript.javascriptGenerator.init(this.blockManager.workspace);
+            let code = javascript.javascriptGenerator.blockToCode(runEventBlock);
 
 
-                try {
-                    await eval(`(async () => {
-                        let checkRunning = () => this.isRunning; // Closure to check the flag
-                        ${code.split("await").join("if (!checkRunning()) return; await")} // Insert check before each await
-                    })();`);
-                } catch (error) {
-                    console.error("Error executing code:", error);
-                } finally {
-                    this.isRunning = false;
-                }
-                buttonNextLevelElements.forEach(button => {
-                    button.innerHTML = `
+            try {
+                await eval(`(async () => {
+                    let checkRunning = () => this.isRunning; // Closure to check the flag
+                    ${code.split("await").join("if (!checkRunning()) return; await")} // Insert check before each await
+                })();`);
+            } catch (error) {
+                console.error("Error executing code:", error);
+            } finally {
+                this.isRunning = false;
+            }
+            buttonNextLevelElements.forEach(button => {
+                button.innerHTML = `
               <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> SAVING`;
-                });
-                const currentLevelIsCompleted = this.isComplete; // this.isComplete doesnt work in withSuccessHandler
-                try {
-                    const xmlDom = Blockly.Xml.workspaceToDom(this.blockManager.workspace);
-                    const xmlText = Blockly.Xml.domToText(xmlDom);
-                    const blockExcess = numberBlockCapacityElement.innerText === "over";
-                    const blocksOver = blockExcess ? parseInt(numberBlockCapacityElement.innerText) : 0;
-                    // check the insertProgress function. It often comes with a 404 error. Resolve by
-                    // noinspection JSUnresolvedVariable
-                    google.script.run
-                        .withSuccessHandler(function (submission) {
-                            console.log("Progress submitted successfully.");
-                            if (currentLevelIsCompleted) {
-                                sessionStorage.setItem("studentProgress", JSON.stringify(submission.allStudentProgress));
-                                renderProgressBar(sessionStorage.getItem("currentLessonType"));
-                                buttonNextLevelElements.forEach(button => {
-                                    button.disabled = false;
-                                    button.innerHTML = `<i class="fa-solid fa-right-long fa-2xl"></i>Next`
-                                });
-                            } else {
-                                buttonNextLevelElements.forEach(button => {
-                                    button.disabled = true;
-                                    button.innerHTML = `<i class="fa-solid fa-right-long fa-2xl"></i>Next`
-                                });
-                            }
-                        })
-                        .withFailureHandler(function (error) {
-                            console.error("Error submitting progress:", error);
+            });
+            const currentLevelIsCompleted = this.isComplete; // this.isComplete doesnt work in withSuccessHandler
+            try {
+                const xmlDom = Blockly.Xml.workspaceToDom(this.blockManager.workspace);
+                const xmlText = Blockly.Xml.domToText(xmlDom);
+                const blockExcess = numberBlockCapacityElement.innerText === "over";
+                const blocksOver = blockExcess ? parseInt(numberBlockCapacityElement.innerText) : 0;
+                // check the insertProgress function. It often comes with a 404 error. Resolve by
+                // noinspection JSUnresolvedVariable
+                google.script.run
+                    .withSuccessHandler(function (submission) {
+                        console.log("Progress submitted successfully.");
+                        if (currentLevelIsCompleted) {
+                            sessionStorage.setItem("studentProgress", JSON.stringify(submission.allStudentProgress));
+                            renderProgressBar(sessionStorage.getItem("currentLessonType"));
+                            buttonNextLevelElements.forEach(button => {
+                                button.disabled = false;
+                                button.innerHTML = `<i class="fa-solid fa-right-long fa-2xl"></i>Next`
+                            });
+                        } else {
                             buttonNextLevelElements.forEach(button => {
                                 button.disabled = true;
                                 button.innerHTML = `<i class="fa-solid fa-right-long fa-2xl"></i>Next`
                             });
-
-                        })
-                        .insertProgress({
-                            email: sessionStorage.getItem("email"),
-                            className: sessionStorage.getItem("className"),
-                            grade: sessionStorage.getItem("grade"),
-                            studentId: sessionStorage.getItem("studentId"),
-                            type: this.type,
-                            level: this.level,
-                            workspaceXml: xmlText,
-                            feedback: "Solid work!",
-                            startedOn: this.startedOn,
-                            blockExcess: blockExcess,
-                            blocksOver: blocksOver,
-                            isCompleted: this.isComplete
+                        }
+                    })
+                    .withFailureHandler(function (error) {
+                        console.error("Error submitting progress:", error);
+                        buttonNextLevelElements.forEach(button => {
+                            button.disabled = true;
+                            button.innerHTML = `<i class="fa-solid fa-right-long fa-2xl"></i>Next`
                         });
 
-                } catch (e) {
-                    console.error("Unexpected error in script.run:", e);
-                }
+                    })
+                    .insertProgress({
+                        email: sessionStorage.getItem("email"),
+                        className: sessionStorage.getItem("className"),
+                        grade: sessionStorage.getItem("grade"),
+                        studentId: sessionStorage.getItem("studentId"),
+                        type: this.type,
+                        level: this.level,
+                        workspaceXml: xmlText,
+                        feedback: "Solid work!",
+                        startedOn: this.startedOn,
+                        blockExcess: blockExcess,
+                        blocksOver: blocksOver,
+                        isCompleted: this.isComplete
+                    });
+
+            } catch (e) {
+                console.error("Unexpected error in script.run:", e);
             }
+
         }
 
         async stepCode() {
@@ -1584,9 +1614,20 @@
 
         resetCode() {
             this.isRunning = false;
-            if(Activity.activityTypeGameSettings.characters.player.eventDriven) {
+            if (Activity.activityTypeGameSettings.characters.player.eventDriven) {
+                // Stop listeners
                 this.keyListeners.forEach(fn => window.removeEventListener('keydown', fn));
                 this.keyListeners = [];
+
+                // Clear all movement flags manually
+                for (let key in this.movementFlags) {
+                    this.movementFlags[key] = false;
+                }
+
+                // Also clear key-to-movement mappings
+                for (let key in this.keyToMovement) {
+                    this.keyToMovement[key] = new Set();
+                }
             }
             this.removeOverlay();
             this.resetStepState();
@@ -1709,14 +1750,6 @@
                         break;
                 }
             });
-        }
-
-        generateMovementCode(direction, key) {
-            return `
-                this.movementFlags["${direction}"] = true;
-                this.keyToMovement["${key}"] = this.keyToMovement["${key}"] || new Set();
-                this.keyToMovement["${key}"].add("${direction}");
-                `;
         }
 
         static playSound(link, isBackground = false) {
@@ -1981,45 +2014,45 @@
             javascript.javascriptGenerator.forBlock['on_key_press'] = function (block, generator) {
                 const key = block.getFieldValue('KEY');
                 const nextBlock = block.getNextBlock();
+                generator.keyContext = key;
                 const nextCode = nextBlock ? generator.blockToCode(nextBlock) : '';
-
                 const handlerName = `onKey_${block.id.replace(/[^a-zA-Z0-9_]/g, "_")}`;
-
+                delete generator.keyContext;
                 return `
-                        window["${handlerName}"] = function(e) {
-                            if (e.code === "${key}") {
-                                this.keyToMovement["${key}"] = this.keyToMovement["${key}"] || new Set();
-                                const recordMovement = (flag) => {
-                                    this.movementFlags[flag] = true;
-                                    this.keyToMovement["${key}"].add(flag);
-                                };
-                                const activateMovement = recordMovement;
-                                ${nextCode}
-                            }
-                        };
-                        addListener(window["${handlerName}"]);
-                    `;
+                    window["${handlerName}"] = function(e) {
+                        if (e.code === "${key}") {
+                            e.preventDefault(); // 👈 prevent arrow keys from scrolling
+                            window.activity.keyToMovement["${key}"] = window.activity.keyToMovement["${key}"] || new Set();
+                            const recordMovement = (flag) => {
+                                window.activity.movementFlags[flag] = true;
+                                window.activity.keyToMovement["${key}"].add(flag);
+                            };
+                            const activateMovement = recordMovement;
+                            ${nextCode}
+                        }
+                    };
+                    addListener(window["${handlerName}"]);
+                `;
             };
 
-            javascript.javascriptGenerator.forBlock['move_up'] = function (block, generator) {
+            javascript.javascriptGenerator.forBlock['move_up'] = (block, generator) => {
                 const key = generator.keyContext || 'UNKNOWN';
                 return this.generateMovementCode("moveUp", key);
             };
 
-            javascript.javascriptGenerator.forBlock['move_down'] = function (block, generator) {
+            javascript.javascriptGenerator.forBlock['move_down'] = (block, generator) => {
                 const key = generator.keyContext || 'UNKNOWN';
                 return this.generateMovementCode("moveDown", key);
             };
-            javascript.javascriptGenerator.forBlock['move_left'] = function (block, generator) {
+            javascript.javascriptGenerator.forBlock['move_left'] = (block, generator) => {
                 const key = generator.keyContext || 'UNKNOWN';
                 return this.generateMovementCode("moveLeft", key);
             };
 
-            javascript.javascriptGenerator.forBlock['move_right'] = function (block, generator) {
+            javascript.javascriptGenerator.forBlock['move_right'] = (block, generator) => {
                 const key = generator.keyContext || 'UNKNOWN';
                 return this.generateMovementCode("moveRight", key);
             };
-
 
 
             javascript.javascriptGenerator.forBlock["turn"] = function (block) {
@@ -2033,6 +2066,16 @@
                 const id = block.id;
                 return `await this.highlightBlock("${id}");\nawait this.move_choice_action("${direction}");\n`;
             };
+
+        }
+
+        // TODO
+        generateMovementCode(direction, key) {
+            return `
+                activity.movementFlags["${direction}"] = true;
+                activity.keyToMovement["${key}"] = activity.keyToMovement["${key}"] || new Set();
+                activity.keyToMovement["${key}"].add("${direction}");
+            `;
         }
 
 
@@ -2801,7 +2844,7 @@
             const link = event.target.closest('.nav-link, .exercise-link');
             if (link) {
                 event.preventDefault();
-                setNextLesson(link.getAttribute('data-param'),link.getAttribute('data-level'));
+                setNextLesson(link.getAttribute('data-param'), link.getAttribute('data-level'));
             }
         });
     });
