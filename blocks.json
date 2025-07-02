@@ -985,6 +985,7 @@
         "goal": "Pick up all the passengers.",
         "background": {
           "type": "colorTiled",
+          "widthStartFrom": 0,
           "image": null,
           "mapLayout": "mapLayout_taxiDriverSequencing_K_1"
         },
@@ -1029,6 +1030,7 @@
         "goal": "Pick up all the passengers.",
         "background": {
           "type": "colorTiled",
+          "widthStartFrom": 0,
           "image": null,
           "mapLayout": "mapLayout_taxiDriverSequencing_K_1"
         },
@@ -1083,6 +1085,7 @@
         "goal": "Pick up all the passengers.",
         "background": {
           "type": "colorTiled",
+          "widthStartFrom": 0,
           "image": null,
           "mapLayout": "mapLayout_taxiDriverSequencing_K_3"
         },
@@ -1132,6 +1135,7 @@
         "goal": "Pick up all the passengers.",
         "background": {
           "type": "colorTiled",
+          "widthStartFrom": 0,
           "image": null,
           "mapLayout": "mapLayout_taxiDriverSequencing_K_3"
         },
@@ -1191,6 +1195,7 @@
         "goal": "Pick up all the passengers.",
         "background": {
           "type": "colorTiled",
+          "widthStartFrom": 0,
           "image": null,
           "mapLayout": "mapLayout_taxiDriverSequencing_K_5"
         },
@@ -1272,6 +1277,7 @@
         "goal": "",
         "background": {
           "type": "colorTiled",
+          "widthStartFrom": 0,
           "image": null,
           "mapLayout": "mapLayout_taxiDriverSequencing_1_1"
         },
@@ -1316,6 +1322,7 @@
         "goal": "",
         "background": {
           "type": "colorTiled",
+          "widthStartFrom": 0,
           "image": null,
           "mapLayout": "mapLayout_taxiDriverSequencing_1_1"
         },
@@ -1370,6 +1377,7 @@
         "goal": "",
         "background": {
           "type": "colorTiled",
+          "widthStartFrom": 0,
           "image": null,
           "mapLayout": "mapLayout_taxiDriverSequencing_1_1"
         },
@@ -1419,6 +1427,7 @@
         "goal": "Pick up all the passengers.",
         "background": {
           "type": "colorTiled",
+          "widthStartFrom": 0,
           "image": null,
           "mapLayout": "mapLayout_taxiDriverSequencing_1_4"
         },
@@ -1480,6 +1489,7 @@
         "goal": "",
         "background": {
           "type": "colorTiled",
+          "widthStartFrom": 0,
           "image": null,
           "mapLayout": "mapLayout_taxiDriverSequencing_2_1"
         },
@@ -1530,6 +1540,7 @@
         "goal": "",
         "background": {
           "type": "colorTiled",
+          "widthStartFrom": 0,
           "image": null,
           "mapLayout": "mapLayout_taxiDriverSequencing_2_2"
         },
@@ -1590,6 +1601,7 @@
         "goal": "",
         "background": {
           "type": "colorTiled",
+          "widthStartFrom": 0,
           "image": null,
           "mapLayout": "mapLayout_taxiDriverSequencing_2_3"
         },
@@ -1660,6 +1672,7 @@
         "goal": "",
         "background": {
           "type": "colorTiled",
+          "widthStartFrom": 0,
           "image": null,
           "mapLayout": "mapLayout_taxiDriverSequencing_2_4"
         },
@@ -1720,6 +1733,7 @@
         "goal": "",
         "background": {
           "type": "colorTiled",
+          "widthStartFrom": 0,
           "image": null,
           "mapLayout": "mapLayout_taxiDriverSequencing_2_5"
         },
@@ -1811,6 +1825,7 @@
         "goal": "",
         "background": {
           "type": "colorTiled",
+          "widthStartFrom": 0,
           "image": null,
           "mapLayout": "mapLayout_taxiDriverSequencing_3_1"
         },
@@ -1864,6 +1879,7 @@
         "goal": "",
         "background": {
           "type": "colorTiled",
+          "widthStartFrom": 0,
           "image": null,
           "mapLayout": "mapLayout_taxiDriverSequencing_3_2"
         },
@@ -1918,6 +1934,7 @@
         "goal": "",
         "background": {
           "type": "image",
+          "widthStartFrom": 0,
           "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/libraryBackground.png",
           "mapLayout": null
         },
@@ -1974,6 +1991,7 @@
         "goal": "",
         "background": {
           "type": "image",
+          "widthStartFrom": 2,
           "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/schoolBackgroundWithoutChildren.png",
           "mapLayout": null
         },

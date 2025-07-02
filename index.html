@@ -1194,7 +1194,7 @@
             if (this.gameData.background.type === "colorTiled") {
                 this.map.drawMap(Activity.activityTypeGameSettings.mapLayoutDesign.styleMap, this._gridSize);
             } else if (this.gameData.background.type === "image") {
-                this.map.drawImageBackground(this.gameData.background.image, 16 * this._gridSize);
+                this.map.drawImageBackground(this.gameData.background.image, 16 * this._gridSize, this.gameData.background.widthStartFrom * this._gridSize);
             }
             // Now resize any existing sprites, with defensive checks
             if (this.nonInteractiveObjectsOne && Array.isArray(this.nonInteractiveObjectsOne)) {
@@ -1269,7 +1269,7 @@
                 if (this.gameData.background.type === "colorTiled") {
                     this.map.drawMap(Activity.activityTypeGameSettings.mapLayoutDesign.styleMap, this._gridSize);
                 } else if (this.gameData.background.type === "image") {
-                    this.map.drawImageBackground(this.gameData.background.image, 16 * this._gridSize);
+                    this.map.drawImageBackground(this.gameData.background.image, 16 * this._gridSize, this.gameData.background.widthStartFrom);
                 }
                 this.map.drawSprites(this.nonInteractiveObjectsOne);
                 this.map.drawSprites(this.nonInteractiveObjectsTwo);
@@ -1777,23 +1777,36 @@
             }
         }
 
-        drawImageBackground(imagePath, desiredHeight) {
+        drawImageBackground(imagePath, desiredHeight, widthStartFrom = 0) {
             this.reset();
 
             const texture = PIXI.Texture.from(imagePath);
             const bgSprite = new PIXI.Sprite(texture);
 
-            // Wait until texture is loaded
-            if (!texture.baseTexture.valid) {
-                texture.baseTexture.once('loaded', () => {
-                    this.scaleToHeight(bgSprite, desiredHeight);
-                    this.mapContainer.addChild(bgSprite);
-                });
-            } else {
+            const applyScaling = () => {
                 this.scaleToHeight(bgSprite, desiredHeight);
+
+                // Calculate cropping offset
+                const overflow = bgSprite.width - this.app.screen.width;
+
+                if (overflow > 0) {
+                    // Shift sprite left based on widthStartFrom
+                    bgSprite.x = -overflow * widthStartFrom;
+                } else {
+                    // If image fits, center it
+                    bgSprite.x = (this.app.screen.width - bgSprite.width) / 2;
+                }
+
                 this.mapContainer.addChild(bgSprite);
+            };
+
+            if (!texture.baseTexture.valid) {
+                texture.baseTexture.once('loaded', applyScaling);
+            } else {
+                applyScaling();
             }
         }
+
 
         scaleToHeight(sprite, height) {
             const originalHeight = sprite.texture.height;
