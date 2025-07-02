@@ -1934,25 +1934,25 @@
           "turn"
         ],
         "playerInfo": {
-          "row": 0,
-          "col": 0,
+          "row": 2,
+          "col": 1,
           "setNotification": false,
           "notification": 0
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
           [
-            5,
+            4,
             4,
             1
           ],
           [
-            5,
+            4,
             6,
             1
           ],
           [
-            5,
+            4,
             8,
             1
           ]
@@ -1994,25 +1994,25 @@
           "move_right"
         ],
         "playerInfo": {
-          "row": 0,
-          "col": 0,
+          "row": 5,
+          "col": 5,
           "setNotification": false,
           "notification": 0
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
           [
-            1,
-            4,
-            1
-          ],
-          [
-            1,
+            5,
             6,
             1
           ],
           [
-            1,
+            5,
+            7,
+            1
+          ],
+          [
+            5,
             8,
             1
           ]
