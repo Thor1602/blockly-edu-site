@@ -553,7 +553,7 @@
                         </div>
                         <div>
                             <div class="section-title">Events</div>
-                            <a>Ms. Jeniffer's Mayhem (Coming soon)</a>
+                            <a>Ms. Gym Mayhem (Coming soon)</a>
                         </div>
                     </div>
                 </div>
@@ -576,12 +576,12 @@
                         </div>
                         <div>
                             <div class="section-title">Events</div>
-                            <a href="#" class="exercise-link" data-param='gymMayhem3' data-level="1">Ms. Jeniffer's
+                            <a href="#" class="exercise-link" data-param='gymMayhem3' data-level="1">Gym
                                 Mayhem</a>
                         </div>
                         <div>
                             <div class="section-title">Conditionals</div>
-                            <a>Ms. Taery's Agony (Coming Soon)</a>
+                            <a> Library Agony (Coming Soon)</a>
                         </div>
                     </div>
                 </div>
@@ -599,11 +599,11 @@
                         </div>
                         <div>
                             <div class="section-title">Events</div>
-                            <a>Ms. Jeniffer's Mayhem (Coming soon)</a>
+                            <a>Gym Mayhem (Coming soon)</a>
                         </div>
                         <div>
                             <div class="section-title">Conditionals</div>
-                            <a href="#" class="exercise-link" data-param='bookSorting4' data-level="1">Ms. Taery's
+                            <a href="#" class="exercise-link" data-param='bookSorting4' data-level="1">Library
                                 Agony</a>
                         </div>
                         <div>
@@ -634,11 +634,11 @@
                         </div>
                         <div>
                             <div class="section-title">Events</div>
-                            <a>Ms. Jeniffer's Mayhem (Coming soon)</a>
+                            <a>Gym Mayhem (Coming soon)</a>
                         </div>
                         <div>
                             <div class="section-title">Conditionals</div>
-                            <a>Ms. Taery's Agony (Coming soon)</a>
+                            <a>Library Agony (Coming soon)</a>
                         </div>
                         <div>
                             <div class="section-title">Nested Loops</div>
@@ -996,7 +996,7 @@
             this.gameData = null;
             this.nonInteractiveObjectsOne = [];
             this.nonInteractiveObjectsTwo = [];
-            this.people = [];
+            this.environmentSprites = [];
             this.player = null;
             this.blockManager = null;
             this.startedOn = new Date().toISOString();
@@ -1010,16 +1010,8 @@
             this.executionIndex = 0;
             this.executionSequence = null;
             this.overlayContainer = null;
-            this.movementFlags = {
-                moveUp: false,
-                moveDown: false,
-                moveLeft: false,
-                moveRight: false,
-            };
-            this.keyToMovement = {};
             this.keyListeners = [];
-            this.playableSpeed = 5;
-
+            this.initActivity();
             buttonRunElement.addEventListener("click", () => {
                 if (Activity.activityTypeGameSettings.characters.player.eventDriven){
                     this.runCodeWithEvents();
@@ -1057,24 +1049,8 @@
                     console.error("Unexpected error in script.run:", e);
                 }
             });
-            window.addEventListener('keyup', (e) => {
-                const movements = this.keyToMovement[e.code];
-                if (movements) {
-                    for (const flag of movements) {
-                        this.movementFlags[flag] = false;
-                    }
-                    this.keyToMovement[e.code] = new Set();
-                }
-            });
-            // window.addEventListener('keydown', (e) => {
-            //     const keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
-            //     if (keys.includes(e.code)) {
-            //         e.preventDefault();
-            //     }
-            // }, { passive: false });
 
-            this.initActivity();
-            window.activity = this;
+
         }
 
         async initActivity() {
@@ -1082,7 +1058,7 @@
             await this.initializeActivity();
             await this.initializeBlocklyWorkspace();
             if (Activity.activityTypeGameSettings.characters.player.eventDriven){
-                this.addKeyInput(this.runCodeWithEvents(), this.resetCode);
+                this.addKeyInput(this.runCodeWithEvents, this.resetCode);
             }
             else{
                 this.addKeyInput(this.runCode, this.resetCode);
@@ -1150,20 +1126,25 @@
             }
 
             this.player = new Player(Activity.activityTypeGameSettings.characters.player.sprite, this.gameData.playerInfo.row, this.gameData.playerInfo.col, this.gameData.playerInfo.direction, this.gameData.playerInfo.setNotification, this.gameData.playerInfo.notification, this._gridSize, this.app, this);
+            await this.player.init();
             if (Activity.activityTypeGameSettings.characters.player.eventDriven) {
                 this.app.ticker.add(() => {
-                    if (!this.player) return;
-                    const flags = window.activity?.movementFlags;
-                    if (!flags) return;
-                    if (this.movementFlags.moveUp) this.player.y -= this.playableSpeed;
-                    if (this.movementFlags.moveDown) this.player.y += this.playableSpeed;
-                    if (this.movementFlags.moveLeft) this.player.x -= this.playableSpeed;
-                    if (this.movementFlags.moveRight) this.player.x += this.playableSpeed;
+                    this.player.updateSpritePosition();
+                    this.player.checkCollisions();
+                });
+                window.addEventListener('keyup', (e) => {
+                    const movements = this.player.getKeyToMovement()[e.code];
+                    if (movements) {
+                        for (const flag of movements) {
+                            this.player.getFlags()[flag] = false;
+                        }
+                        this.player.getKeyToMovement()[e.code] = new Set();
+                    }
                 });
             }
             if (Array.isArray(this.gameData.nonInteractiveObjectOnePositions)) {
                 for (let pos of this.gameData.nonInteractiveObjectOnePositions) {
-                    this.nonInteractiveObjectsOne.push(new Sprite(
+                    const sprite = new Sprite(
                         Activity.activityTypeGameSettings.environment.nonInteractiveObjects.nonInteractiveObjectOne.sprite,
                         pos[0], pos[1],
                         Activity.activityTypeGameSettings.environment.nonInteractiveObjects.nonInteractiveObjectOne.direction,
@@ -1172,12 +1153,15 @@
                         this._gridSize,
                         this.app,
                         this
-                    ));
+                    );
+
+                    await sprite.init(); // wait for image loading and setup
+                    this.nonInteractiveObjectsOne.push(sprite);
                 }
             }
             if (Array.isArray(this.gameData.nonInteractiveObjectTwoPositions)) {
                 for (let pos of this.gameData.nonInteractiveObjectTwoPositions) {
-                    this.nonInteractiveObjectsTwo.push(new Sprite(
+                    const sprite = new Sprite(
                         Activity.activityTypeGameSettings.environment.nonInteractiveObjects.nonInteractiveObjectTwo.sprite,
                         pos[0], pos[1],
                         Activity.activityTypeGameSettings.environment.nonInteractiveObjects.nonInteractiveObjectTwo.direction,
@@ -1186,10 +1170,13 @@
                         this._gridSize,
                         this.app,
                         this
-                    ));
+                    );
+
+                    await sprite.init(); // wait for image loading and setup
+                    this.nonInteractiveObjectsTwo.push(sprite);
                 }
             }
-            this.people = Sprite.listOfSprites.filter(item => !(item instanceof Player));
+            this.environmentSprites = Sprite.listOfSprites.filter(item => !(item instanceof Player));
             // this.nonInteractiveObjectsOne = Sprite.listOfSprites; // might be useless
             // Append PIXI app view (canvas) to DOM
             buttonVisualisationElement.appendChild(this.app.view);
@@ -1455,33 +1442,34 @@
 
         async runCodeWithEvents() {
             if (this.isRunning) return; // Prevent multiple executions
+            this.keyListeners.forEach(fn => window.removeEventListener('keydown', fn));
+            this.keyListeners = [];
             this.isRunning = true;
             buttonRunElement.style.display = "none";
             buttonResetElement.style.display = "inline-block";
             javascript.javascriptGenerator.init(this.blockManager.workspace);
-            const topBlocks = this.blockManager.workspace.getTopBlocks(true); // get all top blocks
+            const topBlocks = this.blockManager.workspace.getTopBlocks(true);
+
             for (const block of topBlocks) {
                 const code = javascript.javascriptGenerator.blockToCode(block);
-                console.log(code);
-                // blockToCode may return an array or a string
                 const cleanCode = Array.isArray(code) ? code[0] : code;
-
                 if (!cleanCode || typeof cleanCode !== 'string') continue;
-
                 try {
-                    const wrapped = new Function('addListener', 'activity', code);
-                    wrapped(
-                        (fn) => {
-                            window.addEventListener('keydown', fn);
-                            this.keyListeners.push(fn);
-                        },
-                        this // <- pass the current Activity instance
-                    );
+                    const wrapped = new Function('addListener', cleanCode);
+                    wrapped((fn) => {
+                        const handler = (e) => {
+                            e.preventDefault();
+                            fn(e);
+                        };
+                        window.addEventListener('keydown', handler);
+                        this.keyListeners.push(handler);
+                    });
                 } catch (e) {
                     console.error("Generated Code Error for block:", block.type, e);
                 }
             }
 
+            javascript.javascriptGenerator.finish();
         }
 
         // Running Blockly Code
@@ -1490,7 +1478,6 @@
             this.isRunning = true;
             buttonRunElement.style.display = "none";
             buttonResetElement.style.display = "inline-block";
-            console.log(Activity.activityTypeGameSettings.characters.player.eventDriven);
             let runEventBlock = this.blockManager.workspace.getAllBlocks().find(block => block.type === 'run_event');
             console.log(this.blockManager.workspace.getAllBlocks());
             if (!runEventBlock) {
@@ -1614,21 +1601,6 @@
 
         resetCode() {
             this.isRunning = false;
-            if (Activity.activityTypeGameSettings.characters.player.eventDriven) {
-                // Stop listeners
-                this.keyListeners.forEach(fn => window.removeEventListener('keydown', fn));
-                this.keyListeners = [];
-
-                // Clear all movement flags manually
-                for (let key in this.movementFlags) {
-                    this.movementFlags[key] = false;
-                }
-
-                // Also clear key-to-movement mappings
-                for (let key in this.keyToMovement) {
-                    this.keyToMovement[key] = new Set();
-                }
-            }
             this.removeOverlay();
             this.resetStepState();
             this.unlockWorkspace();
@@ -1651,8 +1623,8 @@
                 // Initialize the new player (taxi)
                 this.player.initialize();
                 // Reset other elements (e.g., people notifications)
-                this.people.forEach(sprite => sprite.notify(sprite.original_notif_number));
-                this.people.forEach(sprite => sprite.show());
+                this.environmentSprites.forEach(sprite => sprite.notify(sprite.original_notif_number));
+                this.environmentSprites.forEach(sprite => sprite.show());
             }, 800); //  delay
             setTimeout(() => {
                 buttonResetElement.innerHTML = `<i class="fa-solid fa-rotate-right"></i> RESET`;
@@ -1691,7 +1663,8 @@
             if (!configData) {
                 await fetchData();
             }
-            this.blockManager = new BlockManager(blocklyDivElement, this.gameData.maxBlocks);
+            console.log(this.player);
+            this.blockManager = new BlockManager(blocklyDivElement, this.gameData.maxBlocks, this.player);
             this.blockManager.loadBlocks(this.gameData.blocks, Activity.gradeSettings.font);
         }
 
@@ -1924,9 +1897,10 @@
     }
 
     class BlockManager {
-        constructor(blocklyDiv, maxBlocks) {
+        constructor(blocklyDiv, maxBlocks, player) {
             this.blocklyDiv = blocklyDiv;
             this.maxBlocks = maxBlocks;
+            this.player = player;
             this.workspace = null;
             this.customTheme = null;
         }
@@ -1973,6 +1947,16 @@
             if (!blocksByType || Object.keys(blocksByType).length === 0) {
                 throw new Error('No blocks found in JSON.');
             }
+            const flags = this.player.getFlags();
+            const keyToMovement = this.player.getKeyToMovement();
+            const generateMovementCode = (direction, key) => {
+                if (!key || key === 'UNKNOWN') return '';
+                return `
+                movementFlags["${direction}"] = true;
+                keyToMovement["${key}"] = keyToMovement["${key}"] || new Set();
+                keyToMovement["${key}"].add("${direction}");
+            `;
+            };
 
             Object.entries(blocksByType).forEach(([type, blockDef]) => {
                 // Inject the type into the block definition
@@ -2013,47 +1997,39 @@
 
             javascript.javascriptGenerator.forBlock['on_key_press'] = function (block, generator) {
                 const key = block.getFieldValue('KEY');
+                const handlerName = `onKey_${block.id.replace(/[^a-zA-Z0-9_]/g, "_")}`;
                 const nextBlock = block.getNextBlock();
+
                 generator.keyContext = key;
                 const nextCode = nextBlock ? generator.blockToCode(nextBlock) : '';
-                const handlerName = `onKey_${block.id.replace(/[^a-zA-Z0-9_]/g, "_")}`;
                 delete generator.keyContext;
+
                 return `
-                    window["${handlerName}"] = function(e) {
-                        if (e.code === "${key}") {
-                            e.preventDefault(); // 👈 prevent arrow keys from scrolling
-                            window.activity.keyToMovement["${key}"] = window.activity.keyToMovement["${key}"] || new Set();
-                            const recordMovement = (flag) => {
-                                window.activity.movementFlags[flag] = true;
-                                window.activity.keyToMovement["${key}"].add(flag);
-                            };
-                            const activateMovement = recordMovement;
-                            ${nextCode}
-                        }
-                    };
-                    addListener(window["${handlerName}"]);
-                `;
+                window["${handlerName}"] = function(e) {
+                    if (e.code === "${key}") {
+                        ${nextCode}
+                    }
+                };
+                addListener(window["${handlerName}"]);
+            `;
             };
 
-            javascript.javascriptGenerator.forBlock['move_up'] = (block, generator) => {
+            javascript.javascriptGenerator.forBlock['move_up'] = function (block, generator) {
                 const key = generator.keyContext || 'UNKNOWN';
-                return this.generateMovementCode("moveUp", key);
+                return generateMovementCode("moveUp", key);
             };
-
-            javascript.javascriptGenerator.forBlock['move_down'] = (block, generator) => {
+            javascript.javascriptGenerator.forBlock['move_down'] = function (block, generator) {
                 const key = generator.keyContext || 'UNKNOWN';
-                return this.generateMovementCode("moveDown", key);
+                return generateMovementCode("moveDown", key);
             };
-            javascript.javascriptGenerator.forBlock['move_left'] = (block, generator) => {
+            javascript.javascriptGenerator.forBlock['move_left'] = function (block, generator) {
                 const key = generator.keyContext || 'UNKNOWN';
-                return this.generateMovementCode("moveLeft", key);
+                return generateMovementCode("moveLeft", key);
             };
-
-            javascript.javascriptGenerator.forBlock['move_right'] = (block, generator) => {
+            javascript.javascriptGenerator.forBlock['move_right'] = function (block, generator) {
                 const key = generator.keyContext || 'UNKNOWN';
-                return this.generateMovementCode("moveRight", key);
+                return generateMovementCode("moveRight", key);
             };
-
 
             javascript.javascriptGenerator.forBlock["turn"] = function (block) {
                 const direction = block.getFieldValue("DIRECTION");
@@ -2067,15 +2043,6 @@
                 return `await this.highlightBlock("${id}");\nawait this.move_choice_action("${direction}");\n`;
             };
 
-        }
-
-        // TODO
-        generateMovementCode(direction, key) {
-            return `
-                activity.movementFlags["${direction}"] = true;
-                activity.keyToMovement["${key}"] = activity.keyToMovement["${key}"] || new Set();
-                activity.keyToMovement["${key}"].add("${direction}");
-            `;
         }
 
 
@@ -2243,6 +2210,8 @@
         static _directions = ['west', 'north', 'east', 'south'];
 
         constructor(imageURL, row, col, direction, showNotification = false, notificationNumber = 0, gridSize, app, activity) {
+            // store basic info
+            this.imageURL = imageURL;
             this.row = row;
             this.col = col;
             this._gridSize = gridSize;
@@ -2253,7 +2222,13 @@
             this.original_notif_number = notificationNumber;
             this.direction = direction;
             this.originalDirection = direction;
-            this.sprite = PIXI.Sprite.from(imageURL);
+
+        }
+
+
+        async init() {
+            await PIXI.Assets.load(this.imageURL);
+            this.sprite = PIXI.Sprite.from(this.imageURL);
             this.sprite.anchor.set(0.5);
             this.directionToAngle = {
                 east: 0,
@@ -2263,16 +2238,10 @@
             };
             this.sprite.rotation = this.directionToAngle[this.originalDirection] || 0;
             this.updateSizeAndPosition();
-            Object.defineProperty(this, "originalRow", {
-                value: row,
-                writable: false, // Prevent modification
-                configurable: false, // Prevent redefinition
-            });
-            Object.defineProperty(this, "originalCol", {
-                value: col,
-                writable: false, // Prevent modification
-                configurable: false, // Prevent redefinition
-            });
+
+            Object.defineProperty(this, "originalRow", { value: this.row, writable: false });
+            Object.defineProperty(this, "originalCol", { value: this.col, writable: false });
+
             this.container = new PIXI.Container();
             this.container.addChild(this.sprite);
 
@@ -2292,8 +2261,9 @@
 
             this.app.stage.addChild(this.container);
             Sprite.listOfSprites.push(this);
-            Sprite.#numberOfEnvironmentSprites += notificationNumber;
+            Sprite.#numberOfEnvironmentSprites += this.notif_number;
         }
+
 
         static restoreNotificationNumberForAllSprites() {
             Sprite.#numberOfEnvironmentSprites = 0;
@@ -2393,6 +2363,38 @@
         constructor(...args) {
             super(...args); // Pass all arguments to the parent class constructor
             Player.listOfPlayers.push(this);
+            this.movementFlags = { moveUp: false, moveDown: false, moveLeft: false, moveRight: false };
+            this.keyToMovement = {};
+            this.speed = 5;
+            window.movementFlags = this.movementFlags;
+            window.keyToMovement = this.keyToMovement;
+            console.log("✅ movementFlags set", window.movementFlags);
+        }
+
+        updateSpritePosition() {
+            if (!this.sprite) return;
+
+            if (this.movementFlags.moveUp) this.sprite.y -= this.speed;
+            if (this.movementFlags.moveDown) this.sprite.y += this.speed;
+            if (this.movementFlags.moveLeft) this.sprite.x -= this.speed;
+            if (this.movementFlags.moveRight) this.sprite.x += this.speed;
+
+            // Clamp to canvas boundaries
+            const halfWidth = this.sprite.width / 2;
+            const halfHeight = this.sprite.height / 2;
+
+            // Keep inside the canvas
+            this.sprite.x = Math.max(halfWidth, Math.min(this.app.screen.width - halfWidth, this.sprite.x));
+            this.sprite.y = Math.max(halfHeight, Math.min(this.app.screen.height - halfHeight, this.sprite.y));
+        }
+
+
+        getFlags() {
+            return this.movementFlags;
+        }
+
+        getKeyToMovement() {
+            return this.keyToMovement;
         }
 
         moveSmoothly(newRow, newCol, speed, isRunning, callback) {
@@ -2572,9 +2574,7 @@
             let person = activity.people.find(p => this.isNextTo(p) && p.notif_number !== 0);
 
             if (person) {
-
                 Activity.playSound(Activity.activityTypeGameSettings.sounds.succeeded);
-
                 if (person.notif_number > 1) {
                     activity.giveHint("Removed 1 person", "3000");
                     await new Promise(resolve => setTimeout(resolve, activity.speed * 100));
@@ -2663,9 +2663,29 @@
 
             const dRow = Math.abs(this.row - otherSprite.row);
             const dCol = Math.abs(this.col - otherSprite.col);
-            console.log(`Checking next-to: this (${this.row}, ${this.col}) vs other (${otherSprite.row}, ${otherSprite.col}) → dRow: ${dRow}, dCol: ${dCol}`);
+            console.log(`Checking on-to: this (${this.row}, ${this.col}) vs other (${otherSprite.row}, ${otherSprite.col}) → dRow: ${dRow}, dCol: ${dCol}`);
 
             return (dRow === 1 && dCol === 0) || (dRow === 0 && dCol === 1);
+        }
+
+        collide(otherSprite) {
+            const a = this.sprite.getBounds();
+            const b = otherSprite.sprite.getBounds();
+
+            return (
+                a.x < b.x + b.width &&
+                a.x + a.width > b.x &&
+                a.y < b.y + b.height &&
+                a.y + a.height > b.y
+            );
+        }
+        checkCollisions() {
+            for (const other of Sprite.listOfSprites) {
+                if (other !== this && this.collide(other)) {
+                    other.hide();
+                    Sprite.decreaseNumberOfEnvironmentSprites();
+                }
+            }
         }
     }
 

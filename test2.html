@@ -15,8 +15,8 @@
 <body>
 <!-- Control Buttons -->
 <div style="position: fixed; top: 10px; left: 10px; z-index: 1000;">
-    <button onclick="runCode()">Run</button>
-    <button onclick="stopCode()">Stop</button>
+    <button id="runCode">Run</button>
+    <button id="stopCode">Stop</button>
 </div>
 <div id="blocklyDiv"></div>
 <div id="visualisation"></div>
@@ -25,7 +25,7 @@
     class Sprite {
         constructor(app) {
             this.app = app;
-            this.character = null;
+            this.player = null;
             this.speed = 5;
             this.movementFlags = {
                 moveUp: false,
@@ -41,13 +41,13 @@
             // const imageUrl = 'https://i.postimg.cc/RCW9MLSP/28c19129-3f19-40fd-80bc-85a21b8c0df9-removebg-preview.png';
             const characterURL = 'https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/SAIS_mascotte.png';
             await PIXI.Assets.load(characterURL);
-            this.character = PIXI.Sprite.from(characterURL);
-            this.character.anchor.set(0.5);
-            this.character.x = this.app.screen.width / 2;
-            this.character.y = this.app.screen.height / 2;
-            this.character.width = this.app.screen.width / 3;
-            this.character.height = this.app.screen.height / 3;
-            this.app.stage.addChild(this.character);
+            this.player = PIXI.Sprite.from(characterURL);
+            this.player.anchor.set(0.5);
+            this.player.x = this.app.screen.width / 2;
+            this.player.y = this.app.screen.height / 2;
+            this.player.width = this.app.screen.width / 3;
+            this.player.height = this.app.screen.height / 3;
+            this.app.stage.addChild(this.player);
 
             // ✅ Make movement flags globally accessible for Blockly-generated code
             window.movementFlags = this.movementFlags;
@@ -55,11 +55,11 @@
         }
 
         update() {
-            if (!this.character) return;
-            if (this.movementFlags.moveUp) this.character.y -= this.speed;
-            if (this.movementFlags.moveDown) this.character.y += this.speed;
-            if (this.movementFlags.moveLeft) this.character.x -= this.speed;
-            if (this.movementFlags.moveRight) this.character.x += this.speed;
+            if (!this.player) return;
+            if (this.movementFlags.moveUp) this.player.y -= this.speed;
+            if (this.movementFlags.moveDown) this.player.y += this.speed;
+            if (this.movementFlags.moveLeft) this.player.x -= this.speed;
+            if (this.movementFlags.moveRight) this.player.x += this.speed;
         }
 
         getFlags() {
@@ -72,8 +72,8 @@
     }
 
     class BlockManager {
-        constructor(sprite) {
-            this.sprite = sprite; // Sprite instance needed for movement flags
+        constructor(player) {
+            this.player = player; // Sprite instance needed for movement flags
             this.setupBlocks();   // Must be before inject()
             this.setupGenerators();
 
@@ -140,8 +140,8 @@
         }
 
         setupGenerators() {
-            const flags = this.sprite.getFlags();
-            const keyToMovement = this.sprite.getKeyToMovement();
+            const flags = this.player.getFlags();
+            const keyToMovement = this.player.getKeyToMovement();
 
             const generateMovementCode = (direction, key) => {
                 if (!key || key === 'UNKNOWN') return '';
@@ -207,23 +207,23 @@
 
             document.getElementById("visualisation").appendChild(this.app.view);
 
-            this.sprite = new Sprite(this.app);
-            this.blockManager = new BlockManager(this.sprite);
+            this.player = new Sprite(this.app);
+            this.blockManager = new BlockManager(this.player);
 
-            this.app.ticker.add(() => this.sprite.update());
+            this.app.ticker.add(() => this.player.update());
 
             window.addEventListener('keyup', (e) => {
-                const movements = this.sprite.getKeyToMovement()[e.code];
+                const movements = this.player.getKeyToMovement()[e.code];
                 if (movements) {
                     for (const flag of movements) {
-                        this.sprite.getFlags()[flag] = false;
+                        this.player.getFlags()[flag] = false;
                     }
-                    this.sprite.getKeyToMovement()[e.code] = new Set();
+                    this.player.getKeyToMovement()[e.code] = new Set();
                 }
             });
 
-            window.runCode = this.runCode.bind(this);
-            window.stopCode = this.stopCode.bind(this);
+            document.getElementById('runCode').addEventListener('click', () => this.runCode());
+            document.getElementById('stopCode').addEventListener('click', () => this.stopCode());
         }
 
         runCode() {
@@ -242,8 +242,12 @@
                 try {
                     const wrapped = new Function('addListener', cleanCode);
                     wrapped((fn) => {
-                        window.addEventListener('keydown', fn);
-                        this.keyListeners.push(fn);
+                        const handler = (e) => {
+                            e.preventDefault();
+                            fn(e);
+                        };
+                        window.addEventListener('keydown', handler);
+                        this.keyListeners.push(handler);
                     });
                 } catch (e) {
                     console.error("Generated Code Error for block:", block.type, e);

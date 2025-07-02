@@ -173,7 +173,7 @@
             "name": "racket",
             "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/gym/racket2.png",
             "direction": "east",
-            "notifications": true
+            "notifications": false
           }
         }
       },
@@ -789,7 +789,7 @@
       ],
       "previousStatement": null,
       "nextStatement": null,
-      "colour": "#08b5bd",
+      "colour": "#0094ca",
       "javascript_function": "await this.if_else();\n",
       "size": "medium"
     },
@@ -823,7 +823,7 @@
       ],
       "previousStatement": null,
       "nextStatement": null,
-      "colour": "#08b5bd",
+      "colour": "#0094ca",
       "javascript_function": "await this.if_statement();\n",
       "size": "medium"
     },
