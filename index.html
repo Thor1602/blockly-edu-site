@@ -1071,9 +1071,6 @@
             if (!configData) {
                 await fetchData();
             }
-            console.log(configData.exercises);
-            console.log(configData.exercises[this.type]);
-            console.log(configData.exercises[this.type][this.level]);
             this.gameData = configData.exercises[this.type][this.level];
             if (localStorage.getItem('visualisationSize') !== null) {
                 this._gridSize = localStorage.getItem('visualisationSize');
@@ -1269,7 +1266,7 @@
                 if (this.gameData.background.type === "colorTiled") {
                     this.map.drawMap(Activity.activityTypeGameSettings.mapLayoutDesign.styleMap, this._gridSize);
                 } else if (this.gameData.background.type === "image") {
-                    this.map.drawImageBackground(this.gameData.background.image, 16 * this._gridSize, this.gameData.background.widthStartFrom);
+                    this.map.drawImageBackground(this.gameData.background.image, 16 * this._gridSize, this.gameData.background.widthStartFrom * this._gridSize);
                 }
                 this.map.drawSprites(this.nonInteractiveObjectsOne);
                 this.map.drawSprites(this.nonInteractiveObjectsTwo);
@@ -1479,7 +1476,6 @@
             buttonRunElement.style.display = "none";
             buttonResetElement.style.display = "inline-block";
             let runEventBlock = this.blockManager.workspace.getAllBlocks().find(block => block.type === 'run_event');
-            console.log(this.blockManager.workspace.getAllBlocks());
             if (!runEventBlock) {
                 this.giveHint("Error: Run block is missing. Please add the Run block.", "15000");
                 this.hasFailed();
@@ -1663,7 +1659,6 @@
             if (!configData) {
                 await fetchData();
             }
-            console.log(this.player);
             this.blockManager = new BlockManager(blocklyDivElement, this.gameData.maxBlocks, this.player);
             this.blockManager.loadBlocks(this.gameData.blocks, Activity.gradeSettings.font);
         }
@@ -1777,7 +1772,7 @@
             }
         }
 
-        drawImageBackground(imagePath, desiredHeight, widthStartFrom = 0) {
+        drawImageBackground(imagePath, desiredHeight, widthStartFrom) {
             this.reset();
 
             const texture = PIXI.Texture.from(imagePath);
@@ -2381,7 +2376,6 @@
             this.speed = 5;
             window.movementFlags = this.movementFlags;
             window.keyToMovement = this.keyToMovement;
-            console.log("✅ movementFlags set", window.movementFlags);
         }
 
         updateSpritePosition() {
@@ -2676,8 +2670,7 @@
 
             const dRow = Math.abs(this.row - otherSprite.row);
             const dCol = Math.abs(this.col - otherSprite.col);
-            console.log(`Checking on-to: this (${this.row}, ${this.col}) vs other (${otherSprite.row}, ${otherSprite.col}) → dRow: ${dRow}, dCol: ${dCol}`);
-
+            // console.log(`Checking on-to: this (${this.row}, ${this.col}) vs other (${otherSprite.row}, ${otherSprite.col}) → dRow: ${dRow}, dCol: ${dCol}`);
             return (dRow === 1 && dCol === 0) || (dRow === 0 && dCol === 1);
         }
 
@@ -2693,10 +2686,14 @@
             );
         }
         checkCollisions() {
+            if (!Sprite.hasEnvironmentSprites()) {
+                activity.levelCompleted();
+            }
             for (const other of Sprite.listOfSprites) {
                 if (other !== this && this.collide(other)) {
                     other.hide();
                     Sprite.decreaseNumberOfEnvironmentSprites();
+                    Activity.playSound(Activity.activityTypeGameSettings.sounds.succeeded);
                 }
             }
         }

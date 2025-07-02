@@ -1991,7 +1991,7 @@
         "goal": "",
         "background": {
           "type": "image",
-          "widthStartFrom": 2,
+          "widthStartFrom": 0.5,
           "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/schoolBackgroundWithoutChildren.png",
           "mapLayout": null
         },
