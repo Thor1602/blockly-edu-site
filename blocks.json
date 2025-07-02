@@ -1995,9 +1995,9 @@
           "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/schoolBackgroundWithoutChildren.png",
           "mapLayout": null
         },
-        "instructions": "Clean up all the rackets by using the if block",
+        "instructions": "Clean up all the rackets by using an event block and its action",
         "feedback": "Good job!",
-        "hints": "Use the if block to collect all the tennis rackets",
+        "hints": "Use the event block to activate the right arrow key on your keyboard and add the action right. The player will react on the right key by going to the right side.",
         "blocks": [
           "run_event",
           "keyUp_event",

@@ -1079,7 +1079,7 @@
             }
             Activity.activityTypeGameSettings = configData.gameSettings[this.gameData.category];
             Activity.gradeSettings = configData.settingsPerGrade[this.gameData.grade] || {};
-            feedbackElement.innerHTML = this.gameData.instructions;
+            feedbackElement.innerHTML = this.gameData.feedback;
             instructionsContentElement.innerHTML = this.gameData.instructions;
             hintContentElement.innerHTML = this.gameData.hints;
             Activity.playSound(Activity.activityTypeGameSettings.sounds.backgroundMusic, true);
@@ -1089,13 +1089,15 @@
             Activity.playSound(Activity.activityTypeGameSettings.sounds.levelCompleted);
             await this.addOverlay("Challenge\nCompleted!", 0x000000);
             this.isComplete = true;
-
-
             $nextLevelModal.modal({
                 backdrop: 'static',
                 keyboard: false,
                 show: true
             });
+            setTimeout(() => {
+                this.app.ticker.stop(); // Freeze game after delay
+                console.log("🎉 Player frozen after 200ms");
+            }, 200);
         }
 
         hasFailed() {
@@ -1191,7 +1193,7 @@
             if (this.gameData.background.type === "colorTiled") {
                 this.map.drawMap(Activity.activityTypeGameSettings.mapLayoutDesign.styleMap, this._gridSize);
             } else if (this.gameData.background.type === "image") {
-                this.map.drawImageBackground(this.gameData.background.image, 16 * this._gridSize, this.gameData.background.widthStartFrom * this._gridSize);
+                this.map.drawImageBackground(this.gameData.background.image, 16 * this._gridSize, this.gameData.background.widthStartFrom);
             }
             // Now resize any existing sprites, with defensive checks
             if (this.nonInteractiveObjectsOne && Array.isArray(this.nonInteractiveObjectsOne)) {
@@ -1266,7 +1268,7 @@
                 if (this.gameData.background.type === "colorTiled") {
                     this.map.drawMap(Activity.activityTypeGameSettings.mapLayoutDesign.styleMap, this._gridSize);
                 } else if (this.gameData.background.type === "image") {
-                    this.map.drawImageBackground(this.gameData.background.image, 16 * this._gridSize, this.gameData.background.widthStartFrom * this._gridSize);
+                    this.map.drawImageBackground(this.gameData.background.image, 16 * this._gridSize, this.gameData.background.widthStartFrom);
                 }
                 this.map.drawSprites(this.nonInteractiveObjectsOne);
                 this.map.drawSprites(this.nonInteractiveObjectsTwo);
@@ -1444,6 +1446,7 @@
             this.isRunning = true;
             buttonRunElement.style.display = "none";
             buttonResetElement.style.display = "inline-block";
+            this.lockWorkspace();
             javascript.javascriptGenerator.init(this.blockManager.workspace);
             const topBlocks = this.blockManager.workspace.getTopBlocks(true);
 
@@ -1465,7 +1468,61 @@
                     console.error("Generated Code Error for block:", block.type, e);
                 }
             }
+            buttonNextLevelElements.forEach(button => {
+                button.innerHTML = `
+              <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> SAVING`;
+            });
+            const currentLevelIsCompleted = this.isComplete; // this.isComplete doesnt work in withSuccessHandler
+            try {
+                const xmlDom = Blockly.Xml.workspaceToDom(this.blockManager.workspace);
+                const xmlText = Blockly.Xml.domToText(xmlDom);
+                const blockExcess = numberBlockCapacityElement.innerText === "over";
+                const blocksOver = blockExcess ? parseInt(numberBlockCapacityElement.innerText) : 0;
+                // check the insertProgress function. It often comes with a 404 error. Resolve by
+                // noinspection JSUnresolvedVariable
+                google.script.run
+                    .withSuccessHandler(function (submission) {
+                        console.log("Progress submitted successfully.");
+                        if (currentLevelIsCompleted) {
+                            sessionStorage.setItem("studentProgress", JSON.stringify(submission.allStudentProgress));
+                            renderProgressBar(sessionStorage.getItem("currentLessonType"));
+                            buttonNextLevelElements.forEach(button => {
+                                button.disabled = false;
+                                button.innerHTML = `<i class="fa-solid fa-right-long fa-2xl"></i>Next`
+                            });
+                        } else {
+                            buttonNextLevelElements.forEach(button => {
+                                button.disabled = true;
+                                button.innerHTML = `<i class="fa-solid fa-right-long fa-2xl"></i>Next`
+                            });
+                        }
+                    })
+                    .withFailureHandler(function (error) {
+                        console.error("Error submitting progress:", error);
+                        buttonNextLevelElements.forEach(button => {
+                            button.disabled = true;
+                            button.innerHTML = `<i class="fa-solid fa-right-long fa-2xl"></i>Next`
+                        });
 
+                    })
+                    .insertProgress({
+                        email: sessionStorage.getItem("email"),
+                        className: sessionStorage.getItem("className"),
+                        grade: sessionStorage.getItem("grade"),
+                        studentId: sessionStorage.getItem("studentId"),
+                        type: this.type,
+                        level: this.level,
+                        workspaceXml: xmlText,
+                        feedback: "Solid work!",
+                        startedOn: this.startedOn,
+                        blockExcess: blockExcess,
+                        blocksOver: blocksOver,
+                        isCompleted: this.isComplete
+                    });
+
+            } catch (e) {
+                console.error("Unexpected error in script.run:", e);
+            }
             javascript.javascriptGenerator.finish();
         }
 
@@ -1611,6 +1668,9 @@
                     <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
                     LOAD
                 `;
+            if (!this.app.ticker.started) {
+                this.app.ticker.start();
+            }
             setTimeout(() => {
                 // Draw the sprites (including the new player)
                 this.map.drawSprites(this.nonInteractiveObjectsOne);
@@ -2230,7 +2290,6 @@
             this.original_notif_number = notificationNumber;
             this.direction = direction;
             this.originalDirection = direction;
-
         }
 
 
@@ -2577,19 +2636,19 @@
         }
 
 
-        async getPerson(activity, callback) {
-            let person = activity.people.find(p => this.isNextTo(p) && p.notif_number !== 0);
+        async getPerson(callback) {
+            let person = this.activity.people.find(p => this.isNextTo(p) && p.notif_number !== 0);
 
             if (person) {
                 Activity.playSound(Activity.activityTypeGameSettings.sounds.succeeded);
                 if (person.notif_number > 1) {
-                    activity.giveHint("Removed 1 person", "3000");
-                    await new Promise(resolve => setTimeout(resolve, activity.speed * 100));
+                    this.activity.giveHint("Removed 1 person", "3000");
+                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100));
                     Sprite.decreaseNumberOfEnvironmentSprites();
                     person.notify(person.notif_number - 1);
                 } else if (person.notif_number === 1) {
-                    activity.giveHint("Everyone is inside", "3000");
-                    await new Promise(resolve => setTimeout(resolve, activity.speed * 100));
+                    this.activity.giveHint("Everyone is inside", "3000");
+                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100));
                     Sprite.decreaseNumberOfEnvironmentSprites();
                     person.notify(0);
                     person.hide();
@@ -2599,20 +2658,20 @@
 
                 // After potentially removing someone, check if that was the last
                 if (!Sprite.hasEnvironmentSprites()) {
-                    await new Promise(resolve => setTimeout(resolve, activity.speed * 100));
-                    await activity.levelCompleted();
+                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100));
+                    await this.activity.levelCompleted();
                 }
 
                 return person;
             } else {
                 // No person found
                 if (Sprite.hasEnvironmentSprites()) {
-                    activity.giveHint("No person to be picked up", "3000");
-                    activity.hasFailed();
+                    this.activity.giveHint("No person to be picked up", "3000");
+                    this.activity.hasFailed();
                 } else {
                     // No environment sprites left
-                    await new Promise(resolve => setTimeout(resolve, activity.speed * 100));
-                    await activity.levelCompleted();
+                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100));
+                    await this.activity.levelCompleted();
                 }
 
                 if (typeof callback === "function") await callback(null);
@@ -2629,36 +2688,36 @@
         }
 
 
-        async getBook(activity, callback) {
+        async getBook(callback) {
             if (!Sprite.hasEnvironmentSprites()) {
-                await new Promise(resolve => setTimeout(resolve, activity.speed * 100)); // 0.5 sec delay
-                await activity.levelCompleted();
+                await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100)); // 0.5 sec delay
+                await this.activity.levelCompleted();
             }
-            let book = activity.books.find(b => this.isOnto(b) && b.notif_number !== 0);
+            let book = this.activity.books.find(b => this.isOnto(b) && b.notif_number !== 0);
             if (book) {
                 if (book.notif_number > 1) {
                     Activity.playSound(Activity.activityTypeGameSettings.sounds.succeeded);
-                    activity.giveHint("Removed 1 person", "3000");
-                    await new Promise(resolve => setTimeout(resolve, activity.speed * 100)); // 0.5 sec delay
+                    this.activity.giveHint("Removed 1 person", "3000");
+                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100)); // 0.5 sec delay
                     Sprite.decreaseNumberOfEnvironmentSprites();
                     person.notify(book.notif_number - 1);
                 } else if (book.notif_number === 1) {
                     Activity.playSound(Activity.activityTypeGameSettings.sounds.succeeded);
-                    activity.giveHint("Everyone is inside", "3000");
+                    this.activity.giveHint("Everyone is inside", "3000");
                     book.notify(book.notif_number - 1);
-                    await new Promise(resolve => setTimeout(resolve, activity.speed * 100)); // 0.5 sec delay
+                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100)); // 0.5 sec delay
                     Sprite.decreaseNumberOfEnvironmentSprites();
                     book.notify(book.notif_number - 1);
                     book.hide();
                 } else if (person.notif_number <= 0) {
-                    activity.giveHint("No person to be picked up", "3000");
-                    activity.hasFailed();
+                    this.activity.giveHint("No person to be picked up", "3000");
+                    this.activity.hasFailed();
                 }
                 if (typeof callback === "function") await callback(book);
                 return book;
             } else {
-                activity.hasFailed();
-                activity.giveHint("No person to be picked up", "150000");
+                this.activity.hasFailed();
+                this.activity.giveHint("No person to be picked up", "150000");
             }
 
             if (typeof callback === "function") await callback(null);
@@ -2686,14 +2745,15 @@
             );
         }
         checkCollisions() {
-            if (!Sprite.hasEnvironmentSprites()) {
-                activity.levelCompleted();
-            }
+
             for (const other of Sprite.listOfSprites) {
-                if (other !== this && this.collide(other)) {
+                if (other !== this && this.collide(other) && other.container.visible) {
                     other.hide();
                     Sprite.decreaseNumberOfEnvironmentSprites();
                     Activity.playSound(Activity.activityTypeGameSettings.sounds.succeeded);
+                    if (!Sprite.hasEnvironmentSprites()){
+                        this.activity.levelCompleted();
+                    }
                 }
             }
         }
