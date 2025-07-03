@@ -1111,6 +1111,7 @@
             Activity.playSound(Activity.activityTypeGameSettings.sounds.levelCompleted);
             await this.addOverlay("Challenge\nCompleted!", 0x000000);
             this.isComplete = true;
+            this.submitProgress();
             $nextLevelModal.modal({
                 backdrop: 'static',
                 keyboard: false,
@@ -1345,7 +1346,7 @@
 
         // what my sprites will do according to the blocks
         pick_up_person() {
-            return new Promise(resolve => this.player.getPerson(this, resolve));
+            return new Promise(resolve => this.player.getPerson(resolve));
         }
 
         get_book(bookType) {
@@ -1565,7 +1566,6 @@
             javascript.javascriptGenerator.init(this.blockManager.workspace);
             let code = javascript.javascriptGenerator.blockToCode(runEventBlock);
 
-
             try {
                 await eval(`(async () => {
                     let checkRunning = () => this.isRunning; // Closure to check the flag
@@ -1576,11 +1576,14 @@
             } finally {
                 this.isRunning = false;
             }
+        }
+
+        submitProgress(){
             buttonNextLevelElements.forEach(button => {
                 button.innerHTML = `
               <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> SAVING`;
             });
-            const currentLevelIsCompleted = this.isComplete; // this.isComplete doesnt work in withSuccessHandler
+            const currentLevelIsCompleted = this.isComplete;
             try {
                 const xmlDom = Blockly.Xml.workspaceToDom(this.blockManager.workspace);
                 const xmlText = Blockly.Xml.domToText(xmlDom);
@@ -1631,7 +1634,6 @@
             } catch (e) {
                 console.error("Unexpected error in script.run:", e);
             }
-
         }
 
         async stepCode() {
@@ -2673,7 +2675,6 @@
                     await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100));
                     await this.activity.levelCompleted();
                 }
-
                 return person;
             } else {
                 // No person found
