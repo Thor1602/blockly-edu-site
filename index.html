@@ -1215,7 +1215,7 @@
             if (this.gameData.background.type === "colorTiled") {
                 this.map.drawMap(Activity.activityTypeGameSettings.mapLayoutDesign.styleMap, this._gridSize);
             } else if (this.gameData.background.type === "image") {
-                this.map.drawImageBackground(this.gameData.background.image, 16 * this._gridSize, this.gameData.background.widthStartFrom);
+                this.map.drawImageBackground(this.gameData.background.image, 16 * this._gridSize);
             }
             // Now resize any existing sprites, with defensive checks
             if (this.nonInteractiveObjectsOne && Array.isArray(this.nonInteractiveObjectsOne)) {
@@ -1290,7 +1290,7 @@
                 if (this.gameData.background.type === "colorTiled") {
                     this.map.drawMap(Activity.activityTypeGameSettings.mapLayoutDesign.styleMap, this._gridSize);
                 } else if (this.gameData.background.type === "image") {
-                    this.map.drawImageBackground(this.gameData.background.image, 16 * this._gridSize, this.gameData.background.widthStartFrom);
+                    this.map.drawImageBackground(this.gameData.background.image, 16 * this._gridSize);
                 }
                 this.map.drawSprites(this.nonInteractiveObjectsOne);
                 this.map.drawSprites(this.nonInteractiveObjectsTwo);
@@ -1854,7 +1854,7 @@
             }
         }
 
-        drawImageBackground(imagePath, desiredHeight, widthStartFrom) {
+        drawImageBackground(imagePath, desiredHeight) {
             this.reset();
 
             const texture = PIXI.Texture.from(imagePath);
@@ -1863,16 +1863,8 @@
             const applyScaling = () => {
                 this.scaleToHeight(bgSprite, desiredHeight);
 
-                // Calculate cropping offset
-                const overflow = bgSprite.width - this.app.screen.width;
-
-                if (overflow > 0) {
-                    // Shift sprite left based on widthStartFrom
-                    bgSprite.x = -overflow * widthStartFrom;
-                } else {
-                    // If image fits, center it
-                    bgSprite.x = (this.app.screen.width - bgSprite.width) / 2;
-                }
+                // Center the background horizontally (optional)
+                bgSprite.x = (this.app.screen.width - bgSprite.width) / 2;
 
                 this.mapContainer.addChild(bgSprite);
             };
@@ -1883,7 +1875,6 @@
                 applyScaling();
             }
         }
-
 
         scaleToHeight(sprite, height) {
             const originalHeight = sprite.texture.height;
@@ -2660,7 +2651,6 @@
 
         async getPerson(callback) {
             let person = this.activity.environmentSprites.find(p => this.isNextTo(p) && p.notif_number !== 0);
-
             if (person) {
                 Activity.playSound(Activity.activityTypeGameSettings.sounds.succeeded);
                 if (person.notif_number > 1) {

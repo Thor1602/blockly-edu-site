@@ -1987,12 +1987,12 @@
         "gridSize": 30,
         "rowLength": 12,
         "colLength": 16,
-        "maxBlocks": 15,
+        "maxBlocks": 2,
         "goal": "",
         "background": {
           "type": "image",
           "widthStartFrom": 0.2,
-          "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/schoolBackgroundWithoutChildren.png",
+          "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/schoolBackgroundBackyardWithoutChildren.png",
           "mapLayout": null
         },
         "instructions": "Clean up all the rackets by using an event block and its action",
@@ -2031,12 +2031,12 @@
         "gridSize": 30,
         "rowLength": 12,
         "colLength": 16,
-        "maxBlocks": 15,
+        "maxBlocks": 2,
         "goal": "",
         "background": {
           "type": "image",
           "widthStartFrom": 0.2,
-          "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/schoolBackgroundWithoutChildren.png",
+          "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/schoolBackgroundBackyardWithoutChildren.png",
           "mapLayout": null
         },
         "instructions": "Clean up all the rackets by using an event block and its action",
@@ -2075,12 +2075,12 @@
         "gridSize": 30,
         "rowLength": 12,
         "colLength": 16,
-        "maxBlocks": 15,
+        "maxBlocks": 2,
         "goal": "",
         "background": {
           "type": "image",
           "widthStartFrom": 1,
-          "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/schoolBackgroundWithoutChildren.png",
+          "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/schoolBackgroundBackyardWithoutChildren.png",
           "mapLayout": null
         },
         "instructions": "Clean up all the rackets by using an event block and its action",
@@ -2119,12 +2119,12 @@
         "gridSize": 30,
         "rowLength": 12,
         "colLength": 16,
-        "maxBlocks": 15,
+        "maxBlocks": 4,
         "goal": "",
         "background": {
           "type": "image",
           "widthStartFrom": 1,
-          "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/schoolBackgroundWithoutChildren.png",
+          "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/schoolBackgroundFrontyardWithoutChildren.png",
           "mapLayout": null
         },
         "instructions": "Clean up all the rackets by using an event block and its action",
@@ -2164,12 +2164,12 @@
         "gridSize": 30,
         "rowLength": 12,
         "colLength": 16,
-        "maxBlocks": 15,
+        "maxBlocks": 4,
         "goal": "",
         "background": {
           "type": "image",
           "widthStartFrom": 1,
-          "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/schoolBackgroundWithoutChildren.png",
+          "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/schoolBackgroundFrontyardWithoutChildren.png",
           "mapLayout": null
         },
         "instructions": "Clean up all the rackets by using an event block and its action",
@@ -2209,12 +2209,12 @@
         "gridSize": 30,
         "rowLength": 12,
         "colLength": 16,
-        "maxBlocks": 15,
+        "maxBlocks": 8,
         "goal": "",
         "background": {
           "type": "image",
           "widthStartFrom": 0.5,
-          "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/schoolBackgroundWithoutChildren.png",
+          "image": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/backgrounds/schoolBackgroundFrontyardWithoutChildren.png",
           "mapLayout": null
         },
         "instructions": "Clean up all the rackets by using an event block and its action",
