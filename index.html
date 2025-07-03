@@ -2659,7 +2659,7 @@
 
 
         async getPerson(callback) {
-            let person = this.activity.people.find(p => this.isNextTo(p) && p.notif_number !== 0);
+            let person = this.activity.environmentSprites.find(p => this.isNextTo(p) && p.notif_number !== 0);
 
             if (person) {
                 Activity.playSound(Activity.activityTypeGameSettings.sounds.succeeded);

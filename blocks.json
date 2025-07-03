@@ -18,7 +18,7 @@
     "1": {
       "font": {
         "family": "Verdana, sans-serif",
-        "size": 20,
+        "size": 21,
         "weight": "normal"
       },
       "blockSize": {
@@ -33,7 +33,7 @@
     "2": {
       "font": {
         "family": "Verdana, sans-serif",
-        "size": 18,
+        "size": 20,
         "weight": "normal"
       },
       "blockSize": {
@@ -48,7 +48,7 @@
     "3": {
       "font": {
         "family": "Verdana, sans-serif",
-        "size": 16,
+        "size": 19,
         "weight": "normal"
       },
       "blockSize": {
@@ -63,7 +63,7 @@
     "4": {
       "font": {
         "family": "Verdana, sans-serif",
-        "size": 15,
+        "size": 18,
         "weight": "normal"
       },
       "blockSize": {
@@ -78,7 +78,7 @@
     "5": {
       "font": {
         "family": "Verdana, sans-serif",
-        "size": 14,
+        "size": 17,
         "weight": "normal"
       },
       "blockSize": {
