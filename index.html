@@ -871,6 +871,28 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
 
 <script>
+    const compliments = [
+        "Great job figuring that out!",
+        "You solved it like a coding superstar!",
+        "Look at your hard work paying off!",
+        "That was fast thinking!",
+        "You really used your brain on that one!",
+        "Brilliant solution!",
+        "You didn’t give up, and it worked!",
+        "Right on target!",
+        "Awesome focus!",
+        "You’re becoming a coding master!",
+        "That was creative thinking!",
+        "You made your code shine!",
+        "You just leveled up your skills!",
+        "Problem solved like a pro!",
+        "You fit the pieces together perfectly!",
+        "What a smart way to fix that!",
+        "Green light! Your code is ready to go!",
+        "You cracked the code!",
+        "You’re making this look easy!",
+        "Future programmer alert!"
+    ];
     buttonSpeedElement = document.getElementById('speed');
     buttonRunElement = document.getElementById("btnRun");
     buttonResetElement = document.getElementById("btnReset");
@@ -1079,7 +1101,7 @@
             }
             Activity.activityTypeGameSettings = configData.gameSettings[this.gameData.category];
             Activity.gradeSettings = configData.settingsPerGrade[this.gameData.grade] || {};
-            feedbackElement.innerHTML = this.gameData.feedback;
+            feedbackElement.innerHTML = compliments[Math.floor(Math.random() * compliments.length)];
             instructionsContentElement.innerHTML = this.gameData.instructions;
             hintContentElement.innerHTML = this.gameData.hints;
             Activity.playSound(Activity.activityTypeGameSettings.sounds.backgroundMusic, true);
@@ -1523,7 +1545,7 @@
             } catch (e) {
                 console.error("Unexpected error in script.run:", e);
             }
-            javascript.javascriptGenerator.finish();
+            // javascript.javascriptGenerator.finish();
         }
 
         // Running Blockly Code
