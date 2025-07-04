@@ -2187,10 +2187,15 @@
 
         setupChangeListener() {
             const updateCapacity = () => {
-                const runEventBlock = this.workspace.getAllBlocks().find(block => block.type === 'run_event');
+                //  const runEventBlock = this.workspace.getAllBlocks().find(block => block.type === 'run_event');
+                const topBlocks = this.workspace.getTopBlocks(true);
                 let usedBlocks = 0;
-                if (runEventBlock) {
-                    usedBlocks = this.countAttachedBlocks(runEventBlock);
+                if (topBlocks) {
+                    for (const block of topBlocks) {
+                        if (!block.previousConnection) {  // Only count blocks that can't be connected to another block above
+                            usedBlocks += this.countAttachedBlocks(block);
+                        }
+                    }
                 }
 
                 const remaining = this.maxBlocks - usedBlocks;
@@ -2600,8 +2605,82 @@
             }, delay);
         }
 
+        async pickUpObject({
+                               objectName,         // e.g., "person", "book", "ball"
+                               successHint,        // e.g., "Removed 1 person"
+                               emptyHint,          // e.g., "Everyone is inside"
+                               failHint,           // e.g., "No person to be picked up"
+                               isNextToCheck = true,  // true = use isNextTo, false = use isOnto
+                               callback
+                           }) {
+            const checkFn = isNextToCheck ? this.isNextTo.bind(this) : this.isOnto.bind(this);
+            const found = this.activity.environmentSprites.find(obj => checkFn(obj) && obj.notif_number !== 0);
+
+            console.log(`[pickUpObject] Looking for: ${objectName} → Found:`, found);
+
+            if (found) {
+                Activity.playSound(Activity.activityTypeGameSettings.sounds.succeeded);
+
+                if (found.notif_number > 1) {
+                    this.activity.giveHint(successHint, "3000");
+                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100));
+                    Sprite.decreaseNumberOfEnvironmentSprites();
+                    found.notify(found.notif_number - 1);
+                } else if (found.notif_number === 1) {
+                    this.activity.giveHint(emptyHint, "3000");
+                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100));
+                    Sprite.decreaseNumberOfEnvironmentSprites();
+                    found.notify(0);
+                    found.hide();
+                }
+
+                if (typeof callback === "function") await callback(found);
+
+                if (!Sprite.hasEnvironmentSprites()) {
+                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100));
+                    await this.activity.levelCompleted();
+                }
+
+                return found;
+            } else {
+                if (Sprite.hasEnvironmentSprites()) {
+                    this.activity.giveHint(failHint, "3000");
+                    this.activity.hasFailed(true);
+                } else {
+                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100));
+                    await this.activity.levelCompleted();
+                }
+
+                if (typeof callback === "function") await callback(null);
+                return null;
+            }
+        }
 
         async getPerson(callback) {
+            return await this.pickUpObject({
+                objectName: "person",
+                successHint: "Removed 1 person",
+                emptyHint: "Everyone is inside",
+                failHint: "No person to be picked up",
+                isNextToCheck: true,
+                callback
+            });
+        }
+
+        async getBook(callback) {
+            return await this.pickUpObject({
+                objectName: "book",
+                successHint: "Removed 1 book",
+                emptyHint: "All books collected",
+                failHint: "No book to be picked up",
+                isNextToCheck: true,
+                callback
+            });
+        }
+
+
+
+        async getPersonDelete(callback) {
             let person = this.activity.environmentSprites.find(p => this.isNextTo(p) && p.notif_number !== 0);
             if (person) {
                 Activity.playSound(Activity.activityTypeGameSettings.sounds.succeeded);
@@ -2651,7 +2730,7 @@
         }
 
 
-        async getBook(callback) {
+        async getBookDelete(callback) {
             let book = this.activity.environmentSprites.find(b => this.isNextTo(p) && b.notif_number !== 0);
             if (book) {
                 Activity.playSound(Activity.activityTypeGameSettings.sounds.succeeded);
