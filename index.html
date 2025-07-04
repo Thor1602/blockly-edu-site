@@ -1123,10 +1123,13 @@
             }, 200);
         }
 
-        hasFailed() {
+        hasFailed(submitProgress) {
             Activity.playSound(Activity.activityTypeGameSettings.sounds.levelFailed);
             this.addOverlay("🤔", 0x000000);
             this.isComplete = false;
+            if (submitProgress){
+                this.submitProgress();
+            }
             console.log("Level Failed");
         }
 
@@ -1470,7 +1473,7 @@
             buttonRunElement.style.display = "none";
             buttonResetElement.style.display = "inline-block";
             this.lockWorkspace();
-            javascript.javascriptGenerator.init(this.blockManager.workspace);
+            await javascript.javascriptGenerator.init(this.blockManager.workspace);
             const topBlocks = this.blockManager.workspace.getTopBlocks(true);
 
             for (const block of topBlocks) {
@@ -1490,63 +1493,10 @@
                 } catch (e) {
                     console.error("Generated Code Error for block:", block.type, e);
                 }
+                finally {
+                    this.isRunning = false;
+                }
             }
-            buttonNextLevelElements.forEach(button => {
-                button.innerHTML = `
-              <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span> SAVING`;
-            });
-            const currentLevelIsCompleted = this.isComplete; // this.isComplete doesnt work in withSuccessHandler
-            try {
-                const xmlDom = Blockly.Xml.workspaceToDom(this.blockManager.workspace);
-                const xmlText = Blockly.Xml.domToText(xmlDom);
-                const blockExcess = numberBlockCapacityElement.innerText === "over";
-                const blocksOver = blockExcess ? parseInt(numberBlockCapacityElement.innerText) : 0;
-                // check the insertProgress function. It often comes with a 404 error. Resolve by
-                // noinspection JSUnresolvedVariable
-                google.script.run
-                    .withSuccessHandler(function (submission) {
-                        console.log("Progress submitted successfully.");
-                        if (currentLevelIsCompleted) {
-                            sessionStorage.setItem("studentProgress", JSON.stringify(submission.allStudentProgress));
-                            renderProgressBar(sessionStorage.getItem("currentLessonType"));
-                            buttonNextLevelElements.forEach(button => {
-                                button.disabled = false;
-                                button.innerHTML = `<i class="fa-solid fa-right-long fa-2xl"></i>Next`
-                            });
-                        } else {
-                            buttonNextLevelElements.forEach(button => {
-                                button.disabled = true;
-                                button.innerHTML = `<i class="fa-solid fa-right-long fa-2xl"></i>Next`
-                            });
-                        }
-                    })
-                    .withFailureHandler(function (error) {
-                        console.error("Error submitting progress:", error);
-                        buttonNextLevelElements.forEach(button => {
-                            button.disabled = true;
-                            button.innerHTML = `<i class="fa-solid fa-right-long fa-2xl"></i>Next`
-                        });
-
-                    })
-                    .insertProgress({
-                        email: sessionStorage.getItem("email"),
-                        className: sessionStorage.getItem("className"),
-                        grade: sessionStorage.getItem("grade"),
-                        studentId: sessionStorage.getItem("studentId"),
-                        type: this.type,
-                        level: this.level,
-                        workspaceXml: xmlText,
-                        feedback: "Solid work!",
-                        startedOn: this.startedOn,
-                        blockExcess: blockExcess,
-                        blocksOver: blocksOver,
-                        isCompleted: this.isComplete
-                    });
-
-            } catch (e) {
-                console.error("Unexpected error in script.run:", e);
-            }
-            // javascript.javascriptGenerator.finish();
         }
 
         // Running Blockly Code
@@ -1558,12 +1508,12 @@
             let runEventBlock = this.blockManager.workspace.getAllBlocks().find(block => block.type === 'run_event');
             if (!runEventBlock) {
                 this.giveHint("Error: Run block is missing. Please add the Run block.", "15000");
-                this.hasFailed();
+                this.hasFailed(false);
                 this.isRunning = false; // Allow execution again
                 return;
             }
             this.lockWorkspace();
-            javascript.javascriptGenerator.init(this.blockManager.workspace);
+            await javascript.javascriptGenerator.init(this.blockManager.workspace);
             let code = javascript.javascriptGenerator.blockToCode(runEventBlock);
 
             try {
@@ -1577,7 +1527,7 @@
                 this.isRunning = false;
             }
         }
-        // TODO submitProgress for trials and eventRuncode
+
         submitProgress(){
             buttonNextLevelElements.forEach(button => {
                 button.innerHTML = `
@@ -2680,7 +2630,7 @@
                 // No person found
                 if (Sprite.hasEnvironmentSprites()) {
                     this.activity.giveHint("No person to be picked up", "3000");
-                    this.activity.hasFailed();
+                    this.activity.hasFailed(true);
                 } else {
                     // No environment sprites left
                     await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100));
@@ -2702,48 +2652,52 @@
 
 
         async getBook(callback) {
-            if (!Sprite.hasEnvironmentSprites()) {
-                await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100)); // 0.5 sec delay
-                await this.activity.levelCompleted();
-            }
-            let book = this.activity.books.find(b => this.isOnto(b) && b.notif_number !== 0);
+            let book = this.activity.environmentSprites.find(b => this.isNextTo(p) && b.notif_number !== 0);
             if (book) {
+                Activity.playSound(Activity.activityTypeGameSettings.sounds.succeeded);
                 if (book.notif_number > 1) {
-                    Activity.playSound(Activity.activityTypeGameSettings.sounds.succeeded);
-                    this.activity.giveHint("Removed 1 person", "3000");
-                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100)); // 0.5 sec delay
+                    this.activity.giveHint("Removed 1 book", "3000");
+                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100));
                     Sprite.decreaseNumberOfEnvironmentSprites();
-                    person.notify(book.notif_number - 1);
+                    book.notify(book.notif_number - 1);
                 } else if (book.notif_number === 1) {
-                    Activity.playSound(Activity.activityTypeGameSettings.sounds.succeeded);
                     this.activity.giveHint("Everyone is inside", "3000");
-                    book.notify(book.notif_number - 1);
-                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100)); // 0.5 sec delay
+                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100));
                     Sprite.decreaseNumberOfEnvironmentSprites();
-                    book.notify(book.notif_number - 1);
+                    book.notify(0);
                     book.hide();
-                } else if (person.notif_number <= 0) {
-                    this.activity.giveHint("No person to be picked up", "3000");
-                    this.activity.hasFailed();
                 }
+
                 if (typeof callback === "function") await callback(book);
+
+                // After potentially removing someone, check if that was the last
+                if (!Sprite.hasEnvironmentSprites()) {
+                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100));
+                    await this.activity.levelCompleted();
+                }
                 return book;
             } else {
-                this.activity.hasFailed();
-                this.activity.giveHint("No person to be picked up", "150000");
-            }
+                // No book found
+                if (Sprite.hasEnvironmentSprites()) {
+                    this.activity.giveHint("No book to be picked up", "3000");
+                    this.activity.hasFailed(true);
+                } else {
+                    // No environment sprites left
+                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100));
+                    await this.activity.levelCompleted();
+                }
 
-            if (typeof callback === "function") await callback(null);
-            return null;
+                if (typeof callback === "function") await callback(null);
+                return null;
+            }
         }
 
         isOnto(otherSprite) {
             if (!otherSprite) return false; // Prevent errors if null
-
             const dRow = Math.abs(this.row - otherSprite.row);
             const dCol = Math.abs(this.col - otherSprite.col);
             // console.log(`Checking on-to: this (${this.row}, ${this.col}) vs other (${otherSprite.row}, ${otherSprite.col}) → dRow: ${dRow}, dCol: ${dCol}`);
-            return (dRow === 1 && dCol === 0) || (dRow === 0 && dCol === 1);
+            return dCol === 0 || dRow === 0;
         }
 
         collide(otherSprite) {
@@ -2758,7 +2712,6 @@
             );
         }
         checkCollisions() {
-
             for (const other of Sprite.listOfSprites) {
                 if (other !== this && this.collide(other) && other.container.visible) {
                     other.hide();
