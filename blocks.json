@@ -1005,7 +1005,8 @@
           "col": 2,
           "setNotification": false,
           "notification": 0,
-          "direction": "east"
+          "direction": "east",
+          "freeMovement": false
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
@@ -1050,7 +1051,8 @@
           "col": 2,
           "setNotification": false,
           "notification": 0,
-          "direction": "east"
+          "direction": "east",
+          "freeMovement": false
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
@@ -1105,7 +1107,8 @@
           "col": 2,
           "setNotification": false,
           "notification": 0,
-          "direction": "east"
+          "direction": "east",
+          "freeMovement": false
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
@@ -1155,7 +1158,8 @@
           "col": 2,
           "setNotification": false,
           "notification": 0,
-          "direction": "east"
+          "direction": "east",
+          "freeMovement": false
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
@@ -1215,7 +1219,8 @@
           "col": 1,
           "setNotification": false,
           "notification": 0,
-          "direction": "east"
+          "direction": "east",
+          "freeMovement": false
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
@@ -1297,7 +1302,8 @@
           "col": 2,
           "setNotification": false,
           "notification": 0,
-          "direction": "east"
+          "direction": "east",
+          "freeMovement": false
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
@@ -1342,7 +1348,8 @@
           "col": 2,
           "setNotification": false,
           "notification": 0,
-          "direction": "east"
+          "direction": "east",
+          "freeMovement": false
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
@@ -1397,7 +1404,8 @@
           "col": 2,
           "setNotification": false,
           "notification": 0,
-          "direction": "east"
+          "direction": "east",
+          "freeMovement": false
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
@@ -1447,7 +1455,8 @@
           "col": 2,
           "setNotification": false,
           "notification": 0,
-          "direction": "east"
+          "direction": "east",
+          "freeMovement": false
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
@@ -1510,7 +1519,8 @@
           "col": 1,
           "setNotification": false,
           "notification": 0,
-          "direction": "east"
+          "direction": "east",
+          "freeMovement": false
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
@@ -1561,7 +1571,8 @@
           "col": 2,
           "setNotification": false,
           "notification": 0,
-          "direction": "east"
+          "direction": "east",
+          "freeMovement": false
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
@@ -1622,7 +1633,8 @@
           "col": 4,
           "setNotification": false,
           "notification": 0,
-          "direction": "east"
+          "direction": "east",
+          "freeMovement": false
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
@@ -1693,7 +1705,8 @@
           "col": 10,
           "setNotification": false,
           "notification": 0,
-          "direction": "east"
+          "direction": "east",
+          "freeMovement": false
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
@@ -1753,7 +1766,8 @@
           "col": 1,
           "setNotification": false,
           "notification": 0,
-          "direction": "east"
+          "direction": "east",
+          "freeMovement": false
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
@@ -1844,7 +1858,8 @@
           "col": 4,
           "setNotification": false,
           "notification": 0,
-          "direction": "east"
+          "direction": "east",
+          "freeMovement": false
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
@@ -1898,7 +1913,8 @@
           "col": 10,
           "setNotification": false,
           "notification": 0,
-          "direction": "west"
+          "direction": "west",
+          "freeMovement": false
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
@@ -1954,7 +1970,9 @@
           "row": 2,
           "col": 1,
           "setNotification": false,
-          "notification": 0
+          "notification": 0,
+          "direction": "east",
+          "freeMovement": true
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
@@ -2006,7 +2024,9 @@
           "row": 5,
           "col": 5,
           "setNotification": false,
-          "notification": 0
+          "notification": 0,
+          "direction": "east",
+          "freeMovement": true
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
@@ -2050,7 +2070,9 @@
           "row": 5,
           "col": 5,
           "setNotification": false,
-          "notification": 0
+          "notification": 0,
+          "direction": "east",
+          "freeMovement": true
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
@@ -2094,7 +2116,9 @@
           "row": 5,
           "col": 5,
           "setNotification": false,
-          "notification": 0
+          "notification": 0,
+          "direction": "east",
+          "freeMovement": true
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
@@ -2139,7 +2163,9 @@
           "row": 5,
           "col": 5,
           "setNotification": false,
-          "notification": 0
+          "notification": 0,
+          "direction": "east",
+          "freeMovement": true
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
@@ -2184,7 +2210,9 @@
           "row": 5,
           "col": 5,
           "setNotification": false,
-          "notification": 0
+          "notification": 0,
+          "direction": "east",
+          "freeMovement": true
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [
@@ -2231,7 +2259,9 @@
           "row": 5,
           "col": 5,
           "setNotification": false,
-          "notification": 0
+          "notification": 0,
+          "direction": "east",
+          "freeMovement": true
         },
         "movable_sprites": null,
         "nonInteractiveObjectOnePositions": [

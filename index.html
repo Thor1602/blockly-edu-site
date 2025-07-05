@@ -1353,7 +1353,7 @@
         }
 
         get_book(bookType) {
-            return new Promise(resolve => this.player.getBook(this, resolve));
+            return new Promise(resolve => this.player.getBook(resolve));
         }
 
         move_north() {
@@ -2510,18 +2510,26 @@
         moveBy(deltaCol, deltaRow, map_layout, speed, isRunning, callback) {
             let newRow = this.row + deltaRow;
             let newCol = this.col + deltaCol;
+
+            if (Activity.activityTypeGameSettings.characters.player.eventDriven) {
+                // No restrictions in event-driven mode
+                this.moveSmoothly(newRow, newCol, speed, isRunning, callback);
+                return;
+            }
+
+            // Otherwise, check if the target cell is passable
             let rowKey = Object.keys(map_layout)[newRow];
             let colKey = Object.keys(map_layout[rowKey])[newCol];
 
-            if (map_layout[rowKey] && map_layout[rowKey][colKey] !== undefined &&
-                (map_layout[rowKey][colKey] === 1)) {
+            if (map_layout[rowKey] && map_layout[rowKey][colKey] === 1) {
                 this.moveSmoothly(newRow, newCol, speed, isRunning, callback);
             } else {
                 this.moveSmoothlyHalfStep(newRow, newCol, speed, isRunning, callback);
                 Activity.playSound(Activity.activityTypeGameSettings.sounds.failed);
-                this.activity.addOverlay("Crashed!!", 0xE30000)
+                this.activity.addOverlay("Crashed!!", 0xE30000);
             }
         }
+
 
         async turnAnimatedTo(direction, speed, isRunning, callback) {
             if (!isRunning) {
