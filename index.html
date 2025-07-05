@@ -1150,7 +1150,7 @@
                 await this.map.initialize(this.gameData.background.mapLayout);
             }
 
-            this.player = new Player(Activity.activityTypeGameSettings.characters.player.sprite, this.gameData.playerInfo.row, this.gameData.playerInfo.col, this.gameData.playerInfo.direction, this.gameData.playerInfo.setNotification, this.gameData.playerInfo.notification, this._gridSize, this.app, this);
+            this.player = new Player(Activity.activityTypeGameSettings.characters.player, this.gameData.playerInfo ,this.gameData.playerInfo.position, this);
             await this.player.init();
             if (Activity.activityTypeGameSettings.characters.player.eventDriven) {
                 this.app.ticker.add(() => {
@@ -1168,35 +1168,25 @@
                 });
             }
             if (Array.isArray(this.gameData.nonInteractiveObjectOnePositions)) {
-                for (let pos of this.gameData.nonInteractiveObjectOnePositions) {
+                for (let position of this.gameData.nonInteractiveObjectOnePositions) {
                     const sprite = new Sprite(
-                        Activity.activityTypeGameSettings.environment.nonInteractiveObjects.nonInteractiveObjectOne.sprite,
-                        pos[0], pos[1],
-                        Activity.activityTypeGameSettings.environment.nonInteractiveObjects.nonInteractiveObjectOne.direction,
-                        Activity.activityTypeGameSettings.environment.nonInteractiveObjects.nonInteractiveObjectOne.notifications,
-                        pos[2],
-                        this._gridSize,
-                        this.app,
+                        Activity.activityTypeGameSettings.environment.nonInteractiveObjects.nonInteractiveObjectOne,
+                        this.gameData,
+                        position,
                         this
                     );
-
                     await sprite.init(); // wait for image loading and setup
                     this.nonInteractiveObjectsOne.push(sprite);
                 }
             }
             if (Array.isArray(this.gameData.nonInteractiveObjectTwoPositions)) {
-                for (let pos of this.gameData.nonInteractiveObjectTwoPositions) {
+                for (let position of this.gameData.nonInteractiveObjectTwoPositions) {
                     const sprite = new Sprite(
-                        Activity.activityTypeGameSettings.environment.nonInteractiveObjects.nonInteractiveObjectTwo.sprite,
-                        pos[0], pos[1],
-                        Activity.activityTypeGameSettings.environment.nonInteractiveObjects.nonInteractiveObjectTwo.direction,
-                        Activity.activityTypeGameSettings.environment.nonInteractiveObjects.nonInteractiveObjectTwo.notifications,
-                        pos[2],
-                        this._gridSize,
-                        this.app,
+                        Activity.activityTypeGameSettings.environment.nonInteractiveObjects.nonInteractiveObjectOne,
+                        this.gameData,
+                        position,
                         this
                     );
-
                     await sprite.init(); // wait for image loading and setup
                     this.nonInteractiveObjectsTwo.push(sprite);
                 }
@@ -2247,21 +2237,20 @@
         static #numberOfEnvironmentSprites = 0;
         static _directions = ['west', 'north', 'east', 'south'];
 
-        constructor(imageURL, row, col, direction, showNotification = false, notificationNumber = 0, gridSize, app, activity) {
+        constructor(categoryInfo, levelInfo, pos, activity) {
             // store basic info
-            this.imageURL = imageURL;
-            this.row = row;
-            this.col = col;
-            this._gridSize = gridSize;
-            this.showNotif = showNotification;
+            this.imageURL = categoryInfo.sprite;
+            this.row = pos[0];
+            this.col = pos[1];
+            this._gridSize = activity._gridSize;
+            this.showNotif = categoryInfo.notifications;
             this.activity = activity;
-            this.notif_number = notificationNumber;
-            this.app = app;
-            this.original_notif_number = notificationNumber;
-            this.direction = direction;
-            this.originalDirection = direction;
+            this.notif_number = pos[2];
+            this.app = activity.app;
+            this.original_notif_number = pos[2];
+            this.direction = categoryInfo.direction;
+            this.originalDirection = categoryInfo.direction;
         }
-
 
         async init() {
             await PIXI.Assets.load(this.imageURL);
