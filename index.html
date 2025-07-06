@@ -2499,11 +2499,11 @@
             let newRow = this.row + deltaRow;
             let newCol = this.col + deltaCol;
 
-            if (Activity.activityTypeGameSettings.characters.player.freeMovement) {
-                // No restrictions in event-driven mode
-                this.moveSmoothly(newRow, newCol, speed, isRunning, callback);
-                return;
-            }
+            // if (this.levelInfo.freeMovement) {
+            //     // No restrictions in event-driven mode
+            //     this.moveSmoothly(newRow, newCol, speed, isRunning, callback);
+            //     return;
+            // }
 
             // Otherwise, check if the target cell is passable
             let rowKey = Object.keys(map_layout)[newRow];
