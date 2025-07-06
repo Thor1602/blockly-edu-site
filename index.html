@@ -1363,7 +1363,7 @@
         }
 
         move_choice_action(direction) {
-            const dir = this.player.direction; // e.g., "west", "east", etc.
+            const dir = this.player.levelInfo.direction; // e.g., "west", "east", etc.
             let row = 0;
             let col = 0;
 
@@ -1390,7 +1390,7 @@
 
 
         move_all_directions_choice_action(direction) {
-            const dir = this.player.direction; // e.g., "west", "east", etc.
+            const dir = this.player.levelInfo.direction; // e.g., "west", "east", etc.
             let row = 0;
             let col = 0;
 
@@ -2291,7 +2291,6 @@
         static restoreNotificationNumberForAllSprites() {
             Sprite.#numberOfEnvironmentSprites = 0;
             Sprite.listOfSprites.forEach(sprite => Sprite.#numberOfEnvironmentSprites += sprite.original_notif_number);
-            Sprite.#numberOfEnvironmentSprites -= 1;
             console.log(Sprite.#numberOfEnvironmentSprites); // this works well
         }
 
@@ -2392,7 +2391,6 @@
             Player.listOfPlayers.push(this);
             this.movementFlags = { moveUp: false, moveDown: false, moveLeft: false, moveRight: false };
             this.keyToMovement = {};
-            this.speed = 5;
             window.movementFlags = this.movementFlags;
             window.keyToMovement = this.keyToMovement;
         }
@@ -2400,10 +2398,10 @@
         updateSpritePosition() {
             if (!this.sprite) return;
 
-            if (this.movementFlags.moveUp) this.sprite.y -= this.speed;
-            if (this.movementFlags.moveDown) this.sprite.y += this.speed;
-            if (this.movementFlags.moveLeft) this.sprite.x -= this.speed;
-            if (this.movementFlags.moveRight) this.sprite.x += this.speed;
+            if (this.movementFlags.moveUp) this.sprite.y -= this.activity.speed;
+            if (this.movementFlags.moveDown) this.sprite.y += this.activity.speed;
+            if (this.movementFlags.moveLeft) this.sprite.x -= this.activity.speed;
+            if (this.movementFlags.moveRight) this.sprite.x += this.activity.speed;
 
             // Clamp to canvas boundaries
             const halfWidth = this.sprite.width / 2;
@@ -2501,7 +2499,7 @@
             let newRow = this.row + deltaRow;
             let newCol = this.col + deltaCol;
 
-            if (Activity.activityTypeGameSettings.characters.player.eventDriven) {
+            if (Activity.activityTypeGameSettings.characters.player.freeMovement) {
                 // No restrictions in event-driven mode
                 this.moveSmoothly(newRow, newCol, speed, isRunning, callback);
                 return;
