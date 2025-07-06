@@ -2237,24 +2237,20 @@
         static #numberOfEnvironmentSprites = 0;
         static _directions = ['west', 'north', 'east', 'south'];
 
-        constructor(categoryInfo, levelInfo, pos, activity) {
-            // store basic info
-            this.imageURL = categoryInfo.sprite;
-            this.row = pos[0];
-            this.col = pos[1];
-            this._gridSize = activity._gridSize;
-            this.showNotif = categoryInfo.notifications;
+        constructor(categoryInfo, levelInfo, position, activity) {
+            this.categoryInfo = categoryInfo;
+            this.levelInfo = levelInfo;
+            this.row = position[0];
+            this.col = position[1];
             this.activity = activity;
-            this.notif_number = pos[2];
-            this.app = activity.app;
-            this.original_notif_number = pos[2];
-            this.direction = categoryInfo.direction;
+            this.notif_number = position[2];
+            this.original_notif_number = position[2];
             this.originalDirection = categoryInfo.direction;
         }
 
         async init() {
-            await PIXI.Assets.load(this.imageURL);
-            this.sprite = PIXI.Sprite.from(this.imageURL);
+            await PIXI.Assets.load(this.categoryInfo.sprite);
+            this.sprite = PIXI.Sprite.from(this.categoryInfo.sprite);
             this.sprite.anchor.set(0.5);
             this.directionToAngle = {
                 east: 0,
@@ -2271,7 +2267,7 @@
             this.container = new PIXI.Container();
             this.container.addChild(this.sprite);
 
-            if (this.showNotif) {
+            if (this.categoryInfo.notifications) {
                 this.notifText = new PIXI.Text(this.notif_number, {
                     fontFamily: 'Arial',
                     fontSize: 14,
@@ -2285,29 +2281,34 @@
                 this.updateNotificationPosition();
             }
 
-            this.app.stage.addChild(this.container);
+            this.activity.app.stage.addChild(this.container);
             Sprite.listOfSprites.push(this);
-            Sprite.#numberOfEnvironmentSprites += this.notif_number;
+            Sprite.#numberOfEnvironmentSprites += this.original_notif_number;
         }
+
 
 
         static restoreNotificationNumberForAllSprites() {
             Sprite.#numberOfEnvironmentSprites = 0;
-            this.listOfSprites.forEach(sprite => Sprite.#numberOfEnvironmentSprites += sprite.original_notif_number);
+            Sprite.listOfSprites.forEach(sprite => Sprite.#numberOfEnvironmentSprites += sprite.original_notif_number);
+            Sprite.#numberOfEnvironmentSprites -= 1;
+            console.log(Sprite.#numberOfEnvironmentSprites); // this works well
         }
 
         notify(newNumber) {
-            if (this.showNotif && this.notifText) {
+            if (this.categoryInfo.notifications && this.notifText) {
                 this.notif_number = newNumber;
                 this.notifText.text = newNumber;
             }
         }
 
         static decreaseNumberOfEnvironmentSprites() {
+            console.log("decreaseNumberOfEnvironmentSprites");
+            console.log(Sprite.#numberOfEnvironmentSprites);
             Sprite.#numberOfEnvironmentSprites--;
+            console.log(Sprite.#numberOfEnvironmentSprites); // this shows weird neumbersl
 
         }
-
         static hasEnvironmentSprites() {
             return Sprite.#numberOfEnvironmentSprites !== 0;
         }
@@ -2321,11 +2322,11 @@
             this.row = this.originalRow;
             this.col = this.originalCol;
             this.updateSizeAndPosition();
-            if (this.showNotif) {
+            if (this.categoryInfo.notifications) {
                 this.updateNotificationPosition();
             }
-            this.direction = this.originalDirection;
-            this.sprite.rotation = this.directionToAngle[this.direction] || 0;
+            this.categoryInfo.direction = this.originalDirection;
+            this.sprite.rotation = this.directionToAngle[this.categoryInfo.direction] || 0;
         }
 
 
@@ -2339,7 +2340,7 @@
                 return;
             }
 
-            this._gridSize = gridSize;
+            this.activity._gridSize = gridSize;
 
             // Resize sprite
             this.sprite.width = this.sprite.height = gridSize;
@@ -2349,27 +2350,27 @@
             this.sprite.y = this.row * gridSize + gridSize / 2;
 
             // Reposition notification text, if it exists
-            if (this.showNotif && this.notifText) {
+            if (this.categoryInfo.notifications && this.notifText) {
                 this.notifText.x = this.sprite.x + gridSize / 3;
                 this.notifText.y = this.sprite.y - gridSize / 3;
             }
 
             // Add container back to stage if it's missing
-            if (this.app && this.app.stage && !this.app.stage.children.includes(this.container)) {
-                this.app.stage.addChild(this.container);
+            if (this.activity.app && this.activity.app.stage && !this.activity.app.stage.children.includes(this.container)) {
+                this.activity.app.stage.addChild(this.container);
             }
         }
 
 
         updateSizeAndPosition() {
-            this.sprite.width = this.sprite.height = this._gridSize;
-            this.sprite.x = this.col * this._gridSize + this._gridSize / 2;
-            this.sprite.y = this.row * this._gridSize + this._gridSize / 2;
+            this.sprite.width = this.sprite.height = this.activity._gridSize;
+            this.sprite.x = this.col * this.activity._gridSize + this.activity._gridSize / 2;
+            this.sprite.y = this.row * this.activity._gridSize + this.activity._gridSize / 2;
         }
 
         updateNotificationPosition() {
-            this.notifText.x = this.sprite.x + this._gridSize / 3;
-            this.notifText.y = this.sprite.y - this._gridSize / 3;
+            this.notifText.x = this.sprite.x + this.activity._gridSize / 3;
+            this.notifText.y = this.sprite.y - this.activity._gridSize / 3;
         }
 
         hide() {
@@ -2409,8 +2410,8 @@
             const halfHeight = this.sprite.height / 2;
 
             // Keep inside the canvas
-            this.sprite.x = Math.max(halfWidth, Math.min(this.app.screen.width - halfWidth, this.sprite.x));
-            this.sprite.y = Math.max(halfHeight, Math.min(this.app.screen.height - halfHeight, this.sprite.y));
+            this.sprite.x = Math.max(halfWidth, Math.min(this.activity.app.screen.width - halfWidth, this.sprite.x));
+            this.sprite.y = Math.max(halfHeight, Math.min(this.activity.app.screen.height - halfHeight, this.sprite.y));
         }
 
 
@@ -2423,8 +2424,8 @@
         }
 
         moveSmoothly(newRow, newCol, speed, isRunning, callback) {
-            let targetX = newCol * this._gridSize + this._gridSize / 2;
-            let targetY = newRow * this._gridSize + this._gridSize / 2;
+            let targetX = newCol * this.activity._gridSize + this.activity._gridSize / 2;
+            let targetY = newRow * this.activity._gridSize + this.activity._gridSize / 2;
 
             const animateMove = () => {
                 if (!isRunning) {
@@ -2456,8 +2457,8 @@
             let currentX = this.sprite.x;
             let currentY = this.sprite.y;
 
-            let fullTargetX = newCol * this._gridSize + this._gridSize / 2;
-            let fullTargetY = newRow * this._gridSize + this._gridSize / 2;
+            let fullTargetX = newCol * this.activity._gridSize + this.activity._gridSize / 2;
+            let fullTargetY = newRow * this.activity._gridSize + this.activity._gridSize / 2;
 
             // Compute direction vector
             let dx = fullTargetX - currentX;
@@ -2469,7 +2470,7 @@
             let unitY = dy / length;
 
             // Move only 0.5 grid unit in that direction
-            let halfStepDistance = this._gridSize * 0.5;
+            let halfStepDistance = this.activity._gridSize * 0.5;
             let targetX = currentX + unitX * halfStepDistance;
             let targetY = currentY + unitY * halfStepDistance;
 
@@ -2572,7 +2573,7 @@
             if (!isRunning) return;
 
             const directions = this.constructor._directions;
-            let currentIndex = directions.indexOf(this.direction);
+            let currentIndex = directions.indexOf(this.categoryInfo.direction);
 
             const angle = Math.PI / 2;
 
@@ -2588,7 +2589,7 @@
             }
 
             // Update logical direction
-            this.direction = directions[currentIndex];
+            this.categoryInfo.direction = directions[currentIndex];
 
             // Normalize rotation to [0, 2π)
             this.sprite.rotation = (this.sprite.rotation + 2 * Math.PI) % (2 * Math.PI);
@@ -2675,97 +2676,11 @@
             });
         }
 
-
-
-        async getPersonDelete(callback) {
-            let person = this.activity.environmentSprites.find(p => this.isNextTo(p) && p.notif_number !== 0);
-            if (person) {
-                Activity.playSound(Activity.activityTypeGameSettings.sounds.succeeded);
-                if (person.notif_number > 1) {
-                    this.activity.giveHint("Removed 1 person", "3000");
-                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100));
-                    Sprite.decreaseNumberOfEnvironmentSprites();
-                    person.notify(person.notif_number - 1);
-                } else if (person.notif_number === 1) {
-                    this.activity.giveHint("Everyone is inside", "3000");
-                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100));
-                    Sprite.decreaseNumberOfEnvironmentSprites();
-                    person.notify(0);
-                    person.hide();
-                }
-
-                if (typeof callback === "function") await callback(person);
-
-                // After potentially removing someone, check if that was the last
-                if (!Sprite.hasEnvironmentSprites()) {
-                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100));
-                    await this.activity.levelCompleted();
-                }
-                return person;
-            } else {
-                // No person found
-                if (Sprite.hasEnvironmentSprites()) {
-                    this.activity.giveHint("No person to be picked up", "3000");
-                    this.activity.hasFailed(true);
-                } else {
-                    // No environment sprites left
-                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100));
-                    await this.activity.levelCompleted();
-                }
-
-                if (typeof callback === "function") await callback(null);
-                return null;
-            }
-        }
-
-
         isNextTo(otherSprite) {
             if (!otherSprite) return false; // Prevent errors if null
             const dRow = Math.abs(this.row - otherSprite.row);
             const dCol = Math.abs(this.col - otherSprite.col);
             return (dRow === 1 && dCol === 0) || (dRow === 0 && dCol === 1);
-        }
-
-
-        async getBookDelete(callback) {
-            let book = this.activity.environmentSprites.find(b => this.isNextTo(p) && b.notif_number !== 0);
-            if (book) {
-                Activity.playSound(Activity.activityTypeGameSettings.sounds.succeeded);
-                if (book.notif_number > 1) {
-                    this.activity.giveHint("Removed 1 book", "3000");
-                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100));
-                    Sprite.decreaseNumberOfEnvironmentSprites();
-                    book.notify(book.notif_number - 1);
-                } else if (book.notif_number === 1) {
-                    this.activity.giveHint("Everyone is inside", "3000");
-                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100));
-                    Sprite.decreaseNumberOfEnvironmentSprites();
-                    book.notify(0);
-                    book.hide();
-                }
-
-                if (typeof callback === "function") await callback(book);
-
-                // After potentially removing someone, check if that was the last
-                if (!Sprite.hasEnvironmentSprites()) {
-                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100));
-                    await this.activity.levelCompleted();
-                }
-                return book;
-            } else {
-                // No book found
-                if (Sprite.hasEnvironmentSprites()) {
-                    this.activity.giveHint("No book to be picked up", "3000");
-                    this.activity.hasFailed(true);
-                } else {
-                    // No environment sprites left
-                    await new Promise(resolve => setTimeout(resolve, this.activity.speed * 100));
-                    await this.activity.levelCompleted();
-                }
-
-                if (typeof callback === "function") await callback(null);
-                return null;
-            }
         }
 
         isOnto(otherSprite) {

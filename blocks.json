@@ -1001,7 +1001,7 @@
           "pick_up_person"
         ],
         "playerInfo": {
-          "position": [4,2,1],
+          "position": [4,2,0],
           "setNotification": false,
           "notification": 0,
           "direction": "east",
@@ -1046,7 +1046,7 @@
           "pick_up_person"
         ],
         "playerInfo": {
-          "position": [4,2,1],
+          "position": [4,2,0],
           "setNotification": false,
           "notification": 0,
           "direction": "east",
@@ -1101,7 +1101,7 @@
           "pick_up_person"
         ],
         "playerInfo": {
-          "position": [4,2,1],
+          "position": [4,2,0],
           "setNotification": false,
           "notification": 0,
           "direction": "east",
@@ -1151,7 +1151,7 @@
           "pick_up_person"
         ],
         "playerInfo": {
-          "position": [4,2,1],
+          "position": [4,2,0],
 
           "setNotification": false,
           "notification": 0,
@@ -1212,7 +1212,7 @@
           "pick_up_person"
         ],
         "playerInfo": {
-          "position": [4,1,1],
+          "position": [4,1,0],
 
           "setNotification": false,
           "notification": 0,
@@ -1295,7 +1295,7 @@
           "pick_up_person"
         ],
         "playerInfo": {
-          "position": [5,2,1],
+          "position": [5,2,0],
           "setNotification": false,
           "notification": 0,
           "direction": "east",
@@ -1340,7 +1340,7 @@
           "pick_up_person"
         ],
         "playerInfo": {
-          "position": [5,2,1],
+          "position": [5,2,0],
 
           "setNotification": false,
           "notification": 0,
@@ -1396,7 +1396,7 @@
           "pick_up_person"
         ],
         "playerInfo": {
-          "position": [5,2,1],
+          "position": [5,2,0],
           "setNotification": false,
           "notification": 0,
           "direction": "east",
@@ -1446,7 +1446,7 @@
           "pick_up_person"
         ],
         "playerInfo": {
-          "position": [1,2,1],
+          "position": [1,2,0],
           "setNotification": false,
           "notification": 0,
           "direction": "east",
@@ -1509,7 +1509,7 @@
           "repeat_loop_K_2"
         ],
         "playerInfo": {
-          "position": [7,1,1],
+          "position": [7,1,0],
           "setNotification": false,
           "notification": 0,
           "direction": "east",
@@ -1560,7 +1560,7 @@
           "repeat_loop_K_2"
         ],
         "playerInfo": {
-          "position": [0,2,1],
+          "position": [0,2,0],
           "setNotification": false,
           "notification": 0,
           "direction": "east",
@@ -1621,7 +1621,7 @@
           "repeat_loop_K_2"
         ],
         "playerInfo": {
-          "position": [1,4,1],
+          "position": [1,4,0],
           "setNotification": false,
           "notification": 0,
           "direction": "east",
@@ -1692,7 +1692,7 @@
           "repeat_loop_K_2"
         ],
         "playerInfo": {
-          "position": [8,10,1],
+          "position": [8,10,0],
           "setNotification": false,
           "notification": 0,
           "direction": "east",
@@ -1752,7 +1752,7 @@
           "repeat_loop_K_2"
         ],
         "playerInfo": {
-          "position": [1,1,1],
+          "position": [1,1,0],
           "setNotification": false,
           "notification": 0,
           "direction": "east",
@@ -1843,7 +1843,7 @@
           "turn"
         ],
         "playerInfo": {
-          "position": [3,4,1],
+          "position": [3,4,0],
           "setNotification": false,
           "notification": 0,
           "direction": "east",
@@ -1897,7 +1897,7 @@
           "turn"
         ],
         "playerInfo": {
-          "position": [1,10,1],
+          "position": [1,10,0],
           "setNotification": false,
           "notification": 0,
           "direction": "west",
@@ -1954,7 +1954,7 @@
           "turn"
         ],
         "playerInfo": {
-          "position": [2,1,1],
+          "position": [2,1,0],
           "setNotification": false,
           "notification": 0,
           "direction": "east",
@@ -2007,7 +2007,7 @@
           "move_right"
         ],
         "playerInfo": {
-          "position": [5,5,1],
+          "position": [5,5,0],
           "setNotification": false,
           "notification": 0,
           "direction": "east",
@@ -2052,7 +2052,7 @@
           "move_left"
         ],
         "playerInfo": {
-          "position": [5,5,1],
+          "position": [5,5,0],
           "setNotification": false,
           "notification": 0,
           "direction": "east",
@@ -2097,7 +2097,7 @@
           "move_up"
         ],
         "playerInfo": {
-          "position": [5,5,1],
+          "position": [5,5,0],
          "setNotification": false,
           "notification": 0,
           "direction": "east",
@@ -2143,7 +2143,7 @@
           "move_down"
         ],
         "playerInfo": {
-          "position": [5,5,1],
+          "position": [5,5,0],
           "setNotification": false,
           "notification": 0,
           "direction": "east",
@@ -2189,7 +2189,7 @@
           "move_right"
         ],
         "playerInfo": {
-          "position": [5,5,1],
+          "position": [5,5,0],
           "setNotification": false,
           "notification": 0,
           "direction": "east",
@@ -2237,7 +2237,7 @@
           "move_right"
         ],
         "playerInfo": {
-          "position": [5,5,1],
+          "position": [5,5,0],
           "setNotification": false,
           "notification": 0,
           "direction": "east",
