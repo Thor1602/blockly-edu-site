@@ -1146,7 +1146,7 @@
                 backgroundColor: 0xAAAAAA
             });
             this.map = await new MapLayout(this.gameData.grid, this.app);
-            if (this.gameData.background.type === "colorTiled") {
+            if (this.gameData.background.type === "colorTiled" || this.gameData.background.type === "restrictedImage") {
                 await this.map.initialize(this.gameData.background.mapLayout);
             }
 
