@@ -738,7 +738,7 @@
       "previousStatement": null,
       "nextStatement": null,
       "colour": "#08b5bd",
-      "javascript_function": "await this.get_book(fiction);\n",
+      "javascript_function": "await this.get_book();\n",
       "size": "medium"
     },
     "get_fiction_book": {
@@ -754,7 +754,7 @@
       "previousStatement": null,
       "nextStatement": null,
       "colour": "#08b5bd",
-      "javascript_function": "await this.get_book(nonFiction);\n",
+      "javascript_function": "await this.get_book();\n",
       "size": "medium"
     },
     "if_else_statement": {

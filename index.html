@@ -1342,7 +1342,7 @@
             return new Promise(resolve => this.player.getPerson(resolve));
         }
 
-        get_book(bookType) {
+        get_book() {
             return new Promise(resolve => this.player.getBook(resolve));
         }
 
@@ -2672,7 +2672,7 @@
                 successHint: "Removed 1 book",
                 emptyHint: "All books collected",
                 failHint: "No book to be picked up",
-                isNextToCheck: true,
+                isNextToCheck: false,
                 callback
             });
         }
