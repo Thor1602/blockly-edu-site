@@ -1170,7 +1170,7 @@
             if (Array.isArray(this.gameData.nonInteractiveObjectOnePositions)) {
                 for (let position of this.gameData.nonInteractiveObjectOnePositions) {
                     const sprite = new Sprite(
-                        Activity.activityTypeGameSettings.environment.nonInteractiveObjects.nonInteractiveObjectOne,
+                        Activity.activityTypeGameSettings,
                         this.gameData,
                         position,
                         this
@@ -2379,9 +2379,8 @@
                     ? this.categoryInfo.characters.player.size
                     : this.categoryInfo.environment.nonInteractiveObjects.nonInteractiveObjectOne.size
             );
-            this.sprite.width = this.sprite.height = size;
-            this.notifText.x = this.sprite.x + this.activity._gridSize / 3;
-            this.notifText.y = this.sprite.y - this.activity._gridSize / 3;
+            this.notifText.x = this.sprite.x + size / 3;
+            this.notifText.y = this.sprite.y - size / 3;
         }
 
         hide() {
