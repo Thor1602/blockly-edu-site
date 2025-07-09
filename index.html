@@ -1170,7 +1170,7 @@
             if (Array.isArray(this.gameData.nonInteractiveObjectOnePositions)) {
                 for (let position of this.gameData.nonInteractiveObjectOnePositions) {
                     const sprite = new Sprite(
-                        Activity.activityTypeGameSettings.environment.nonInteractiveObjects.nonInteractiveObjectOne,
+                        Activity.activityTypeGameSettings,
                         this.gameData,
                         position,
                         this
@@ -1182,7 +1182,7 @@
             if (Array.isArray(this.gameData.nonInteractiveObjectTwoPositions)) {
                 for (let position of this.gameData.nonInteractiveObjectTwoPositions) {
                     const sprite = new Sprite(
-                        Activity.activityTypeGameSettings.environment.nonInteractiveObjects.nonInteractiveObjectOne,
+                        Activity.activityTypeGameSettings,
                         this.gameData,
                         position,
                         this
@@ -1342,7 +1342,7 @@
             return new Promise(resolve => this.player.getPerson(resolve));
         }
 
-        get_book(bookType) {
+        get_book() {
             return new Promise(resolve => this.player.getBook(resolve));
         }
 
@@ -2250,8 +2250,8 @@
         }
 
         async init() {
-            await PIXI.Assets.load(this.categoryInfo.sprite);
-            this.sprite = PIXI.Sprite.from(this.categoryInfo.sprite);
+            await PIXI.Assets.load(this.categoryInfo.environment.nonInteractiveObjects.nonInteractiveObjectOne.sprite);
+            this.sprite = PIXI.Sprite.from(this.categoryInfo.environment.nonInteractiveObjects.nonInteractiveObjectOne.sprite);
             this.sprite.anchor.set(0.5);
             this.directionToAngle = {
                 east: 0,
@@ -2268,7 +2268,7 @@
             this.container = new PIXI.Container();
             this.container.addChild(this.sprite);
 
-            if (this.categoryInfo.notifications) {
+            if (this.categoryInfo.environment.nonInteractiveObjects.nonInteractiveObjectOne.notifications) {
                 this.notifText = new PIXI.Text(this.notif_number, {
                     fontFamily: 'Arial',
                     fontSize: 14,
@@ -2296,7 +2296,7 @@
         }
 
         notify(newNumber) {
-            if (this.categoryInfo.notifications && this.notifText) {
+            if (this.categoryInfo.environment.nonInteractiveObjects.nonInteractiveObjectOne.notifications && this.notifText) {
                 this.notif_number = newNumber;
                 this.notifText.text = newNumber;
             }
@@ -2322,7 +2322,7 @@
             this.row = this.originalRow;
             this.col = this.originalCol;
             this.updateSizeAndPosition();
-            if (this.categoryInfo.notifications) {
+            if (this.categoryInfo.environment.nonInteractiveObjects.nonInteractiveObjectOne.notifications) {
                 this.updateNotificationPosition();
             }
             this.direction = this.originalDirection;
@@ -2350,7 +2350,7 @@
             this.sprite.y = this.row * gridSize + gridSize / 2;
 
             // Reposition notification text, if it exists
-            if (this.categoryInfo.notifications && this.notifText) {
+            if (this.categoryInfo.environment.nonInteractiveObjects.nonInteractiveObjectOne.notifications && this.notifText) {
                 this.notifText.x = this.sprite.x + gridSize / 3;
                 this.notifText.y = this.sprite.y - gridSize / 3;
             }
@@ -2363,14 +2363,24 @@
 
 
         updateSizeAndPosition() {
-            this.sprite.width = this.sprite.height = this.activity._gridSize;
+            this.sprite.width = this.sprite.height = this.activity._gridSize * (
+                this instanceof Player
+                    ? this.categoryInfo.characters.player.size
+                    : this.categoryInfo.environment.nonInteractiveObjects.nonInteractiveObjectOne.size
+            );
             this.sprite.x = this.col * this.activity._gridSize + this.activity._gridSize / 2;
             this.sprite.y = this.row * this.activity._gridSize + this.activity._gridSize / 2;
         }
 
+
         updateNotificationPosition() {
-            this.notifText.x = this.sprite.x + this.activity._gridSize / 3;
-            this.notifText.y = this.sprite.y - this.activity._gridSize / 3;
+            const size = this.activity._gridSize * (
+                this instanceof Player
+                    ? this.categoryInfo.characters.player.size
+                    : this.categoryInfo.environment.nonInteractiveObjects.nonInteractiveObjectOne.size
+            );
+            this.notifText.x = this.sprite.x + size / 3;
+            this.notifText.y = this.sprite.y - size / 3;
         }
 
         hide() {
@@ -2672,7 +2682,7 @@
                 successHint: "Removed 1 book",
                 emptyHint: "All books collected",
                 failHint: "No book to be picked up",
-                isNextToCheck: true,
+                isNextToCheck: false,
                 callback
             });
         }
