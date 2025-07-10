@@ -954,6 +954,69 @@
       "colour": "#08b5bd",
       "javascript_function": "await this.turnTo(direction);\n",
       "size": "medium"
+    },
+    "symbolBlock": {
+      "message0": "%1",
+      "args0": [
+        {
+          "type": "field_dropdown",
+          "name": "CHARACTER",
+          "options": [
+            ["!", "!"], ["@", "@"], [".", "."], [",", ","], ["$", "$"]
+          ]
+        }
+      ],
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": "#a050c3",
+      "tooltip": "Select a symbol",
+      "helpUrl": "",
+      "javascript_function": "await this.symbol();\n",
+      "size": "large"
+    },
+    "numberBlock": {
+      "message0": "%1",
+      "args0": [
+        {
+          "type": "field_dropdown",
+          "name": "CHARACTER",
+          "options": [
+            ["0", "0"], ["1", "1"], ["2", "2"], ["3", "3"], ["4", "4"],
+            ["5", "5"], ["6", "6"], ["7", "7"], ["8", "8"], ["9", "9"]
+          ]
+        }
+      ],
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": "#f2a007",
+      "tooltip": "Select a number",
+      "helpUrl": "",
+      "javascript_function": "await this.number();\n",
+      "size": "large"
+    },
+    "alphabetBlock": {
+      "message0": "%1",
+      "args0": [
+        {
+          "type": "field_dropdown",
+          "name": "CHARACTER",
+          "options": [
+            ["A", "A"], ["B", "B"], ["C", "C"], ["D", "D"], ["E", "E"],
+            ["F", "F"], ["G", "G"], ["H", "H"], ["I", "I"], ["J", "J"],
+            ["K", "K"], ["L", "L"], ["M", "M"], ["N", "N"], ["O", "O"],
+            ["P", "P"], ["Q", "Q"], ["R", "R"], ["S", "S"], ["T", "T"],
+            ["U", "U"], ["V", "V"], ["W", "W"], ["X", "X"], ["Y", "Y"],
+            ["Z", "Z"]
+          ]
+        }
+      ],
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": "#08b5bd",
+      "tooltip": "Select an alphabet letter",
+      "helpUrl": "",
+      "javascript_function": "await this.letter();\n",
+      "size": "large"
     }
   },
   "blocklyThemeSettings": {
@@ -984,6 +1047,104 @@
     }
   },
   "exercises": {
+    "passwordPracticeK": {
+      "1": {
+        "name": "passwordPracticeK_1",
+        "type": "passwordPracticeK",
+        "category": "passwordPractice",
+        "grade": "K",
+        "grid": false,
+        "level": "1",
+        "gridSize": 35,
+        "rowLength": 9,
+        "colLength": 9,
+        "maxBlocks": 8,
+        "goal": "Put the blocks in the correct order to have your email address",
+        "background": {
+          "type": "colorTiled",
+          "widthStartFrom": 0,
+          "image": null,
+          "mapLayout": null
+        },
+        "instructions": "Put the blocks in the correct order to have your email address",
+        "feedback": "Good job!",
+        "hints": "Put the blocks in the correct order to have your email address.",
+        "blocks": [
+          "alphabetBlock",
+          "numberBlock",
+          "symbolBlock"
+        ],
+        "playerInfo": {
+          "position": [
+            0,
+            0,
+            0
+          ],
+          "setNotification": false,
+          "notification": 0,
+          "direction": "east",
+          "freeMovement": false
+        },
+        "movable_sprites": null,
+        "nonInteractiveObjectOnePositions": [
+          [
+            0,
+            6,
+            1
+          ],
+          [
+            1,
+            6,
+            1
+          ],
+          [
+            2,
+            6,
+            1
+          ],
+          [
+            3,
+            6,
+            1
+          ],
+          [
+            4,
+            6,
+            1
+          ],
+          [
+            5,
+            6,
+            1
+          ],
+          [
+            6,
+            6,
+            1
+          ],
+          [
+            7,
+            6,
+            1
+          ],
+          [
+            8,
+            6,
+            1
+          ],
+          [
+            9,
+            6,
+            1
+          ],
+          [
+            10,
+            6,
+            1
+          ]
+        ]
+      }
+    },
     "taxiDriverSequencingK": {
       "1": {
         "name": "taxiDriverSequencingK_1",
