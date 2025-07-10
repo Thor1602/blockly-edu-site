@@ -499,6 +499,7 @@
                         <div>
                             <div class="section-title">Sequencing</div>
                             <a href="#" class="exercise-link" data-param="passwordPracticeK" data-level="1">Password Practice</a>
+                            <div class="section-title"></div>
                             <a href="#" class="exercise-link" data-param="taxiDriverSequencingK" data-level="1">Mr. Cab
                                 Driver</a>
                         </div>
@@ -1153,7 +1154,7 @@
                 await this.map.initialize(this.gameData.background.mapLayout);
             }
 
-            this.player = new Player(Activity.activityTypeGameSettings.characters.player, this.gameData.playerInfo ,this.gameData.playerInfo.position, this);
+            this.player = new Player(Activity.activityTypeGameSettings, this.gameData.playerInfo ,this.gameData.playerInfo.position, this);
             await this.player.init();
             if (Activity.activityTypeGameSettings.characters.player.eventDriven) {
                 this.app.ticker.add(() => {
@@ -2253,8 +2254,16 @@
         }
 
         async init() {
-            await PIXI.Assets.load(this.categoryInfo.environment.nonInteractiveObjects.nonInteractiveObjectOne.sprite);
-            this.sprite = PIXI.Sprite.from(this.categoryInfo.environment.nonInteractiveObjects.nonInteractiveObjectOne.sprite);
+
+            if (this instanceof Player) {
+                await PIXI.Assets.load(this.categoryInfo.characters.player.sprite);
+                this.sprite = PIXI.Sprite.from(this.categoryInfo.characters.player.sprite);
+            }
+            else{
+                await PIXI.Assets.load(this.categoryInfo.environment.nonInteractiveObjects.nonInteractiveObjectOne.sprite);
+                this.sprite = PIXI.Sprite.from(this.categoryInfo.environment.nonInteractiveObjects.nonInteractiveObjectOne.sprite);
+            }
+
             this.sprite.anchor.set(0.5);
             this.directionToAngle = {
                 east: 0,
@@ -2270,21 +2279,21 @@
 
             this.container = new PIXI.Container();
             this.container.addChild(this.sprite);
-
-            if (this.categoryInfo.environment.nonInteractiveObjects.nonInteractiveObjectOne.notifications) {
-                this.notifText = new PIXI.Text(this.notif_number, {
-                    fontFamily: 'Arial',
-                    fontSize: 14,
-                    fill: 'yellow',
-                    fontWeight: 'bold',
-                    stroke: 'black',
-                    strokeThickness: 4
-                });
-                this.notifText.anchor.set(0.5);
-                this.container.addChild(this.notifText);
-                this.updateNotificationPosition();
+            if (!(this instanceof Player)) {
+                if (this.categoryInfo.environment.nonInteractiveObjects.nonInteractiveObjectOne.notifications) {
+                    this.notifText = new PIXI.Text(this.notif_number, {
+                        fontFamily: 'Arial',
+                        fontSize: 14,
+                        fill: 'yellow',
+                        fontWeight: 'bold',
+                        stroke: 'black',
+                        strokeThickness: 4
+                    });
+                    this.notifText.anchor.set(0.5);
+                    this.container.addChild(this.notifText);
+                    this.updateNotificationPosition();
+                }
             }
-
             this.activity.app.stage.addChild(this.container);
             Sprite.listOfSprites.push(this);
             Sprite.#numberOfEnvironmentSprites += this.original_notif_number;

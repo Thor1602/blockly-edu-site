@@ -92,6 +92,74 @@
     }
   },
   "gameSettings": {
+    "passwordSequencing": {
+      "characters": {
+        "player": {
+          "name": "person",
+          "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/taxi3.png",
+          "eventDriven": false,
+          "size": 1,
+          "freeMovement": false
+        }
+      },
+      "environment": {
+        "interactiveObjects": {},
+        "nonInteractiveObjects": {
+          "nonInteractiveObjectOne": {
+            "name": "passenger",
+            "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/person.png",
+            "direction": "east",
+            "size": 1,
+            "notifications": true
+          }
+        }
+      },
+      "sounds": {
+        "succeeded": "pop-268648.mp3",
+        "failed": "bang-crash-103775.mp3",
+        "levelCompleted": "level-up-enhancement-8-bit-retro-sound-effect-153002.mp3",
+        "levelFailed": "slap-failure.mp3",
+        "backgroundMusic": "Lenny%20Kravitz%20-%20Mr.%20Cab%20Driver%20%5BKaraoke%20Version%5D.mp3"
+      },
+      "mapLayoutDesign": {
+        "tileTypes": {
+          "0": {
+            "label": "empty",
+            "walkable": false
+          },
+          "1": {
+            "label": "path",
+            "walkable": true
+          },
+          "2": {
+            "label": "park",
+            "walkable": false
+          }
+        },
+        "styleMap": {
+          "walkableColor": "0x555555",
+          "sideColor": "0xCCCCCC",
+          "decorationColors": [
+            "0x00FF00",
+            "0x228B22",
+            "0x32CD32"
+          ],
+          "secondaryColor": "0xCCCCCC",
+          "tertiaryColor": "0xCCCCCC",
+          "quaternaryColor": "0xCCCCCC",
+          "quinaryColor": "0xCCCCCC",
+          "senaryColor": "0xCCCCCC"
+        },
+        "textureMap": {
+          "primaryTile": "tree.jpg",
+          "secondaryTile": "rabbit.jpg",
+          "tertiaryTile": "bush.jpg",
+          "quaternaryTile": "rack.jpg",
+          "quinaryTile": "hoe.jpg",
+          "senaryTile": "flower.jpg"
+        }
+      }
+    },
     "taxiDriverSequencing": {
       "characters": {
         "player": {
