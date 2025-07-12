@@ -1063,7 +1063,7 @@
       "size": "large"
     },
     "alphabetBlockR": {
-      "message0": "\uD83D\uDD12 %1",
+      "message0": "\uD83D\uDD12 R-Z %1",
       "args0": [
         {
           "type": "field_dropdown",
@@ -1083,14 +1083,14 @@
       "size": "large"
     },
     "alphabetBlockJ": {
-      "message0": "\uD83D\uDD12 %1",
+      "message0": "\uD83D\uDD12 J-Q %1",
       "args0": [
         {
           "type": "field_dropdown",
           "name": "CHARACTER",
           "options": [
             ["J", "J"], ["K", "K"], ["L", "L"], ["M", "M"], ["N", "N"], ["O", "O"],
-            ["P", "P"], ["Q", "Q"], ["R", "R"]
+            ["P", "P"], ["Q", "Q"]
           ]
         }
       ],
@@ -1103,7 +1103,7 @@
       "size": "large"
     },
     "alphabetBlockA": {
-      "message0": "\uD83D\uDD12 %1",
+      "message0": "\uD83D\uDD12 A-I %1",
       "args0": [
         {
           "type": "field_dropdown",
@@ -1174,6 +1174,7 @@
         "feedback": "Good job!",
         "hints": "Put the blocks in the correct order to have your email address.",
         "blocks": [
+          "run_event",
           "alphabetBlockA",
           "alphabetBlockJ",
           "alphabetBlockR",
