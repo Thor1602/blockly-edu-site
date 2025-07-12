@@ -1115,11 +1115,11 @@
     }
   },
   "exercises": {
-    "passwordPracticeK": {
+    "passwordSequencingK": {
       "1": {
-        "name": "passwordPracticeK_1",
-        "type": "passwordPracticeK",
-        "category": "passwordPractice",
+        "name": "passwordSequencingK_1",
+        "type": "passwordSequencingK",
+        "category": "passwordSequencing",
         "grade": "K",
         "grid": false,
         "level": "1",
