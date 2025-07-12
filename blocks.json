@@ -110,7 +110,7 @@
             "sprite": "https://raw.githubusercontent.com/Thor1602/blockly-edu-site/refs/heads/main/images/person.png",
             "direction": "east",
             "size": 1,
-            "notifications": true
+            "notifications": false
           }
         }
       },
@@ -1024,7 +1024,7 @@
       "size": "medium"
     },
     "symbolBlock": {
-      "message0": "%1",
+      "message0": "\uD83D\uDD12 %1",
       "args0": [
         {
           "type": "field_dropdown",
@@ -1043,7 +1043,7 @@
       "size": "large"
     },
     "numberBlock": {
-      "message0": "%1",
+      "message0": "\uD83D\uDD12 %1",
       "args0": [
         {
           "type": "field_dropdown",
@@ -1062,19 +1062,55 @@
       "javascript_function": "await this.number();\n",
       "size": "large"
     },
-    "alphabetBlock": {
-      "message0": "%1",
+    "alphabetBlockR": {
+      "message0": "\uD83D\uDD12 %1",
+      "args0": [
+        {
+          "type": "field_dropdown",
+          "name": "CHARACTER",
+          "options": [
+            ["R", "R"], ["S", "S"], ["T", "T"], ["U", "U"], ["V", "V"],
+            ["W", "W"], ["X", "X"], ["Y", "Y"], ["Z", "Z"]
+          ]
+        }
+      ],
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": "#08b5bd",
+      "tooltip": "Select an alphabet letter",
+      "helpUrl": "",
+      "javascript_function": "await this.letter();\n",
+      "size": "large"
+    },
+    "alphabetBlockJ": {
+      "message0": "\uD83D\uDD12 %1",
+      "args0": [
+        {
+          "type": "field_dropdown",
+          "name": "CHARACTER",
+          "options": [
+            ["J", "J"], ["K", "K"], ["L", "L"], ["M", "M"], ["N", "N"], ["O", "O"],
+            ["P", "P"], ["Q", "Q"], ["R", "R"]
+          ]
+        }
+      ],
+      "previousStatement": null,
+      "nextStatement": null,
+      "colour": "#08b5bd",
+      "tooltip": "Select an alphabet letter",
+      "helpUrl": "",
+      "javascript_function": "await this.letter();\n",
+      "size": "large"
+    },
+    "alphabetBlockA": {
+      "message0": "\uD83D\uDD12 %1",
       "args0": [
         {
           "type": "field_dropdown",
           "name": "CHARACTER",
           "options": [
             ["A", "A"], ["B", "B"], ["C", "C"], ["D", "D"], ["E", "E"],
-            ["F", "F"], ["G", "G"], ["H", "H"], ["I", "I"], ["J", "J"],
-            ["K", "K"], ["L", "L"], ["M", "M"], ["N", "N"], ["O", "O"],
-            ["P", "P"], ["Q", "Q"], ["R", "R"], ["S", "S"], ["T", "T"],
-            ["U", "U"], ["V", "V"], ["W", "W"], ["X", "X"], ["Y", "Y"],
-            ["Z", "Z"]
+            ["F", "F"], ["G", "G"], ["H", "H"], ["I", "I"]
           ]
         }
       ],
@@ -1138,7 +1174,9 @@
         "feedback": "Good job!",
         "hints": "Put the blocks in the correct order to have your email address.",
         "blocks": [
-          "alphabetBlock",
+          "alphabetBlockA",
+          "alphabetBlockJ",
+          "alphabetBlockR",
           "numberBlock",
           "symbolBlock"
         ],
