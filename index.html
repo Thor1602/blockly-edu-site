@@ -964,7 +964,7 @@
                         el.innerText = "💛 Hi " + firstname + " " + lastname + " (" + className + ") 💛";
                     });
                     setTimeout(() => {
-                        handleLoginStatus(true);
+                        handleLoginStatus(false);
                     }, 200);
                     enableLinks();
 
@@ -1140,8 +1140,8 @@
         async initializeActivity() {
             if (this.speed) {
                 this.speedElement.style.display = "inline-block";
-                this.speed = this.speedElement.value;
-                this.speedElement.oninput = () => this.speed = this.speedElement.value;
+                this.speed = parseInt(this.speedElement.value, 10);
+                this.speedElement.oninput = () => this.speed = parseInt(this.speedElement.value, 10);
             }
 
             this.app = new PIXI.Application({
@@ -1167,7 +1167,7 @@
                         for (const flag of movements) {
                             this.player.getFlags()[flag] = false;
                         }
-                        // this.player.getKeyToMovement()[e.code] = new Set();
+                        this.player.getKeyToMovement()[e.code] = new Set();
                     }
                 });
             }
@@ -1969,7 +1969,6 @@
             }
 
         }
-
         defineBlocks(blocksByType) {
             if (!blocksByType || Object.keys(blocksByType).length === 0) {
                 throw new Error('No blocks found in JSON.');
@@ -2422,12 +2421,11 @@
 
         updateSpritePosition() {
             if (!this.sprite) return;
-
+            console.log(this.activity.speed);
             if (this.movementFlags.moveUp) this.sprite.y -= this.activity.speed;
             if (this.movementFlags.moveDown) this.sprite.y += this.activity.speed;
             if (this.movementFlags.moveLeft) this.sprite.x -= this.activity.speed;
             if (this.movementFlags.moveRight) this.sprite.x += this.activity.speed;
-
             // Clamp to canvas boundaries
             const halfWidth = this.sprite.width / 2;
             const halfHeight = this.sprite.height / 2;
