@@ -1020,8 +1020,7 @@
             this.type = type;
             this.level = level;
             this.gameData = null;
-            this.nonInteractiveObjectsOne = [];
-            this.nonInteractiveObjectsTwo = [];
+            this.nonInteractiveObjects = {};
             this.environmentSprites = [];
             this.player = null;
             this.blockManager = null;
@@ -1098,6 +1097,7 @@
                 await fetchData();
             }
             this.gameData = configData.exercises[this.type][this.level];
+            if (!this.gameData) return; // Exit if exercise not found
             if (localStorage.getItem('visualisationSize') !== null) {
                 this._gridSize = localStorage.getItem('visualisationSize');
             } else {
@@ -1122,8 +1122,7 @@
                 show: true
             });
             setTimeout(() => {
-                this.app.ticker.stop(); // Freeze game after delay
-                console.log("🎉 Player frozen after 200ms");
+                this.app.ticker.stop();
             }, 200);
         }
 
@@ -1154,8 +1153,8 @@
                 await this.map.initialize(this.gameData.background.mapLayout);
             }
 
-            this.player = new Player(Activity.activityTypeGameSettings, this.gameData.playerInfo ,this.gameData.playerInfo.position, this);
-            await this.player.init();
+            this.player = new Player(Activity.activityTypeGameSettings, this.gameData.playerInfo ,null, this.gameData.playerInfo.position, this);
+            await this.player.init(); // TODO is already done in the constructor, try to remove it later
             if (Activity.activityTypeGameSettings.characters.player.eventDriven) {
                 this.app.ticker.add(() => {
                     this.player.updateSpritePosition();
@@ -1171,39 +1170,43 @@
                     }
                 });
             }
-            if (Array.isArray(this.gameData.nonInteractiveObjectOnePositions)) {
-                for (let position of this.gameData.nonInteractiveObjectOnePositions) {
-                    const sprite = new Sprite(
-                        Activity.activityTypeGameSettings,
-                        this.gameData,
-                        position,
-                        this
-                    );
-                    await sprite.init(); // wait for image loading and setup
-                    this.nonInteractiveObjectsOne.push(sprite);
+            if (this.gameData.nonInteractiveObjectPositions) {
+                for (const [key, obj] of Object.entries(this.gameData.nonInteractiveObjectPositions)) {
+                    const positions = this.gameData.nonInteractiveObjectPositions[key];
+                    for (let position of positions) {
+                        const sprite = new Sprite(
+                            Activity.activityTypeGameSettings,
+                            this.gameData,
+                            key,
+                            position,
+                            this
+                        );
+                        await sprite.init(); // wait for image loading and setup
+                        if (!this.nonInteractiveObjects[key]) {
+                            this.nonInteractiveObjects[key] = [];
+                        }
+                        this.nonInteractiveObjects[key].push(sprite);
+                    }
                 }
             }
-            if (Array.isArray(this.gameData.nonInteractiveObjectTwoPositions)) {
-                for (let position of this.gameData.nonInteractiveObjectTwoPositions) {
-                    const sprite = new Sprite(
-                        Activity.activityTypeGameSettings,
-                        this.gameData,
-                        position,
-                        this
-                    );
-                    await sprite.init(); // wait for image loading and setup
-                    this.nonInteractiveObjectsTwo.push(sprite);
-                }
-            }
+            // if (Array.isArray(this.gameData.nonInteractiveObjectTwoPositions)) {
+            //     for (let position of this.gameData.nonInteractiveObjectTwoPositions) {
+            //         const sprite = new Sprite(
+            //             Activity.activityTypeGameSettings,
+            //             this.gameData,
+            //             position,
+            //             this
+            //         );
+            //         await sprite.init(); // wait for image loading and setup
+            //         this.nonInteractiveObjects.push(sprite);
+            //     }
+            // }
             this.environmentSprites = Sprite.listOfSprites.filter(item => !(item instanceof Player));
-            // this.nonInteractiveObjectsOne = Sprite.listOfSprites; // might be useless
-            // Append PIXI app view (canvas) to DOM
             buttonVisualisationElement.appendChild(this.app.view);
 
             this.initializeEnvironment();
-            this.map.drawSprites(this.nonInteractiveObjectsOne);  // Pass the correct 'sprites' array
-            this.map.drawSprites(this.nonInteractiveObjectsTwo);  // Pass the correct 'sprites' array
-        }
+            this.map.drawSprites(this.nonInteractiveObjects);  // Pass the correct 'sprites' array
+            }
 
         initializeEnvironment() {
             if (!this.map) {
@@ -1215,31 +1218,27 @@
             } else if (this.gameData.background.type === "image") {
                 this.map.drawImageBackground(this.gameData.background.image, 16 * this._gridSize);
             }
-            // Now resize any existing sprites, with defensive checks
-            if (this.nonInteractiveObjectsOne && Array.isArray(this.nonInteractiveObjectsOne)) {
-                this.nonInteractiveObjectsOne.forEach((sprite) => {
-                    try {
-                        if (sprite && typeof sprite.resize === 'function') {
-                            sprite.resize(this._gridSize);
-                        }
-                    } catch (error) {
-                        console.error("Error resizing sprite:", sprite, error);
-                    }
-                });
+            else if (this.gameData.background.type === "restrictedImage") {
+                this.map.drawMap(Activity.activityTypeGameSettings.mapLayoutDesign.styleMap, this._gridSize);
+                this.map.drawImageBackground(this.gameData.background.image, 16 * this._gridSize);
             }
-            if (this.nonInteractiveObjectsTwo && Array.isArray(this.nonInteractiveObjectsTwo)) {
-                this.nonInteractiveObjectsTwo.forEach((sprite) => {
-                    try {
-                        if (sprite && typeof sprite.resize === 'function') {
-                            sprite.resize(this._gridSize);
+            // Now resize any existing sprites, with defensive checks
+            if (this.nonInteractiveObjects && typeof this.nonInteractiveObjects === 'object') {
+                for (const [key, spriteList] of Object.entries(this.nonInteractiveObjects)) {
+                    if (Array.isArray(spriteList)) {
+                        for (const sprite of spriteList) {
+                            try {
+                                if (sprite && typeof sprite.resize === 'function') {
+                                    sprite.resize(this._gridSize);
+                                }
+                            } catch (error) {
+                                console.error(`Error resizing sprite in '${key}':`, sprite, error);
+                            }
                         }
-                    } catch (error) {
-                        console.error("Error resizing sprite:", sprite, error);
                     }
-                });
+                }
             }
         }
-
         visualisationDivSizeListener() {
             visualisationSize.addEventListener("change", () => {
                 if (visualisationSize.value === "Medium") {
@@ -1268,15 +1267,16 @@
             this._gridSize = newGridSize;
 
             // Resize all sprites (including player)
-            if (this.nonInteractiveObjectsOne) {
-                this.nonInteractiveObjectsOne.forEach(sprite => {
-                    if (sprite) sprite.resize(newGridSize);
-                });
-            }
-            if (this.nonInteractiveObjectsTwo) {
-                this.nonInteractiveObjectsTwo.forEach(sprite => {
-                    if (sprite) sprite.resize(newGridSize);
-                });
+            if (this.nonInteractiveObjects && typeof this.nonInteractiveObjects === 'object') {
+                for (const spriteList of Object.values(this.nonInteractiveObjects)) {
+                    if (Array.isArray(spriteList)) {
+                        for (const sprite of spriteList) {
+                            if (sprite && typeof sprite.resize === 'function') {
+                                sprite.resize(newGridSize);
+                            }
+                        }
+                    }
+                }
             }
             // Resize player separately if needed
             if (this.player) {
@@ -1290,8 +1290,11 @@
                 } else if (this.gameData.background.type === "image") {
                     this.map.drawImageBackground(this.gameData.background.image, 16 * this._gridSize);
                 }
-                this.map.drawSprites(this.nonInteractiveObjectsOne);
-                this.map.drawSprites(this.nonInteractiveObjectsTwo);
+                else if (this.gameData.background.type === "restrictedImage") {
+                    this.map.drawMap(Activity.activityTypeGameSettings.mapLayoutDesign.styleMap, this._gridSize);
+                    this.map.drawImageBackground(this.gameData.background.image, 16 * this._gridSize);
+                }
+                this.map.drawSprites(this.nonInteractiveObjects);
             }
 
             // Resize PIXI app view/canvas
@@ -1641,8 +1644,7 @@
             }
             setTimeout(() => {
                 // Draw the sprites (including the new player)
-                this.map.drawSprites(this.nonInteractiveObjectsOne);
-                this.map.drawSprites(this.nonInteractiveObjectsTwo);
+                this.map.drawSprites(this.nonInteractiveObjects);
                 Sprite.restoreNotificationNumberForAllSprites();
                 // Initialize the new player (taxi)
                 this.player.initialize();
@@ -1906,13 +1908,30 @@
                 rowIndex++;
             }
         }
+        drawSprites(setOfSprites) {
+            if (!setOfSprites) return;
+            const normalSprites = [];
+            const playerSprites = [];
+            for (const [key, listOfSprites] of Object.entries(setOfSprites)) {
+                if (Array.isArray(listOfSprites)) {
+                    for (const sprite of listOfSprites) {
+                        if (!sprite) continue;
+                        if (sprite instanceof Player) {
+                            playerSprites.push(sprite.container);
+                        } else {
+                            normalSprites.push(sprite.container);
+                        }
+                    }
+                }
+            }
+            // Add normal sprites first
+            for (const container of normalSprites) {
+                this.app.stage.addChild(container);
+            }
 
-
-        drawSprites(listOfSprites) {
-            if (listOfSprites) {
-                listOfSprites.forEach((sprite) => {
-                    if (sprite) this.app.stage.addChild(sprite.container);
-                });
+            // Then add player(s) last so they appear on top
+            for (const container of playerSprites) {
+                this.app.stage.addChild(container);
             }
         }
 
@@ -2240,9 +2259,10 @@
         static #numberOfEnvironmentSprites = 0;
         static _directions = ['west', 'north', 'east', 'south'];
 
-        constructor(categoryInfo, levelInfo, position, activity) {
+        constructor(categoryInfo, levelInfo, key, position, activity) {
             this.categoryInfo = categoryInfo;
             this.levelInfo = levelInfo;
+            this.key = key;
             this.row = position[0];
             this.col = position[1];
             this.activity = activity;
@@ -2250,6 +2270,7 @@
             this.original_notif_number = position[2];
             this.direction = categoryInfo.direction;
             this.originalDirection = categoryInfo.direction;
+
         }
 
         async init() {
@@ -2259,8 +2280,8 @@
                 this.sprite = PIXI.Sprite.from(this.categoryInfo.characters.player.sprite);
             }
             else{
-                await PIXI.Assets.load(this.categoryInfo.environment.nonInteractiveObjects.nonInteractiveObjectOne.sprite);
-                this.sprite = PIXI.Sprite.from(this.categoryInfo.environment.nonInteractiveObjects.nonInteractiveObjectOne.sprite);
+                await PIXI.Assets.load(this.categoryInfo.environment.nonInteractiveObjects[this.key].sprite);
+                this.sprite = PIXI.Sprite.from(this.categoryInfo.environment.nonInteractiveObjects[this.key].sprite);
             }
 
             this.sprite.anchor.set(0.5);
@@ -2279,7 +2300,7 @@
             this.container = new PIXI.Container();
             this.container.addChild(this.sprite);
             if (!(this instanceof Player)) {
-                if (this.categoryInfo.environment.nonInteractiveObjects.nonInteractiveObjectOne.notifications) {
+                if (this.categoryInfo.environment.nonInteractiveObjects[this.key].notifications) {
                     this.notifText = new PIXI.Text(this.notif_number, {
                         fontFamily: 'Arial',
                         fontSize: 14,
@@ -2303,22 +2324,17 @@
         static restoreNotificationNumberForAllSprites() {
             Sprite.#numberOfEnvironmentSprites = 0;
             Sprite.listOfSprites.forEach(sprite => Sprite.#numberOfEnvironmentSprites += sprite.original_notif_number);
-            console.log(Sprite.#numberOfEnvironmentSprites); // this works well
         }
 
         notify(newNumber) {
-            if (this.categoryInfo.environment.nonInteractiveObjects.nonInteractiveObjectOne.notifications && this.notifText) {
+            if (this.categoryInfo.environment.nonInteractiveObjects[this.key].notifications && this.notifText) {
                 this.notif_number = newNumber;
                 this.notifText.text = newNumber;
             }
         }
 
         static decreaseNumberOfEnvironmentSprites() {
-            console.log("decreaseNumberOfEnvironmentSprites");
-            console.log(Sprite.#numberOfEnvironmentSprites);
             Sprite.#numberOfEnvironmentSprites--;
-            console.log(Sprite.#numberOfEnvironmentSprites); // this shows weird neumbersl
-
         }
         static hasEnvironmentSprites() {
             return Sprite.#numberOfEnvironmentSprites !== 0;
@@ -2333,7 +2349,8 @@
             this.row = this.originalRow;
             this.col = this.originalCol;
             this.updateSizeAndPosition();
-            if (this.categoryInfo.environment.nonInteractiveObjects.nonInteractiveObjectOne.notifications) {
+            if (!(this instanceof Player) &&
+                this.categoryInfo?.environment?.nonInteractiveObjects?.[this.key]?.notifications) {
                 this.updateNotificationPosition();
             }
             this.direction = this.originalDirection;
@@ -2360,8 +2377,8 @@
             this.sprite.x = this.col * gridSize + gridSize / 2;
             this.sprite.y = this.row * gridSize + gridSize / 2;
 
-            // Reposition notification text, if it exists
-            if (this.categoryInfo.environment.nonInteractiveObjects.nonInteractiveObjectOne.notifications && this.notifText) {
+            const objectData = this.categoryInfo?.environment?.nonInteractiveObjects?.[this.key];
+            if (objectData?.notifications && this.notifText) {
                 this.notifText.x = this.sprite.x + gridSize / 3;
                 this.notifText.y = this.sprite.y - gridSize / 3;
             }
@@ -2377,7 +2394,7 @@
             this.sprite.width = this.sprite.height = this.activity._gridSize * (
                 this instanceof Player
                     ? this.categoryInfo.characters.player.size
-                    : this.categoryInfo.environment.nonInteractiveObjects.nonInteractiveObjectOne.size
+                    : this.categoryInfo.environment.nonInteractiveObjects[this.key].size
             );
             this.sprite.x = this.col * this.activity._gridSize + this.activity._gridSize / 2;
             this.sprite.y = this.row * this.activity._gridSize + this.activity._gridSize / 2;
@@ -2385,11 +2402,11 @@
 
 
         updateNotificationPosition() {
-            const size = this.activity._gridSize * (
-                this instanceof Player
-                    ? this.categoryInfo.characters.player.size
-                    : this.categoryInfo.environment.nonInteractiveObjects.nonInteractiveObjectOne.size
-            );
+            if (!this.notifText) return; // Skip if no notification text (e.g., for players)
+
+            const size = this.activity._gridSize *
+                this.categoryInfo.environment.nonInteractiveObjects[this.key].size;
+
             this.notifText.x = this.sprite.x + size / 3;
             this.notifText.y = this.sprite.y - size / 3;
         }
@@ -2421,11 +2438,11 @@
 
         updateSpritePosition() {
             if (!this.sprite) return;
-            console.log(this.activity.speed);
-            if (this.movementFlags.moveUp) this.sprite.y -= this.activity.speed;
-            if (this.movementFlags.moveDown) this.sprite.y += this.activity.speed;
-            if (this.movementFlags.moveLeft) this.sprite.x -= this.activity.speed;
-            if (this.movementFlags.moveRight) this.sprite.x += this.activity.speed;
+            const adjustedSpeed = 11 - this.activity.speed;
+            if (this.movementFlags.moveUp) this.sprite.y -= adjustedSpeed;
+            if (this.movementFlags.moveDown) this.sprite.y += adjustedSpeed;
+            if (this.movementFlags.moveLeft) this.sprite.x -= adjustedSpeed;
+            if (this.movementFlags.moveRight) this.sprite.x += adjustedSpeed;
             // Clamp to canvas boundaries
             const halfWidth = this.sprite.width / 2;
             const halfHeight = this.sprite.height / 2;
@@ -2708,8 +2725,7 @@
             if (!otherSprite) return false; // Prevent errors if null
             const dRow = Math.abs(this.row - otherSprite.row);
             const dCol = Math.abs(this.col - otherSprite.col);
-            // console.log(`Checking on-to: this (${this.row}, ${this.col}) vs other (${otherSprite.row}, ${otherSprite.col}) → dRow: ${dRow}, dCol: ${dCol}`);
-            return dCol === 0 || dRow === 0;
+            return dCol === 0 && dRow === 0;
         }
 
         collide(otherSprite) {
