@@ -2031,17 +2031,18 @@
             };
 
             javascript.javascriptGenerator.forBlock['if_statement_book'] = function (block) {
-                let bookType = block.getFieldValue('NAME');
-                let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO');
+                const innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO');
+                // TODO this book has
                 return `
-                    if (${bookType} === "non-fiction") {
-                        ${innerCode}
+                    {
+                        const book = this.activity.environmentSprites.find(obj => this.isOnto(obj) && obj.type === "book");
+                        if (book) {
+                            ${innerCode}
+                        }
                     }
-                    if (${bookType} === "fiction") {
-                        ${innerCode}
-                    }
-                    `;
+                `;
             };
+
 
             javascript.javascriptGenerator.forBlock['repeat_loop_K_2'] = function (block) {
                 let times = block.getFieldValue('TIMES') || 10;
@@ -3013,8 +3014,6 @@
         event.preventDefault();
         showPane("home");
     });
-
-
 </script>
 </body>
 </html>
