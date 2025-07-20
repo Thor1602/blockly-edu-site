@@ -2030,7 +2030,20 @@
                     `;
             };
 
-            javascript.javascriptGenerator.forBlock['repeat_loop_2_5'] = function (block) {
+            javascript.javascriptGenerator.forBlock['if_statement_book'] = function (block) {
+                let bookType = block.getFieldValue('NAME');
+                let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO');
+                return `
+                    if (${bookType} === "non-fiction") {
+                        ${innerCode}
+                    }
+                    if (${bookType} === "fiction") {
+                        ${innerCode}
+                    }
+                    `;
+            };
+
+            javascript.javascriptGenerator.forBlock['repeat_loop_K_2'] = function (block) {
                 let times = block.getFieldValue('TIMES') || 10;
                 let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO');
                 return `
@@ -2081,6 +2094,8 @@
                 const id = block.id;
                 return `await this.highlightBlock("${id}");\nawait this.turnTo("${direction}");\n`;
             };
+
+
 
             javascript.javascriptGenerator.forBlock["move_choice_action"] = function (block) {
                 const direction = block.getFieldValue("DIRECTION");
