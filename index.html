@@ -2031,11 +2031,25 @@
             };
 
             javascript.javascriptGenerator.forBlock['if_statement_book'] = function (block) {
+                let bookType = block.getFieldValue('NAME');
+                let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO');
+                return `
+                    if (${bookType} === "non-fiction") {
+                        ${innerCode}
+                    }
+                    if (${bookType} === "fiction") {
+                        ${innerCode}
+                    }
+                    `;
+            };
+
+            javascript.javascriptGenerator.forBlock['if_statement_book'] = function (block) {
+                const bookType = block.getFieldValue('BOOK_TYPE');
                 const innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO');
-                // TODO this book has
+
                 return `
                     {
-                        const book = this.activity.environmentSprites.find(obj => this.isOnto(obj) && obj.type === "book");
+                        const book = this.activity.environmentSprites.find(obj => this.isOnto(obj) && obj.type === "book" && obj.subtype === "${bookType}");
                         if (book) {
                             ${innerCode}
                         }
@@ -3014,6 +3028,8 @@
         event.preventDefault();
         showPane("home");
     });
+
+
 </script>
 </body>
 </html>
