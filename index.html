@@ -388,9 +388,9 @@
         <!-- Left side -->
         <div class="d-flex align-items-center">
             <a href="#" id="homeLink" class="navbar-brand me-3 expand">
-                <img src="https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/images/logo.png" height="40"
+                <img src="https://raw.githubusercontent.com/Thor1602/blockly-edu-site/main/images/wolf-logo.svg" height="40"
                      width="40" alt=""/>
-                CodeRecess SAIS
+                CodeRecess
             </a>
             <button class="btn btn-lg btn-primary" onclick="showPane('codingPane')">Continue</button>
         </div>
@@ -658,7 +658,7 @@
                         </div>
                         <div>
                             <div class="section-title">Functions</div>
-                            <a>Ms. Minjae’s Melody Functions (Coming soon)</a>
+                            <a>Melody Functions (Coming soon)</a>
                         </div>
                         <div>
                             <div class="section-title">Operators</div>
@@ -757,6 +757,11 @@
         </div>
     </div>
 </div>
+<footer class="bg-warning text-white text-center py-3">
+    <div class="container">
+        <small>&copy; 2025 The Apgu Wolves Foundation. All rights reserved.</small>
+    </div>
+</footer>
 
 
 <!-- Warning Modal -->
@@ -1206,7 +1211,7 @@
 
             this.initializeEnvironment();
             this.map.drawSprites(this.nonInteractiveObjects);  // Pass the correct 'sprites' array
-            }
+        }
 
         initializeEnvironment() {
             if (!this.map) {
@@ -2019,16 +2024,6 @@
                 };
             });
 
-            // Manually defined generators (unchanged)
-            javascript.javascriptGenerator.forBlock['repeat_loop_K_2'] = function (block) {
-                let times = block.getFieldValue('TIMES') || 10;
-                let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO');
-                return `
-                    for (let i = 0; i < ${times}; i++) {
-                        ${innerCode}
-                    }
-                    `;
-            };
 
             javascript.javascriptGenerator.forBlock['if_statement_book'] = function (block) {
                 let bookType = block.getFieldValue('NAME');
@@ -2059,6 +2054,18 @@
 
 
             javascript.javascriptGenerator.forBlock['repeat_loop_K_2'] = function (block) {
+                let times = block.getFieldValue('TIMES') || 10;
+                let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO');
+                return `
+                    for (let i = 0; i < ${times}; i++) {
+                        ${innerCode}
+                    }
+                    `;
+            };
+
+
+            // Manually defined generators (unchanged)
+            javascript.javascriptGenerator.forBlock['repeat_loop_2_5'] = function (block) {
                 let times = block.getFieldValue('TIMES') || 10;
                 let innerCode = javascript.javascriptGenerator.statementToCode(block, 'DO');
                 return `
